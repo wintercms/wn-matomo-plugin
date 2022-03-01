@@ -3,6 +3,7 @@
 use Config;
 use BackendAuth;
 use Cms\Classes\ComponentBase;
+use Cms\Models\MaintenanceSetting;
 
 /**
  * Tracker component
@@ -43,8 +44,33 @@ class Tracker extends ComponentBase
         $this->siteId = Config::get('winter.matomo::site_id');
 
         // Disable the tracker when authenticated backend users are detected
-        if (BackendAuth::getUser()) {
+        if (
+            !Config::get('winter.matomo::track_backend_users', false)
+            && BackendAuth::getUser()
+        ) {
             $this->enabled = false;
         }
+
+        // Disable the tracker when in maintenance mode
+        if (
+            !Config::get('winter.matomo::track_maintenance_mode', false)
+            && (
+                app()->maintenanceMode()->active()
+                || $this->isMaintenanceModeEnabled()
+            )
+        ) {
+            $this->enabled = false;
+        }
+    }
+
+    /**
+     * isMaintenanceModeEnabled will check if maintenance mode is currently enabled.
+     * Static page logic should be disabled when this occurs.
+     */
+    protected function isMaintenanceModeEnabled(): bool
+    {
+        return MaintenanceSetting::isConfigured() &&
+            MaintenanceSetting::get('is_enabled', false) &&
+            !BackendAuth::getUser();
     }
 }
