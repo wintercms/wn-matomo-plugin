@@ -1,10 +1,10 @@
 <?php namespace Winter\Matomo\ReportWidgets;
 
 use Url;
-use Arr;
 use Lang;
 use Yaml;
 use Config;
+use Winter\Storm\Support\Arr;
 use Backend\Classes\ReportWidgetBase;
 
 /**

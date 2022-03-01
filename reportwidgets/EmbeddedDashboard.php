@@ -81,7 +81,6 @@ class EmbeddedDashboard extends ReportWidgetBase
                 'moduleToWidgetize' => 'Dashboard',
                 'actionToWidgetize' => 'index',
                 'period'            => 'range',
-
             ],
         ]);
     }
