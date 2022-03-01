@@ -1,0 +1,29 @@
+{
+    "name": "winter/wn-matomo-plugin",
+    "type": "winter-plugin",
+    "description": "Integrates Matomo Analytics with Winter CMS",
+    "homepage": "https://github.com/wintercms/wn-matomo-plugin",
+    "keywords": ["cms", "wintercms", "matomo", "analytics", "piwik"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Helmut Kaufmann",
+            "homepage": "https://mercator.li",
+            "role": "Original Author"
+        },
+        {
+            "name": "Winter CMS Maintainers",
+            "homepage": "https://wintercms.com",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/wintercms/wn-matomo-plugin/issues",
+        "discord": "https://discord.gg/D5MFSPH6Ux",
+        "source": "https://github.com/wintercms/wn-matomo-plugin"
+    },
+    "require": {
+        "php": ">=7.2",
+        "composer/installers": "~1.11"
+    }
+}
