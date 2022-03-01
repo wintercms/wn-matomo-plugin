@@ -1,0 +1,25 @@
+<div class="report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+    <?php if (!isset($error)): ?>
+        <iframe
+            id="<?= e($this->getId('iframe')) ?>"
+            width="100%"
+            src="<?= e($iframeUrl); ?>"
+            frameborder="0"
+            marginheight="0"
+            marginwidth="0"
+        ></iframe>
+    <?php else: ?>
+        <div class="callout callout-warning">
+            <div class="content"><?= e($error) ?></div>
+        </div>
+    <?php endif ?>
+</div>
+<script>
+    iFrameResize({
+        log: false, // Disable console logging
+        resizedCallback: function(messageData){ // Callback fn when resize is received
+            $(window).trigger('resize');
+        }
+    }, "#<?= $this->getId('iframe') ?>");
+</script>

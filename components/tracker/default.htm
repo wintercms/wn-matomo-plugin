@@ -1,0 +1,18 @@
+{% if __SELF__.enabled %}
+    <link rel="preload" href="{{ __SELF__.serverUrl }}/matomo.js" onload="embedTracker()" type="script" crossorigin>
+    <script>
+        var _paq = window._paq = window._paq || [];
+        _paq.push(['trackPageView']);
+        _paq.push(['enableLinkTracking']);
+        (function() {
+            var u="{{ __SELF__.serverUrl }}/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '{{ __SELF__.siteId }}']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+            g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+        })();
+    </script>
+    <noscript>
+        <img referrerpolicy="no-referrer-when-downgrade" src="{{ __SELF__.serverUrl }}/matomo.php?idsite={{ __SELF__.siteId }}&amp;rec=1" style="border:0" alt="Tracking pixel"/>
+    </noscript>
+{% endif %}

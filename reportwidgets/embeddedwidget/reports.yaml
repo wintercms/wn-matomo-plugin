@@ -1,0 +1,354 @@
+widgetReferrersgetReferrerType:
+    module: "Referrers"
+    action: "getReferrerType"
+
+widgetReferrersgetAll:
+    module: "Referrers"
+    action: "getAll"
+
+widgetReferrersgetCampaignUrlBuilder:
+    module: "Referrers"
+    action: "getCampaignUrlBuilder"
+
+widgetReferrersgetCampaigns:
+    module: "Referrers"
+    action: "getCampaigns"
+
+widgetReferrersgetSparklinesforceView1viewDataTablesparklines:
+    module: "Referrers"
+    action: "getSparklines"
+    extraParams: "&forceView=1&viewDataTable=sparklines"
+
+widgetReferrersgetEvolutionGraphforceView1viewDataTablegraphEvolutioncolumnsArray:
+    module: "Referrers"
+    action: "getEvolutionGraph"
+    extraParams: "&forceView=1&viewDataTable=graphEvolution&columns=Array"
+
+widgetReferrersgetKeywords:
+    module: "Referrers"
+    action: "getKeywords"
+
+widgetReferrersgetSearchEngines:
+    module: "Referrers"
+    action: "getSearchEngines"
+
+widgetReferrersgetSocials:
+    module: "Referrers"
+    action: "getSocials"
+
+widgetReferrersgetWebsites:
+    module: "Referrers"
+    action: "getWebsites"
+
+widgetContents:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=Contents"
+
+widgetContentsgetContentNames:
+    module: "Contents"
+    action: "getContentNames"
+
+widgetContentsgetContentPieces:
+    module: "Contents"
+    action: "getContentPieces"
+
+widgetActionsgetDownloads:
+    module: "Actions"
+    action: "getDownloads"
+
+widgetVisitFrequencygetforceView1viewDataTablesparklines:
+    module: "VisitFrequency"
+    action: "get"
+    extraParams: "&forceView=1&viewDataTable=sparklines"
+
+widgetVisitFrequencygetEvolutionGraphforceView1viewDataTablegraphEvolution:
+    module: "VisitFrequency"
+    action: "getEvolutionGraph"
+    extraParams: "&forceView=1&viewDataTable=graphEvolution"
+
+widgetVisitorInterestgetNumberOfVisitsByDaysSinceLast:
+    module: "VisitorInterest"
+    action: "getNumberOfVisitsByDaysSinceLast"
+
+widgetVisitorInterestgetNumberOfVisitsByVisitCount:
+    module: "VisitorInterest"
+    action: "getNumberOfVisitsByVisitCount"
+
+widgetVisitorInterestgetNumberOfVisitsPerPage:
+    module: "VisitorInterest"
+    action: "getNumberOfVisitsPerPage"
+
+widgetVisitorInterestgetNumberOfVisitsPerVisitDuration:
+    module: "VisitorInterest"
+    action: "getNumberOfVisitsPerVisitDuration"
+
+widgetActionsgetEntryPageTitles:
+    module: "Actions"
+    action: "getEntryPageTitles"
+
+widgetActionsgetEntryPageUrls:
+    module: "Actions"
+    action: "getEntryPageUrls"
+
+widgetEvents:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=Events"
+
+widgetEventsgetActionsecondaryDimensioneventName:
+    module: "Events"
+    action: "getAction"
+    extraParams: "&secondaryDimension=eventName"
+
+widgetEventsgetCategorysecondaryDimensioneventAction:
+    module: "Events"
+    action: "getCategory"
+    extraParams: "&secondaryDimension=eventAction"
+
+widgetEventsgetNamesecondaryDimensioneventAction:
+    module: "Events"
+    action: "getName"
+    extraParams: "&secondaryDimension=eventAction"
+
+widgetActionsgetExitPageTitles:
+    module: "Actions"
+    action: "getExitPageTitles"
+
+widgetActionsgetExitPageUrls:
+    module: "Actions"
+    action: "getExitPageUrls"
+
+widgetActionsgetOutlinks:
+    module: "Actions"
+    action: "getOutlinks"
+
+widgetActionsgetPageTitles:
+    module: "Actions"
+    action: "getPageTitles"
+
+widgetActionsgetPageUrls:
+    module: "Actions"
+    action: "getPageUrls"
+
+widgetPagePerformancegetforceView1viewDataTablesparklines:
+    module: "PagePerformance"
+    action: "get"
+    extraParams: "&forceView=1&viewDataTable=sparklines"
+
+widgetPagePerformancegetEvolutionGraphforceView1viewDataTablegraphStackedBarEvolution:
+    module: "PagePerformance"
+    action: "getEvolutionGraph"
+    extraParams: "&forceView=1&viewDataTable=graphStackedBarEvolution"
+
+widgetActionsgetPageTitlesforceView1viewDataTabletablePerformanceColumnsperformance1:
+    module: "Actions"
+    action: "getPageTitles"
+    extraParams: "&forceView=1&viewDataTable=tablePerformanceColumns&performance=1"
+
+widgetActionsgetPageUrlsforceView1viewDataTabletablePerformanceColumnsperformance1:
+    module: "Actions"
+    action: "getPageUrls"
+    extraParams: "&forceView=1&viewDataTable=tablePerformanceColumns&performance=1"
+
+widgetActionsgetPageTitlesFollowingSiteSearch:
+    module: "Actions"
+    action: "getPageTitlesFollowingSiteSearch"
+
+widgetActionsgetPageUrlsFollowingSiteSearch:
+    module: "Actions"
+    action: "getPageUrlsFollowingSiteSearch"
+
+widgetActionsgetSiteSearchCategories:
+    module: "Actions"
+    action: "getSiteSearchCategories"
+
+widgetActionsgetSiteSearchNoResultKeywords:
+    module: "Actions"
+    action: "getSiteSearchNoResultKeywords"
+
+widgetActionsgetSiteSearchKeywords:
+    module: "Actions"
+    action: "getSiteSearchKeywords"
+
+widgetTransitionsgetTransitions:
+    module: "Transitions"
+    action: "getTransitions"
+
+widgetGoalsaddNewGoalidGoal:
+    module: "Goals"
+    action: "addNewGoal"
+    extraParams: "&idGoal="
+
+widgetGoals:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=Goals"
+
+widgetGoalsOverview:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=GoalsOverview"
+
+widgetInsightsgetInsightsOverview:
+    module: "Insights"
+    action: "getInsightsOverview"
+
+widgetInsightsgetOverallMoversAndShakers:
+    module: "Insights"
+    action: "getOverallMoversAndShakers"
+
+widgetCoreVisualizationssingleMetricViewcolumn:
+    module: "CoreVisualizations"
+    action: "singleMetricView"
+    extraParams: "&column="
+
+widgetSEOgetRank:
+    module: "SEO"
+    action: "getRank"
+
+widgetBotTrackergetBotTracker:
+    module: "BotTracker"
+    action: "getBotTracker"
+
+widgetBotTrackergetTop10:
+    module: "BotTracker"
+    action: "getTop10"
+
+widgetBotTrackergetBotTrackerAnzeige:
+    module: "BotTracker"
+    action: "getBotTrackerAnzeige"
+
+widgetIPtoCompanygetCompanies:
+    module: "IPtoCompany"
+    action: "getCompanies"
+
+widgetDevicesDetectiongetBrand:
+    module: "DevicesDetection"
+    action: "getBrand"
+
+widgetDevicesDetectiongetModel:
+    module: "DevicesDetection"
+    action: "getModel"
+
+widgetDevicesDetectiongetType:
+    module: "DevicesDetection"
+    action: "getType"
+
+widgetResolutiongetResolution:
+    module: "Resolution"
+    action: "getResolution"
+
+widgetContinent:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=Continent"
+
+widgetUserLanguagegetLanguage:
+    module: "UserLanguage"
+    action: "getLanguage"
+
+widgetUserCountrygetCity:
+    module: "UserCountry"
+    action: "getCity"
+
+widgetUserCountrygetContinent:
+    module: "UserCountry"
+    action: "getContinent"
+
+widgetUserCountrygetCountry:
+    module: "UserCountry"
+    action: "getCountry"
+
+widgetUserLanguagegetLanguageCode:
+    module: "UserLanguage"
+    action: "getLanguageCode"
+
+widgetUserCountrygetRegion:
+    module: "UserCountry"
+    action: "getRegion"
+
+widgetUserCountryMapvisitorMap:
+    module: "UserCountryMap"
+    action: "visitorMap"
+
+widgetVisitsSummarygetEvolutionGraphforceView1viewDataTablegraphEvolution:
+    module: "VisitsSummary"
+    action: "getEvolutionGraph"
+    extraParams: "&forceView=1&viewDataTable=graphEvolution"
+
+widgetVisitsSummarygetforceView1viewDataTablesparklines:
+    module: "VisitsSummary"
+    action: "get"
+    extraParams: "&forceView=1&viewDataTable=sparklines"
+
+widgetLivegetSimpleLastVisitCount:
+    module: "Live"
+    action: "getSimpleLastVisitCount"
+
+widgetLivewidget:
+    module: "Live"
+    action: "widget"
+
+widgetUserCountryMaprealtimeMap:
+    module: "UserCountryMap"
+    action: "realtimeMap"
+
+widgetDevicesDetectiongetBrowserEngines:
+    module: "DevicesDetection"
+    action: "getBrowserEngines"
+
+widgetDevicePluginsgetPlugin:
+    module: "DevicePlugins"
+    action: "getPlugin"
+
+widgetDevicesDetectiongetBrowserVersions:
+    module: "DevicesDetection"
+    action: "getBrowserVersions"
+
+widgetDevicesDetectiongetBrowsers:
+    module: "DevicesDetection"
+    action: "getBrowsers"
+
+widgetResolutiongetConfiguration:
+    module: "Resolution"
+    action: "getConfiguration"
+
+widgetDevicesDetectiongetOsFamilies:
+    module: "DevicesDetection"
+    action: "getOsFamilies"
+
+widgetDevicesDetectiongetOsVersions:
+    module: "DevicesDetection"
+    action: "getOsVersions"
+
+widgetVisitTimegetByDayOfWeek:
+    module: "VisitTime"
+    action: "getByDayOfWeek"
+
+widgetVisitTimegetVisitInformationPerLocalTime:
+    module: "VisitTime"
+    action: "getVisitInformationPerLocalTime"
+
+widgetVisitTimegetVisitInformationPerServerTime:
+    module: "VisitTime"
+    action: "getVisitInformationPerServerTime"
+
+widgetUserIdgetUsers:
+    module: "UserId"
+    action: "getUsers"
+
+widgetLivegetVisitorProfilePopup:
+    module: "Live"
+    action: "getVisitorProfilePopup"
+
+widgetLivegetLastVisitsDetailsforceView1viewDataTableVisitorLogsmall1:
+    module: "Live"
+    action: "getLastVisitsDetails"
+    extraParams: "&forceView=1&viewDataTable=VisitorLog&small=1"
+
+widgetVisitOverviewWithGraph:
+    module: "CoreHome"
+    action: "renderWidgetContainer"
+    extraParams: "&containerId=VisitOverviewWithGraph"
+
