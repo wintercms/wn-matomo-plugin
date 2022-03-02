@@ -1,5 +1,7 @@
 # Matomo Analytics
 
+![Matomo Plugin](https://user-images.githubusercontent.com/15900351/156275611-363b795f-bea8-47f2-b6dc-d7852ad5efcd.png)
+
 [Matomo](https://matomo.org) is a Google Analytics alternative that lets website owners own their analytical data and protect their customers' privacy. This is a [WinterCMS](https://wintercms.com) plugin that integrates Matomo into WinterCMS providing reporting widgets, client-based tracking component, and (planned) a server-side tracking component.
 
 ## Prerequisites
