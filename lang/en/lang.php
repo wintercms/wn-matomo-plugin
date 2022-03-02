@@ -1,7 +1,7 @@
 <?php return [
     'plugin' => [
-        'name' => 'Analytics',
-        'description' => 'Integrates CA with the Matomo Analytics service',
+        'name' => 'Matomo Analytics',
+        'description' => 'Integrates Matomo Analytics with Winter CMS',
     ],
 
     'permissions' => [

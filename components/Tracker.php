@@ -54,10 +54,10 @@ class Tracker extends ComponentBase
         // Disable the tracker when in maintenance mode
         if (
             !Config::get('winter.matomo::track_maintenance_mode', false)
-            && (
-                app()->maintenanceMode()->active()
-                || $this->isMaintenanceModeEnabled()
-            )
+            // && (
+            //     app()->maintenanceMode()->active()
+            //     || $this->isMaintenanceModeEnabled()
+            // )
         ) {
             $this->enabled = false;
         }
