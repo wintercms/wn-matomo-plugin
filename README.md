@@ -21,6 +21,7 @@ To get Matomo Analytics setup for your Winter CMS instance:
 - add the Matomo Server URL, the Site ID, and the Auth Token to this plugin's configuration
 
 >**NOTE:** You may want to disable any adblockers that you are currently using.
+>**NOTE:** Remember the tracker is disabled when authenticated backend users are detected or the website is in maintenance mode
 
 ### Configuration
 
