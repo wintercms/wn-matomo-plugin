@@ -22,6 +22,8 @@ To get Matomo Analytics setup for your Winter CMS instance:
 
 >**NOTE:** You may want to disable any adblockers that you are currently using.
 
+>**NOTE:** The tracker is disabled when authenticated backend users are detected or the website is in maintenance mode
+
 ### Configuration
 
 Configuration for this plugin is handled through a [configuration file](https://wintercms.com/docs/plugin/settings#file-configuration). In order to modify the configuration values and get started you can either add the values to your `.env` environment file or copy the `plugins/winter/matomo/config/config.php` file to `config/winter/matomo/config.php` and make your changes there.
