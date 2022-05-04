@@ -22,7 +22,7 @@ To get Matomo Analytics setup for your Winter CMS instance:
 
 >**NOTE:** You may want to disable any adblockers that you are currently using.
 
->**NOTE:** Remember the tracker is disabled when authenticated backend users are detected or the website is in maintenance mode
+>**NOTE:** The tracker is disabled when authenticated backend users are detected or the website is in maintenance mode
 
 ### Configuration
 
