@@ -27,11 +27,13 @@ class Plugin extends PluginBase
     public function boot()
     {
         $this->app->scoped(ReportingAPI::class, function () {
-            return new ReportingAPI(
+            $api = new ReportingAPI(
                 Config::get('winter.matomo::server'),
                 Config::get('winter.matomo::auth_token'),
                 Config::get('winter.matomo::site_id')
             );
+            $api->setCacheTtl(Config::get('winter.matomo::reportingapi_cache_ttl'));
+            return $api;
         });
     }
 
