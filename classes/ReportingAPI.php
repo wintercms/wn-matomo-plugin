@@ -120,6 +120,58 @@ class ReportingAPI
     //
 
     /**
+     * Get the currently set serverUrl
+     */
+    public function getServerUrl(): string
+    {
+        return $this->serverUrl;
+    }
+
+    /**
+     * Set the serverUrl property
+     */
+    public function setServerUrl(string $value): ReportingAPI
+    {
+        $this->serverUrl = $value;
+        return $this;
+    }
+
+    /**
+     * Get the currently set siteId
+     */
+    public function getSiteId(): ?int
+    {
+        return $this->siteId;
+    }
+
+    /**
+     * Set the siteId property
+     */
+    public function setSiteId(int $value): ReportingAPI
+    {
+        $this->siteId = $value;
+        return $this;
+    }
+
+    /**
+     * Get the currently set authToken
+     */
+    public function getAuthToken(): string
+    {
+        return $this->authToken;
+    }
+
+    /**
+     * Set the authToken property
+     */
+    public function setAuthToken(string $value): ReportingAPI
+    {
+        $this->authToken = $value;
+        return $this;
+    }
+
+
+    /**
      * Get the currently set period property value
      */
     public function getPeriod(): string
@@ -358,17 +410,14 @@ class ReportingAPI
     //
 
     /**
-     * Get an event's action ID (idSubtable) from its label
-     * @throws SystemException if the requested event cannot be found
+     * Get an event's action ID (idSubtable) from its label. Returns 0 if the requested
+     * event action could not be found with the current filters
      */
     public function getEventActionId(string $label): int
     {
-        $api = $this->clone();
-        $api->reset();
-        $api->setFilterLimit(-1);
-        $api->setPeriod(static::PERIOD_ALL);
-
-        $actions = $api->call('Events.getAction');
+        // The idsubdatatable is based on the current filters applied so this call
+        // must be made with the same filters as any subsequent calls
+        $actions = $this->call('Events.getAction', ['showColumns' => 'label,idsubdatatable']);
 
         foreach ($actions as $action) {
             if ($action->label === $label) {
@@ -376,23 +425,63 @@ class ReportingAPI
             }
         }
 
-        throw new SystemException("Unable to find the action ID for $label");
+        return 0;
     }
 
     /**
      * Get event names from the action ID
      */
-    public function getEventNamesFromActionId(int $idSubtable): array
+    public function getEventNamesFromActionId(int $idSubtable, array $params = []): array
     {
-        return $this->call('Events.getNameFromActionId', ['idSubtable' => $idSubtable]);
+        if ($idSubtable === 0) {
+            return [];
+        }
+        return $this->call('Events.getNameFromActionId', array_merge($params, ['idSubtable' => $idSubtable]));
     }
 
     /**
-     * Get the event names in the current reporting period for the
-     * provided event
+     * Get the event names in the current reporting period associated with the provided action label
      */
-    public function getEventNames(string $label)
+    public function getEventNamesFromAction(string $label, array $params = []): array
     {
-        return $this->getEventNamesFromActionId($this->getEventActionId($label));
+        return $this->getEventNamesFromActionId($this->getEventActionId($label), $params);
+    }
+
+    /**
+     * Get an event's category ID (idSubtable) from its label. Returns 0 if the requested
+     * event action could not be found with the current filters
+     */
+    public function getEventCategoryId(string $label): int
+    {
+        // The idsubdatatable is based on the current filters applied so this call
+        // must be made with the same filters as any subsequent calls
+        $categories = $this->call('Events.getCategory', ['showColumns' => 'label,idsubdatatable']);
+
+        foreach ($categories as $category) {
+            if ($category->label === $label) {
+                return (int) $category->idsubdatatable;
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Get event names from the category ID
+     */
+    public function getEventNamesFromCategoryId(int $idSubtable, array $params = []): array
+    {
+        if ($idSubtable === 0) {
+            return [];
+        }
+        return $this->call('Events.getNameFromCategoryId', array_merge($params, ['idSubtable' => $idSubtable]));
+    }
+
+    /**
+     * Get the event names in the current reporting period associated with the provided category label
+     */
+    public function getEventNamesFromCategory(string $label, array $params = []): array
+    {
+        return $this->getEventNamesFromCategoryId($this->getEventCategoryId($label), $params);
     }
 }
