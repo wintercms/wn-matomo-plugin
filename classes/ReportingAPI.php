@@ -389,12 +389,16 @@ class ReportingAPI
             $response = Http::get($url);
 
             if (empty($response->body) || $response->code !== 200) {
-                throw new SystemException("The API call failed.");
+                throw new SystemException("The API call failed. Code: {$response->code}, Response: {$response->body}");
             }
 
             $data = $response->body;
             if ($this->format === 'php') {
-                $data = json_decode($data, flags: JSON_THROW_ON_ERROR);
+                try {
+                    $data = json_decode($data, flags: JSON_THROW_ON_ERROR);
+                } catch (\Throwable $e) {
+                    throw new SystemException("The response was unable to be parsed: $data");
+                }
 
                 if (isset($data->result) && $data->result === 'error') {
                     throw new SystemException("The API call failed with the following message: {$data->message}");
