@@ -16,8 +16,8 @@ You must have basic knowledge about Matomo in order to use this plugin. In parti
 To get Matomo Analytics setup for your Winter CMS instance:
 
 - identify the analytics server you intend to use (e.g., matomo.org).
-- in the Matoma backend set your CMS server up for tracking and note down the site ID
-- again in the in the Matoma backend generate a security token (an *Auth Token*). Note that the *Auth Token* must be created under user who does **not** have super admin access
+- in the Matomo backend set your CMS server up for tracking and note down the site ID
+- again in the in the Matomo backend generate a security token (an *Auth Token*). Note that the *Auth Token* must be created under user who does **not** have super admin access
 - add the Matomo Server URL, the Site ID, and the Auth Token to this plugin's configuration
 
 >**NOTE:** You may want to disable any adblockers that you are currently using.
