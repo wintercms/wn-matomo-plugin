@@ -36,6 +36,23 @@
     */
 
     'auth_token' => env('MATOMO_TOKEN'),
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Reporting API Cache TTL
+    |--------------------------------------------------------------------------
+    |
+    | This is the length of time (in seconds) that requests made through
+    | the ReportingAPI should be cached for. Since the cache key includes the
+    | full request URL and those values determine the data present, all data
+    | should be remembered forever since for a given generated cacheKey the
+    | data will always be the same. However, in the interest of not having
+    | our cache directory grow indefinitely we'll keep it around for only
+    | two days because most of the time the end date is the present day
+    |
+    */
+
+    'reportingapi_cache_ttl' => 60 * 60 * 24 * 2,
 
     /*
     |--------------------------------------------------------------------------
