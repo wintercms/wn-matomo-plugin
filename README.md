@@ -31,7 +31,7 @@ Configuration for this plugin is handled through a [configuration file](https://
 Environment File Supported Values:
 - `MATOMO_SERVER="https://example.matomo.cloud/"`
 - `MATOMO_SITE_ID=1`
-- `MATOMO_TOKEN=""`
+- `MATOMO_AUTH_TOKEN=""`
 
 ### Tracking
 To start tracking your visitors simply add the `Tracker` component to the `<head>` section on all of the pages that you want to include the Matomo tracker on.
