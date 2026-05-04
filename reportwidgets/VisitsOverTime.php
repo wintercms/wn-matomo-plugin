@@ -32,7 +32,6 @@ class VisitsOverTime extends ReportWidgetBase
         return [
             'title' => [
                 'title' => 'backend::lang.dashboard.widget_title_label',
-                'description' => 'winter.core::lang.reportwidgets.general.title_desc',
                 'type' => 'string',
                 'default' => 'winter.matomo::lang.reportwidgets.visits_over_time.title_default',
                 'required' => true,
