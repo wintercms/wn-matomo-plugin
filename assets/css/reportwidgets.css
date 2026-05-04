@@ -1,0 +1,19 @@
+.report-widget.matomo-report-widget > div {
+    margin-top: -15px;
+}
+
+.report-widget.matomo-report-widget .matomo-report-widget-footer {
+    align-items: center;
+    display: flex;
+    gap: 16px;
+    justify-content: space-between;
+    padding-top: 12px;
+}
+
+.report-widget.matomo-report-widget .matomo-report-widget-meta {
+    margin: 0;
+}
+
+.report-widget.matomo-report-widget .matomo-report-widget-actions {
+    white-space: nowrap;
+}

@@ -1,0 +1,59 @@
+<div class="matomo-report-widget-body">
+    <?php if (!empty($error)): ?>
+        <div class="callout callout-warning">
+            <div class="content"><?= e($error) ?></div>
+        </div>
+    <?php else: ?>
+        <div class="control-list">
+            <table class="table data">
+                <tbody>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_visits')) ?></th>
+                        <td><?= e((string) ($metrics['nb_visits'] ?? 0)) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_uniq_visitors')) ?></th>
+                        <td><?= e((string) ($metrics['nb_uniq_visitors'] ?? 0)) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_actions')) ?></th>
+                        <td><?= e((string) ($metrics['nb_actions'] ?? 0)) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.bounce_rate')) ?></th>
+                        <td><?= e((string) ($metrics['bounce_rate'] ?? '0%')) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_actions_per_visit')) ?></th>
+                        <td><?= e((string) ($metrics['nb_actions_per_visit'] ?? '0')) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.avg_time_on_site')) ?></th>
+                        <td><?= e((string) ($metrics['avg_time_on_site'] ?? '00:00')) ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    <?php endif ?>
+
+    <div class="matomo-report-widget-footer">
+        <p class="help-block matomo-report-widget-meta">
+            <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.selected_period')) ?>:
+            <strong><?= e((string) ($selectedPeriodLabel ?? ($selectedPeriod ?? ''))) ?></strong>
+            |
+            <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.selected_date')) ?>:
+            <strong><?= e((string) ($selectedDateLabel ?? ($selectedDate ?? ''))) ?></strong>
+        </p>
+
+        <div class="matomo-report-widget-actions">
+            <button
+                type="button"
+                class="btn btn-default btn-sm"
+                data-request="<?= e($this->getEventHandler('onRefreshWidget')) ?>"
+                data-stripe-load-indicator
+            >
+                <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.refresh')) ?>
+            </button>
+        </div>
+    </div>
+</div>

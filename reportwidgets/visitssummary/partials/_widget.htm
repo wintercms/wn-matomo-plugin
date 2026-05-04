@@ -1,0 +1,7 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div id="<?= e($this->getId('content')) ?>">
+        <?= $this->makePartial('content') ?>
+    </div>
+</div>
