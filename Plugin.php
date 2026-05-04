@@ -102,6 +102,13 @@ class Plugin extends PluginBase
                     'winter.matomo.site.view',
                 ],
             ],
+            \Winter\Matomo\ReportWidgets\VisitsOverTime::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.visits_over_time.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
         ];
     }
 }

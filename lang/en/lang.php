@@ -24,6 +24,25 @@
             'period_last_x_days' => 'Last :x days',
         ],
 
+        'visits_over_time' => [
+            'label'        => 'Visits Over Time',
+            'title_default' => 'Visits Over Time',
+            'days'         => 'Period',
+            'days_desc'    => 'Number of past days to display on the chart.',
+            'days_options' => [
+                '7'  => 'Last 7 days',
+                '14' => 'Last 14 days',
+                '30' => 'Last 30 days',
+                '90' => 'Last 90 days',
+            ],
+            'days_label'   => 'Period',
+            'total_visits' => 'Total visits',
+            'no_data'      => 'No visit data available for this period.',
+            'metrics' => [
+                'nb_visits' => 'Visits',
+            ],
+        ],
+
         'embedded_dashboard' => [
             'title_default'      => 'Analytics Dashboard',
         ],

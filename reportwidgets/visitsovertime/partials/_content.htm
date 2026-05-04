@@ -1,0 +1,46 @@
+<div class="matomo-report-widget-body">
+    <?php if (!empty($error)): ?>
+        <div class="callout callout-warning">
+            <div class="content"><?= e($error) ?></div>
+        </div>
+    <?php elseif (empty($chartData)): ?>
+        <div class="callout callout-info">
+            <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.no_data')) ?></div>
+        </div>
+    <?php else: ?>
+        <div
+            data-control="chart-line"
+            data-time-mode="days"
+            style="height: 200px">
+            <span
+                data-chart="dataset"
+                data-set-color="#008dc9"
+                data-set-data="<?= e($chartData) ?>"
+                data-set-name="<?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits')) ?>">
+            </span>
+        </div>
+    <?php endif ?>
+
+    <div class="matomo-report-widget-footer">
+        <p class="help-block matomo-report-widget-meta">
+            <?php if (!empty($totalVisits)): ?>
+                <?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits')) ?>:
+                <strong><?= e((string) $totalVisits) ?></strong>
+                &nbsp;|&nbsp;
+            <?php endif ?>
+            <?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label')) ?>:
+            <strong><?= e((string) ($daysLabel ?? $days)) ?></strong>
+        </p>
+
+        <div class="matomo-report-widget-actions">
+            <button
+                type="button"
+                class="btn btn-default btn-sm"
+                data-request="onRefreshWidget"
+                data-request-update="'content': '#<?= e($this->getId('content')) ?>'"
+                data-stripe-load-indicator>
+                <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.refresh')) ?>
+            </button>
+        </div>
+    </div>
+</div>
