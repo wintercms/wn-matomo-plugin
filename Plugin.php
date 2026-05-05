@@ -117,6 +117,13 @@ class Plugin extends PluginBase
                     'winter.matomo.site.view',
                 ],
             ],
+            \Winter\Matomo\ReportWidgets\Referrers::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.referrers.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
         ];
     }
 }

@@ -144,6 +144,36 @@
             ],
         ],
 
+        'referrers' => [
+            'label' => 'Sources de trafic',
+            'title_default' => 'Sources de trafic',
+            'period' => 'Période',
+            'period_desc' => 'Sélectionnez la période de reporting pour les sources de trafic.',
+            'period_options' => [
+                'day' => 'Jour',
+                'week' => 'Semaine',
+                'month' => 'Mois',
+                'year' => 'Année',
+            ],
+            'date' => 'Date',
+            'date_desc' => 'Sélectionnez la plage de dates pour les sources de trafic.',
+            'date_options' => [
+                'today' => 'Aujourd\'hui',
+                'yesterday' => 'Hier',
+                'last7' => '7 derniers jours',
+                'last30' => '30 derniers jours',
+                'last90' => '90 derniers jours',
+            ],
+            'selected_period' => 'Période sélectionnée',
+            'selected_date' => 'Date sélectionnée',
+            'total_visits' => 'Total des visites',
+            'refresh' => 'Actualiser',
+            'no_data' => 'Aucune donnée de source de trafic disponible pour cette période.',
+            'types' => [
+                'unknown' => 'Source inconnue',
+            ],
+        ],
+
         'embedded_widget' => [
             'label'        => 'Rapport Analytics',
             'report'       => 'Rapport',

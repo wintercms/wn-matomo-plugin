@@ -144,6 +144,36 @@
             ],
         ],
 
+        'referrers' => [
+            'label' => 'Traffic Sources',
+            'title_default' => 'Traffic Sources',
+            'period' => 'Period',
+            'period_desc' => 'Select the reporting period used for traffic sources.',
+            'period_options' => [
+                'day' => 'Day',
+                'week' => 'Week',
+                'month' => 'Month',
+                'year' => 'Year',
+            ],
+            'date' => 'Date',
+            'date_desc' => 'Select the date range used for traffic sources.',
+            'date_options' => [
+                'today' => 'Today',
+                'yesterday' => 'Yesterday',
+                'last7' => 'Last 7 days',
+                'last30' => 'Last 30 days',
+                'last90' => 'Last 90 days',
+            ],
+            'selected_period' => 'Selected period',
+            'selected_date' => 'Selected date',
+            'total_visits' => 'Total visits',
+            'refresh' => 'Refresh',
+            'no_data' => 'No referrer data available for this period.',
+            'types' => [
+                'unknown' => 'Unknown source',
+            ],
+        ],
+
         'embedded_widget' => [
             'label' => 'Analytics Report',
             'report' => 'Report',

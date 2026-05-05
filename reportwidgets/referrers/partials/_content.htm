@@ -1,0 +1,51 @@
+<div class="matomo-report-widget-body">
+    <?php if (!empty($error)): ?>
+        <div class="callout callout-warning">
+            <div class="content"><?= e($error) ?></div>
+        </div>
+    <?php elseif (empty($referrerTypes)): ?>
+        <div class="callout callout-info">
+            <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.referrers.no_data')) ?></div>
+        </div>
+    <?php else: ?>
+        <div
+            class="control-chart"
+            data-control="chart-pie"
+            data-center-text="<?= e(number_format($totalVisits)) ?>"
+            data-size="160">
+            <ul>
+                <?php foreach ($referrerTypes as $referrerType): ?>
+                    <li data-color="<?= e($referrerType['color']) ?>">
+                        <?= e($referrerType['label']) ?>
+                        <span><?= e(number_format($referrerType['nb_visits'])) ?></span>
+                    </li>
+                <?php endforeach ?>
+            </ul>
+        </div>
+    <?php endif ?>
+
+    <div class="matomo-report-widget-footer">
+        <p class="help-block matomo-report-widget-meta">
+            <?php if (!empty($totalVisits)): ?>
+                <?= e(trans('winter.matomo::lang.reportwidgets.referrers.total_visits')) ?>:
+                <strong><?= e((string) $totalVisits) ?></strong>
+                &nbsp;|&nbsp;
+            <?php endif ?>
+            <?= e(trans('winter.matomo::lang.reportwidgets.referrers.selected_period')) ?>:
+            <strong><?= e((string) ($selectedPeriodLabel ?? $selectedPeriod)) ?></strong>
+            &nbsp;|&nbsp;
+            <?= e(trans('winter.matomo::lang.reportwidgets.referrers.selected_date')) ?>:
+            <strong><?= e((string) ($selectedDateLabel ?? $selectedDate)) ?></strong>
+        </p>
+
+        <div class="matomo-report-widget-actions">
+            <button
+                type="button"
+                class="btn btn-refresh btn-xs wn-icon-refresh"
+                data-request="<?= e($this->getEventHandler('onRefreshWidget')) ?>"
+                data-stripe-load-indicator>
+                <?= e(trans('winter.matomo::lang.reportwidgets.referrers.refresh')) ?>
+            </button>
+        </div>
+    </div>
+</div>
