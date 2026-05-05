@@ -131,6 +131,13 @@ class Plugin extends PluginBase
                     'winter.matomo.site.view',
                 ],
             ],
+            \Winter\Matomo\ReportWidgets\UserCountry::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.user_country.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
         ];
     }
 }

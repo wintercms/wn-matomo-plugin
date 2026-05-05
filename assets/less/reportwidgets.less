@@ -20,6 +20,10 @@
         margin-top: -15px;
     }
 
+    table > thead > tr > th {
+        padding: 12px 15px;
+    }
+
     .matomo-report-widget-footer {
         align-items: center;
         display: flex;
@@ -75,59 +79,65 @@
         }
     }
 
-    .matomo-top-pages-table-wrapper {
-        max-height: @top-pages-wrapper-max-height;
-        overflow-x: auto;
-        overflow-y: auto;
+
+    .matomo-top-pages {
+
+        &-table {
+            min-width: @top-pages-table-min-width;
+
+            &-wrapper {
+                max-height: @top-pages-wrapper-max-height;
+                overflow-x: auto;
+                overflow-y: auto;
+            }
+        }
+
+        &-header {
+            background: @top-pages-header-bg;
+            position: sticky;
+            top: 0;
+
+            &-url {
+                min-width: @top-pages-url-min-width;
+                z-index: 2;
+            }
+
+            &-metric {
+                white-space: nowrap;
+                text-align: center;
+                z-index: 3;
+            }
+
+            &-visits {
+                min-width: 80px;
+                right: @sticky-visits-right;
+            }
+
+            &-bounce {
+                min-width: 110px;
+                right: @sticky-bounce-right;
+            }
+
+            &-time {
+                min-width: 90px;
+                right: @sticky-time-right;
+            }
+        }
+
+        &-url {
+            &-cell {
+                max-width: @top-pages-url-max-width;
+                word-break: break-all;
+
+                > span {
+                    display: inline-block;
+                    max-width: 100%;
+                    overflow-wrap: anywhere;
+                }
+            }
+        }
     }
 
-    .matomo-top-pages-table {
-        min-width: @top-pages-table-min-width;
-    }
-
-    .matomo-top-pages-header {
-        background: @top-pages-header-bg;
-        position: sticky;
-        padding: 12px 15px;
-        top: 0;
-    }
-
-    .matomo-top-pages-header-url {
-        min-width: @top-pages-url-min-width;
-        z-index: 2;
-    }
-
-    .matomo-top-pages-header-metric {
-        white-space: nowrap;
-        text-align: center;
-        z-index: 3;
-    }
-
-    .matomo-top-pages-header-visits {
-        min-width: 80px;
-        right: @sticky-visits-right;
-    }
-
-    .matomo-top-pages-header-bounce {
-        min-width: 110px;
-        right: @sticky-bounce-right;
-    }
-
-    .matomo-top-pages-header-time {
-        min-width: 90px;
-        right: @sticky-time-right;
-    }
-
-    .matomo-top-pages-url-cell {
-        max-width: @top-pages-url-max-width;
-        word-break: break-all;
-    }
-
-    .matomo-top-pages-url-text {
-        display: inline-block;
-        max-width: 100%;
-        overflow-wrap: anywhere;
-    }
 
     .matomo-page-row-hidden {
         display: none;
@@ -166,5 +176,22 @@
 
     .matomo-sticky-metric-time {
         right: @sticky-time-right;
+    }
+
+    .matomo-countries-table {
+        > tbody > tr > td {
+
+            &:first-child {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+            }
+
+            > span {
+                &:first-child {
+                    font-size: 2rem;
+                }
+            }
+        }
     }
 }

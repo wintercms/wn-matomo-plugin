@@ -208,6 +208,46 @@
             ],
         ],
 
+        'user_country' => [
+            'label' => 'Pays',
+            'title_default' => 'Top Pays',
+            'period' => 'Période',
+            'period_desc' => 'Sélectionnez la période de reporting pour les pays.',
+            'period_options' => [
+                'day' => 'Jour',
+                'week' => 'Semaine',
+                'month' => 'Mois',
+                'year' => 'Année',
+            ],
+            'date' => 'Date',
+            'date_desc' => 'Sélectionnez la plage de dates pour les pays.',
+            'date_options' => [
+                'today' => 'Aujourd\'hui',
+                'yesterday' => 'Hier',
+                'last7' => '7 derniers jours',
+                'last30' => '30 derniers jours',
+                'last90' => '90 derniers jours',
+            ],
+            'limit' => 'Limite',
+            'limit_desc' => 'Nombre maximal de pays à afficher.',
+            'limit_options' => [
+                5 => '5 pays',
+                10 => '10 pays',
+                20 => '20 pays',
+            ],
+            'selected_period' => 'Période sélectionnée',
+            'selected_date' => 'Date sélectionnée',
+            'selected_limit' => 'Limite',
+            'refresh' => 'Actualiser',
+            'no_data' => 'Aucune donnée de pays disponible pour cette période.',
+            'unknown_country' => 'Pays inconnu',
+            'unknown_flag' => '🌍',
+            'columns' => [
+                'country' => 'Pays',
+                'nb_visits' => 'Visites',
+            ],
+        ],
+
         'embedded_widget' => [
             'label'        => 'Rapport Analytics',
             'report'       => 'Rapport',

@@ -1,6 +1,9 @@
 .report-widget.matomo-report-widget > div {
   margin-top: -15px;
 }
+.report-widget.matomo-report-widget table > thead > tr > th {
+  padding: 12px 15px;
+}
 .report-widget.matomo-report-widget .matomo-report-widget-footer {
   align-items: center;
   display: flex;
@@ -45,18 +48,17 @@
 .report-widget.matomo-report-widget .matomo-page-row td:first-child {
   white-space: nowrap;
 }
+.report-widget.matomo-report-widget .matomo-top-pages-table {
+  min-width: 520px;
+}
 .report-widget.matomo-report-widget .matomo-top-pages-table-wrapper {
   max-height: calc(calc(var(--max-pages) + 1) * 44.55px);
   overflow-x: auto;
   overflow-y: auto;
 }
-.report-widget.matomo-report-widget .matomo-top-pages-table {
-  min-width: 520px;
-}
 .report-widget.matomo-report-widget .matomo-top-pages-header {
   background: #ffffff;
   position: sticky;
-  padding: 12px 15px;
   top: 0;
 }
 .report-widget.matomo-report-widget .matomo-top-pages-header-url {
@@ -84,7 +86,7 @@
   max-width: 300px;
   word-break: break-all;
 }
-.report-widget.matomo-report-widget .matomo-top-pages-url-text {
+.report-widget.matomo-report-widget .matomo-top-pages-url-cell > span {
   display: inline-block;
   max-width: 100%;
   overflow-wrap: anywhere;
@@ -114,4 +116,12 @@
 }
 .report-widget.matomo-report-widget .matomo-sticky-metric-time {
   right: 0;
+}
+.report-widget.matomo-report-widget .matomo-countries-table > tbody > tr > td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.report-widget.matomo-report-widget .matomo-countries-table > tbody > tr > td > span:first-child {
+  font-size: 2rem;
 }
