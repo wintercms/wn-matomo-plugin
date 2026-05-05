@@ -14,7 +14,7 @@ class MatomoAuthenticationException extends MatomoReportingException
 
     public function userMessageKey(): string
     {
-        return 'winter.matomo::lang.reportwidgets.visits_summary.errors.authentication';
+        return 'winter.matomo::lang.reportwidgets.errors.authentication';
     }
 
     public function isRetryable(): bool

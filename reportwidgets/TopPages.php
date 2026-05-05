@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\MatomoReportingService;
+use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
 
 /**
  * Native WinterCMS report widget that renders top pages from Matomo analytics.
@@ -16,6 +17,8 @@ use Winter\Matomo\Classes\MatomoReportingService;
  */
 class TopPages extends ReportWidgetBase
 {
+    use ReportWidgetConcerns;
+
     /**
      * Default widget alias used by WinterCMS dashboard internals.
      *
@@ -153,6 +156,9 @@ class TopPages extends ReportWidgetBase
             'winter.matomo::lang.reportwidgets.top_pages.view_mode_options',
             $selectedViewMode
         );
+        $this->vars['refreshButton'] = $this->renderRefreshButton([
+            'widgetId' => $this->getId(),
+        ]);
 
         try {
             /** @var MatomoReportingService $service */
@@ -609,41 +615,6 @@ class TopPages extends ReportWidgetBase
     }
 
     /**
-     * Formats a duration in seconds to a human-readable string (MM:SS).
-     *
-     * @param int $seconds Duration in seconds
-     * @return string Formatted duration
-     */
-    protected function formatDuration(int $seconds): string
-    {
-        $minutes = intdiv($seconds, 60);
-        $remainingSeconds = $seconds % 60;
-
-        return sprintf('%02d:%02d', $minutes, $remainingSeconds);
-    }
-
-    /**
-     * Resolves a user-friendly error message from an exception.
-     *
-     * @param Throwable $exception The exception that occurred
-     * @return string User-friendly error message
-     */
-    protected function resolveUserErrorMessage(Throwable $exception): string
-    {
-        if ($exception instanceof MatomoReportingException) {
-            return match ($exception->errorCode()) {
-                'authentication' => 'winter.matomo::lang.reportwidgets.errors.authentication',
-                'timeout' => 'winter.matomo::lang.reportwidgets.errors.timeout',
-                'server' => 'winter.matomo::lang.reportwidgets.errors.server',
-                'configuration' => 'winter.matomo::lang.reportwidgets.errors.configuration',
-                default => 'winter.matomo::lang.reportwidgets.errors.generic',
-            };
-        }
-
-        return 'winter.matomo::lang.reportwidgets.errors.generic';
-    }
-
-    /**
      * Strips the domain (scheme + host) from a URL, returning only the path and query.
      *
      * @param string $url The full URL
@@ -668,19 +639,5 @@ class TopPages extends ReportWidgetBase
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the translated label for a given option value.
-     *
-     * @param string $langKey Language key for the options array
-     * @param string|int $value The option value
-     * @return string Translated label
-     */
-    protected function translatedOptionLabel(string $langKey, string|int $value): string
-    {
-        $options = trans($langKey);
-
-        return $options[$value] ?? (string) $value;
     }
 }

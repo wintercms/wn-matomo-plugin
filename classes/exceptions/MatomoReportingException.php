@@ -51,7 +51,7 @@ class MatomoReportingException extends \RuntimeException
      */
     public function userMessageKey(): string
     {
-        return 'winter.matomo::lang.reportwidgets.visits_summary.errors.reporting';
+        return 'winter.matomo::lang.reportwidgets.errors.reporting';
     }
 
     /**

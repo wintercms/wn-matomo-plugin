@@ -6,8 +6,8 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
-use Winter\Matomo\Classes\Exceptions\MatomoRequestTimeoutException;
 use Winter\Matomo\Classes\MatomoReportingService;
+use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
 
 /**
  * Native WinterCMS report widget that renders a Matomo visits summary.
@@ -17,6 +17,8 @@ use Winter\Matomo\Classes\MatomoReportingService;
  */
 class VisitsSummary extends ReportWidgetBase
 {
+    use ReportWidgetConcerns;
+
     /**
      * Default widget alias used by WinterCMS dashboard internals.
      *
@@ -110,6 +112,9 @@ class VisitsSummary extends ReportWidgetBase
             'winter.matomo::lang.reportwidgets.visits_summary.date_options',
             $selectedDate
         );
+        $this->vars['refreshButton'] = $this->renderRefreshButton([
+            'widgetId' => $this->getId(),
+        ]);
 
         try {
             /** @var MatomoReportingService $service */
@@ -156,64 +161,6 @@ class VisitsSummary extends ReportWidgetBase
     }
 
     /**
-     * Converts technical exceptions to actionable user-facing messages.
-     */
-    protected function resolveUserErrorMessage(Throwable $exception): string
-    {
-        if ($exception instanceof MatomoRequestTimeoutException) {
-            $context = $exception->context();
-            $host = $this->extractHostFromExceptionContext($exception);
-            $connectionError = (string) ($context['connection_error'] ?? '');
-
-            if ($connectionError === 'dns_resolution' && $host !== null) {
-                return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.host_unreachable', [
-                    'host' => $host,
-                ]);
-            }
-
-            if ($connectionError === 'connection_refused' && $host !== null) {
-                return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.connection_refused', [
-                    'host' => $host,
-                ]);
-            }
-
-            return (string) trans($exception->userMessageKey());
-        }
-
-        if ($exception instanceof MatomoReportingException) {
-            return (string) trans($exception->userMessageKey());
-        }
-
-        return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.unexpected');
-    }
-
-    /**
-     * Extracts a hostname from typed exception context if available.
-     */
-    protected function extractHostFromExceptionContext(MatomoReportingException $exception): ?string
-    {
-        $context = $exception->context();
-
-        $host = $context['host'] ?? null;
-        if (is_string($host) && $host !== '') {
-            return $host;
-        }
-
-        $endpoint = $context['endpoint'] ?? null;
-        if (!is_string($endpoint) || $endpoint === '') {
-            return null;
-        }
-
-        $parsed = parse_url($endpoint, PHP_URL_HOST);
-
-        if (!is_string($parsed) || $parsed === '') {
-            return null;
-        }
-
-        return $parsed;
-    }
-
-    /**
      * Extracts the metrics object from Matomo responses.
      *
      * Some responses are flat arrays, while others are grouped by period/date.
@@ -252,29 +199,5 @@ class VisitsSummary extends ReportWidgetBase
             'nb_actions_per_visit' => '0',
             'avg_time_on_site' => '00:00',
         ];
-    }
-
-    /**
-     * Converts a duration in seconds to mm:ss format.
-     */
-    protected function formatDuration(int $seconds): string
-    {
-        $minutes = intdiv(max(0, $seconds), 60);
-        $remainingSeconds = max(0, $seconds) % 60;
-
-        return sprintf('%02d:%02d', $minutes, $remainingSeconds);
-    }
-
-    /**
-     * Resolves a translated options array and returns the label for a selected key.
-     */
-    protected function translatedOptionLabel(string $optionsLangKey, string $selectedValue): string
-    {
-        $options = trans($optionsLangKey);
-        if (!is_array($options)) {
-            return $selectedValue;
-        }
-
-        return (string) ($options[$selectedValue] ?? $selectedValue);
     }
 }

@@ -62,14 +62,7 @@
         </p>
 
         <div class="matomo-report-widget-actions">
-            <button
-                type="button"
-                class="btn btn-refresh btn-xs wn-icon-refresh"
-                data-request="<?= e($this->getEventHandler('onRefreshWidget')) ?>"
-                data-stripe-load-indicator
-            >
-                <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.refresh')) ?>
-            </button>
+            <?= $refreshButton ?>
         </div>
     </div>
 

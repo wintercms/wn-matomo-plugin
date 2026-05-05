@@ -11,25 +11,25 @@
   justify-content: space-between;
   padding-top: 12px;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-meta {
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-meta {
   margin: 0;
   font-size: 0.9em;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-actions {
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions {
   white-space: nowrap;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-actions .btn-refresh {
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh {
   background: white;
   border: 1px solid #2896b2;
   color: #24849d;
   font-weight: 500;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-actions .btn-refresh:hover {
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh:hover {
   background: #24849d;
   border-color: #2896b2;
   color: #fff;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-actions .btn-refresh:before {
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh:before {
   margin-right: 2px;
 }
 .report-widget.matomo-report-widget .matomo-page-toggle {

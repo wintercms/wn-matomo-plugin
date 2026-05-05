@@ -47,6 +47,20 @@
             'title_default'      => 'Analytics Dashboard',
         ],
 
+        'errors' => [
+            'configuration'   => 'Matomo configuration is invalid. Check MATOMO_SERVER, MATOMO_SITE_ID and MATOMO_TOKEN.',
+            'authentication'  => 'Matomo authentication failed. Verify your token permissions and value.',
+            'timeout'         => 'Matomo server is unreachable or too slow. Try again in a moment.',
+            'host_unreachable' => 'Matomo host ":host" cannot be resolved. Check MATOMO_SERVER.',
+            'connection_refused' => 'Connection to Matomo host ":host" was refused. Check server availability and port.',
+            'ssl_certificate' => 'SSL certificate verification failed for Matomo server. Check server certificate or update system CA certificates.',
+            'dns_resolution'  => 'Matomo host ":host" cannot be resolved. Check DNS configuration and network connectivity.',
+            'connection_failed' => 'Connection to Matomo server failed. Check server availability and network configuration.',
+            'server'          => 'Matomo server returned an unexpected response. Check server availability and logs.',
+            'reporting'       => 'Matomo returned an analytics error for this request. Check your widget settings and logs.',
+            'unexpected'      => 'An unexpected error occurred while loading analytics data. Check logs for details.',
+        ],
+
         'visits_summary' => [
             'label' => 'Visits Summary',
             'title_default' => 'Visits Summary',
@@ -70,19 +84,6 @@
             'selected_period' => 'Selected period',
             'selected_date' => 'Selected date',
             'refresh' => 'Refresh',
-            'errors' => [
-                'configuration' => 'Matomo configuration is invalid. Check MATOMO_SERVER, MATOMO_SITE_ID and MATOMO_TOKEN.',
-                'authentication' => 'Matomo authentication failed. Verify your token permissions and value.',
-                'timeout' => 'Matomo server is unreachable or too slow. Try again in a moment.',
-                'host_unreachable' => 'Matomo host ":host" cannot be resolved. Check MATOMO_SERVER.',
-                'connection_refused' => 'Connection to Matomo host ":host" was refused. Check server availability and port.',
-                'ssl_certificate' => 'SSL certificate verification failed for Matomo server. Check server certificate or update system CA certificates.',
-                'dns_resolution' => 'Matomo host ":host" cannot be resolved. Check DNS configuration and network connectivity.',
-                'connection_failed' => 'Connection to Matomo server failed. Check server availability and network configuration.',
-                'server' => 'Matomo server returned an unexpected response. Check server availability and logs.',
-                'reporting' => 'Matomo returned an analytics error for this request. Check your widget settings and logs.',
-                'unexpected' => 'An unexpected error occurred while loading analytics data. Check logs for details.',
-            ],
             'metrics' => [
                 'nb_visits' => 'Visits',
                 'nb_uniq_visitors' => 'Unique visitors',

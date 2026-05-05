@@ -30,30 +30,30 @@
         gap: 16px;
         justify-content: space-between;
         padding-top: 12px;
-    }
+    
+        .matomo-report-widget-meta {
+            margin: 0;
+            font-size: .90em;
+        }
 
-    .matomo-report-widget-meta {
-        margin: 0;
-        font-size: .90em;
-    }
+        .matomo-report-widget-actions {
+            white-space: nowrap;
 
-    .matomo-report-widget-actions {
-        white-space: nowrap;
+            .btn-refresh {
+                background: white;
+                border: 1px solid #2896b2;
+                color: #24849d;
+                font-weight: 500;
 
-        .btn-refresh {
-            background: white;
-            border: 1px solid #2896b2;
-            color: #24849d;
-            font-weight: 500;
+                &:hover {
+                    background: #24849d;
+                    border-color: #2896b2;
+                    color: #fff;
+                }
 
-            &:hover {
-                background: #24849d;
-                border-color: #2896b2;
-                color: #fff;
-            }
-
-            &:before {
-                margin-right: 2px;
+                &:before {
+                    margin-right: 2px;
+                }
             }
         }
     }

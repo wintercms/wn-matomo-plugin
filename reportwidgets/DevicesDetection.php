@@ -6,14 +6,16 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
-use Winter\Matomo\Classes\Exceptions\MatomoRequestTimeoutException;
 use Winter\Matomo\Classes\MatomoReportingService;
+use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
 
 /**
  * Native WinterCMS report widget that renders Matomo device types and browser distribution as dual donut charts.
  */
 class DevicesDetection extends ReportWidgetBase
 {
+    use ReportWidgetConcerns;
+
     /**
      * Default widget alias used by WinterCMS dashboard internals.
      *
@@ -107,6 +109,9 @@ class DevicesDetection extends ReportWidgetBase
             'winter.matomo::lang.reportwidgets.devices_detection.date_options',
             $selectedDate
         );
+        $this->vars['refreshButton'] = $this->renderRefreshButton([
+            'widgetId' => $this->getId(),
+        ]);
 
         try {
             /** @var MatomoReportingService $service */
@@ -306,70 +311,5 @@ class DevicesDetection extends ReportWidgetBase
             str_contains($normalized, 'samsung') => '#1f77e6',
             default => '#868e96',
         };
-    }
-
-    /**
-     * Converts technical exceptions to actionable user-facing messages.
-     */
-    protected function resolveUserErrorMessage(Throwable $exception): string
-    {
-        if ($exception instanceof MatomoRequestTimeoutException) {
-            $context = $exception->context();
-            $host = $this->extractHostFromExceptionContext($exception);
-            $connectionError = (string) ($context['connection_error'] ?? '');
-
-            if ($connectionError === 'dns_resolution' && $host !== null) {
-                return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.host_unreachable', [
-                    'host' => $host,
-                ]);
-            }
-
-            if ($connectionError === 'connection_refused' && $host !== null) {
-                return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.connection_refused', [
-                    'host' => $host,
-                ]);
-            }
-        }
-
-        if ($exception instanceof MatomoReportingException) {
-            return (string) trans($exception->userMessageKey());
-        }
-
-        return (string) trans('winter.matomo::lang.reportwidgets.visits_summary.errors.unexpected');
-    }
-
-    /**
-     * Extracts a hostname from typed exception context if available.
-     */
-    protected function extractHostFromExceptionContext(MatomoReportingException $exception): ?string
-    {
-        $context = $exception->context();
-
-        $host = $context['host'] ?? null;
-        if (is_string($host) && $host !== '') {
-            return $host;
-        }
-
-        $endpoint = $context['endpoint'] ?? null;
-        if (!is_string($endpoint) || $endpoint === '') {
-            return null;
-        }
-
-        $parsed = parse_url($endpoint, PHP_URL_HOST);
-
-        return (is_string($parsed) && $parsed !== '') ? $parsed : null;
-    }
-
-    /**
-     * Resolves a translated options array and returns the label for a selected key.
-     */
-    protected function translatedOptionLabel(string $optionsLangKey, string $selectedValue): string
-    {
-        $options = trans($optionsLangKey);
-        if (!is_array($options)) {
-            return $selectedValue;
-        }
-
-        return (string) ($options[$selectedValue] ?? $selectedValue);
     }
 }

@@ -33,14 +33,7 @@
         </p>
 
         <div class="matomo-report-widget-actions">
-            <button
-                type="button"
-                class="btn btn-refresh btn-xs wn-icon-refresh"
-                data-request="onRefreshWidget"
-                data-request-update="'content': '#<?= e($this->getId('content')) ?>'"
-                data-stripe-load-indicator>
-                <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.refresh')) ?>
-            </button>
+            <?= $refreshButton ?>
         </div>
     </div>
 </div>

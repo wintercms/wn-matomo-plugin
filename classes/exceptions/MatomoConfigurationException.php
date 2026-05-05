@@ -14,7 +14,7 @@ class MatomoConfigurationException extends MatomoReportingException
 
     public function userMessageKey(): string
     {
-        return 'winter.matomo::lang.reportwidgets.visits_summary.errors.configuration';
+        return 'winter.matomo::lang.reportwidgets.errors.configuration';
     }
 
     public function isRetryable(): bool

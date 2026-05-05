@@ -17,11 +17,11 @@ class MatomoRequestTimeoutException extends MatomoReportingException
         $connectionError = $this->context()['connection_error'] ?? 'connection_failed';
 
         return match ($connectionError) {
-            'dns_resolution' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.dns_resolution',
-            'connection_refused' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.connection_refused',
-            'ssl_certificate' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.ssl_certificate',
-            'timeout' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.timeout',
-            default => 'winter.matomo::lang.reportwidgets.visits_summary.errors.connection_failed',
+            'dns_resolution'    => 'winter.matomo::lang.reportwidgets.errors.dns_resolution',
+            'connection_refused' => 'winter.matomo::lang.reportwidgets.errors.connection_refused',
+            'ssl_certificate'   => 'winter.matomo::lang.reportwidgets.errors.ssl_certificate',
+            'timeout'           => 'winter.matomo::lang.reportwidgets.errors.timeout',
+            default             => 'winter.matomo::lang.reportwidgets.errors.connection_failed',
         };
     }
 

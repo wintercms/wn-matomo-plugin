@@ -47,6 +47,20 @@
             'title_default' => 'Tableau de bord Analytics',
         ],
 
+        'errors' => [
+            'configuration'      => 'La configuration Matomo est invalide. Vérifiez MATOMO_SERVER, MATOMO_SITE_ID et MATOMO_TOKEN.',
+            'authentication'     => "L'authentification Matomo a échoué. Vérifiez les permissions et la valeur du token.",
+            'timeout'            => 'Le serveur Matomo est inaccessible ou trop lent. Réessayez dans un moment.',
+            'host_unreachable'   => 'L\'hôte Matomo ":host" ne peut pas être résolu. Vérifiez MATOMO_SERVER.',
+            'connection_refused' => 'La connexion à l\'hôte Matomo ":host" a été refusée. Vérifiez la disponibilité du serveur et le port.',
+            'ssl_certificate'    => 'La vérification du certificat SSL a échoué pour le serveur Matomo. Vérifiez le certificat du serveur ou mettez à jour les certificats CA du système.',
+            'dns_resolution'     => 'L\'hôte Matomo ":host" ne peut pas être résolu. Vérifiez la configuration DNS et la connectivité réseau.',
+            'connection_failed'  => 'La connexion au serveur Matomo a échoué. Vérifiez la disponibilité du serveur et la configuration réseau.',
+            'server'             => 'Le serveur Matomo a renvoyé une réponse inattendue. Vérifiez la disponibilité du serveur et les logs.',
+            'reporting'          => 'Matomo a renvoyé une erreur analytique pour cette requête. Vérifiez les paramètres du widget et les logs.',
+            'unexpected'         => 'Une erreur inattendue est survenue lors du chargement des données analytiques. Consultez les logs pour plus de détails.',
+        ],
+
         'visits_summary' => [
             'label'       => 'Résumé des visites',
             'title_default' => 'Résumé des visites',
@@ -70,19 +84,6 @@
             'selected_period' => 'Période sélectionnée',
             'selected_date'   => 'Date sélectionnée',
             'refresh'         => 'Actualiser',
-            'errors' => [
-                'configuration'     => 'La configuration Matomo est invalide. Vérifiez MATOMO_SERVER, MATOMO_SITE_ID et MATOMO_TOKEN.',
-                'authentication'    => "L'authentification Matomo a échoué. Vérifiez les permissions et la valeur du token.",
-                'timeout'           => 'Le serveur Matomo est inaccessible ou trop lent. Réessayez dans un moment.',
-                'host_unreachable'  => 'L\'hôte Matomo ":host" ne peut pas être résolu. Vérifiez MATOMO_SERVER.',
-                'connection_refused' => 'La connexion à l\'hôte Matomo ":host" a été refusée. Vérifiez la disponibilité du serveur et le port.',
-                'ssl_certificate'   => 'La vérification du certificat SSL a échoué pour le serveur Matomo. Vérifiez le certificat du serveur ou mettez à jour les certificats CA du système.',
-                'dns_resolution'    => 'L\'hôte Matomo ":host" ne peut pas être résolu. Vérifiez la configuration DNS et la connectivité réseau.',
-                'connection_failed' => 'La connexion au serveur Matomo a échoué. Vérifiez la disponibilité du serveur et la configuration réseau.',
-                'server'            => 'Le serveur Matomo a renvoyé une réponse inattendue. Vérifiez la disponibilité du serveur et les logs.',
-                'reporting'         => 'Matomo a renvoyé une erreur analytique pour cette requête. Vérifiez les paramètres du widget et les logs.',
-                'unexpected'        => 'Une erreur inattendue est survenue lors du chargement des données analytiques. Consultez les logs pour plus de détails.',
-            ],
             'metrics' => [
                 'nb_visits'           => 'Visites',
                 'nb_uniq_visitors'    => 'Visiteurs uniques',
