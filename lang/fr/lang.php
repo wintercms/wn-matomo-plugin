@@ -174,6 +174,40 @@
             ],
         ],
 
+        'devices_detection' => [
+            'label' => 'Appareils & Navigateurs',
+            'title_default' => 'Appareils & Navigateurs',
+            'period' => 'Période',
+            'period_desc' => 'Sélectionnez la période de reporting pour les appareils et navigateurs.',
+            'period_options' => [
+                'day' => 'Jour',
+                'week' => 'Semaine',
+                'month' => 'Mois',
+                'year' => 'Année',
+            ],
+            'date' => 'Date',
+            'date_desc' => 'Sélectionnez la plage de dates pour les appareils et navigateurs.',
+            'date_options' => [
+                'today' => 'Aujourd\'hui',
+                'yesterday' => 'Hier',
+                'last7' => '7 derniers jours',
+                'last30' => '30 derniers jours',
+                'last90' => '90 derniers jours',
+            ],
+            'selected_period' => 'Période sélectionnée',
+            'selected_date' => 'Date sélectionnée',
+            'device_types_title' => 'Types d\'appareils',
+            'browsers_title' => 'Navigateurs',
+            'refresh' => 'Actualiser',
+            'no_data' => 'Aucune donnée d\'appareil ou de navigateur disponible pour cette période.',
+            'types' => [
+                'unknown' => 'Appareil inconnu',
+            ],
+            'browsers' => [
+                'unknown' => 'Navigateur inconnu',
+            ],
+        ],
+
         'embedded_widget' => [
             'label'        => 'Rapport Analytics',
             'report'       => 'Rapport',

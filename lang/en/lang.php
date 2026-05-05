@@ -174,6 +174,40 @@
             ],
         ],
 
+        'devices_detection' => [
+            'label' => 'Devices & Browsers',
+            'title_default' => 'Devices & Browsers',
+            'period' => 'Period',
+            'period_desc' => 'Select the reporting period used for devices and browsers.',
+            'period_options' => [
+                'day' => 'Day',
+                'week' => 'Week',
+                'month' => 'Month',
+                'year' => 'Year',
+            ],
+            'date' => 'Date',
+            'date_desc' => 'Select the date range used for devices and browsers.',
+            'date_options' => [
+                'today' => 'Today',
+                'yesterday' => 'Yesterday',
+                'last7' => 'Last 7 days',
+                'last30' => 'Last 30 days',
+                'last90' => 'Last 90 days',
+            ],
+            'selected_period' => 'Selected period',
+            'selected_date' => 'Selected date',
+            'device_types_title' => 'Device Types',
+            'browsers_title' => 'Browsers',
+            'refresh' => 'Refresh',
+            'no_data' => 'No device or browser data available for this period.',
+            'types' => [
+                'unknown' => 'Unknown device',
+            ],
+            'browsers' => [
+                'unknown' => 'Unknown browser',
+            ],
+        ],
+
         'embedded_widget' => [
             'label' => 'Analytics Report',
             'report' => 'Report',

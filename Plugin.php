@@ -124,6 +124,13 @@ class Plugin extends PluginBase
                     'winter.matomo.site.view',
                 ],
             ],
+            \Winter\Matomo\ReportWidgets\DevicesDetection::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.devices_detection.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
         ];
     }
 }
