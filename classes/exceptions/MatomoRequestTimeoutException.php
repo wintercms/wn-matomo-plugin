@@ -14,12 +14,23 @@ class MatomoRequestTimeoutException extends MatomoReportingException
 
     public function userMessageKey(): string
     {
-        return 'winter.matomo::lang.reportwidgets.visits_summary.errors.timeout';
+        $connectionError = $this->context()['connection_error'] ?? 'connection_failed';
+
+        return match ($connectionError) {
+            'dns_resolution' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.dns_resolution',
+            'connection_refused' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.connection_refused',
+            'ssl_certificate' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.ssl_certificate',
+            'timeout' => 'winter.matomo::lang.reportwidgets.visits_summary.errors.timeout',
+            default => 'winter.matomo::lang.reportwidgets.visits_summary.errors.connection_failed',
+        };
     }
 
     public function isRetryable(): bool
     {
-        return true;
+        $connectionError = $this->context()['connection_error'] ?? 'connection_failed';
+
+        // SSL certificate errors are not retryable without configuration changes
+        return $connectionError !== 'ssl_certificate';
     }
 
     public function severity(): string

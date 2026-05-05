@@ -1,0 +1,170 @@
+// out: "../css/reportwidgets.css", compress: false, sourceMap: false
+
+@top-pages-header-bg: #ffffff;
+@sticky-metric-bg: #fff;
+@sticky-metric-alt-bg: #ecf0f1;
+
+@top-pages-wrapper-max-height: calc(calc(var(--max-pages) + 1) * 44.55px);
+@top-pages-table-min-width: 520px;
+@top-pages-url-min-width: 200px;
+@top-pages-url-max-width: 300px;
+
+@sticky-visits-right: 200px;
+@sticky-bounce-right: 90px;
+@sticky-time-right: 0;
+
+@level-indent-step: 16px;
+
+.report-widget.matomo-report-widget {
+    > div {
+        margin-top: -15px;
+    }
+
+    .matomo-report-widget-footer {
+        align-items: center;
+        display: flex;
+        gap: 16px;
+        justify-content: space-between;
+        padding-top: 12px;
+    }
+
+    .matomo-report-widget-meta {
+        margin: 0;
+        font-size: .90em;
+    }
+
+    .matomo-report-widget-actions {
+        white-space: nowrap;
+
+        .btn-refresh {
+            background: white;
+            border: 1px solid #2896b2;
+            color: #24849d;
+            font-weight: 500;
+
+            &:hover {
+                background: #24849d;
+                border-color: #2896b2;
+                color: #fff;
+            }
+
+            &:before {
+                margin-right: 2px;
+            }
+        }
+    }
+
+    .matomo-page-toggle {
+        background: transparent;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        font-size: 1em;
+        line-height: 1;
+        padding: 0 6px 0 0;
+
+        .icon {
+            padding: 1px;
+            border: 1px solid currentColor;
+        }
+    }
+
+    .matomo-page-row {
+        td:first-child {
+            white-space: nowrap;
+        }
+    }
+
+    .matomo-top-pages-table-wrapper {
+        max-height: @top-pages-wrapper-max-height;
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    .matomo-top-pages-table {
+        min-width: @top-pages-table-min-width;
+    }
+
+    .matomo-top-pages-header {
+        background: @top-pages-header-bg;
+        position: sticky;
+        padding: 12px 15px;
+        top: 0;
+    }
+
+    .matomo-top-pages-header-url {
+        min-width: @top-pages-url-min-width;
+        z-index: 2;
+    }
+
+    .matomo-top-pages-header-metric {
+        white-space: nowrap;
+        text-align: center;
+        z-index: 3;
+    }
+
+    .matomo-top-pages-header-visits {
+        min-width: 80px;
+        right: @sticky-visits-right;
+    }
+
+    .matomo-top-pages-header-bounce {
+        min-width: 110px;
+        right: @sticky-bounce-right;
+    }
+
+    .matomo-top-pages-header-time {
+        min-width: 90px;
+        right: @sticky-time-right;
+    }
+
+    .matomo-top-pages-url-cell {
+        max-width: @top-pages-url-max-width;
+        word-break: break-all;
+    }
+
+    .matomo-top-pages-url-text {
+        display: inline-block;
+        max-width: 100%;
+        overflow-wrap: anywhere;
+    }
+
+    .matomo-page-row-hidden {
+        display: none;
+    }
+
+    .matomo-page-label-cell {
+        padding-left: calc(var(--matomo-page-level, 0) * @level-indent-step + 22px) !important;
+        white-space: nowrap;
+    }
+
+    .matomo-sticky-metric {
+        background-clip: padding-box;
+        background-color: @sticky-metric-bg;
+        position: sticky;
+        text-align: center;
+        z-index: 1;
+    }
+
+    table.table.data {
+        tbody {
+            tr:nth-child(2n) {
+                .matomo-sticky-metric {
+                    background-color: @sticky-metric-alt-bg;
+                }
+            }
+        }
+    }
+
+    .matomo-sticky-metric-visits {
+        right: @sticky-visits-right;
+    }
+
+    .matomo-sticky-metric-bounce {
+        right: @sticky-bounce-right;
+    }
+
+    .matomo-sticky-metric-time {
+        right: @sticky-time-right;
+    }
+}

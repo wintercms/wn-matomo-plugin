@@ -52,18 +52,25 @@ class MatomoReportingService
      */
     protected int $httpTimeout;
 
+    /**
+     * Whether to verify SSL certificates.
+     */
+    protected bool $verifySsl;
+
     public function __construct(
         string $serverUrl,
         ?string $authToken,
         int $siteId,
         int $cacheTtl = 900,
-        int $httpTimeout = 10
+        int $httpTimeout = 10,
+        bool $verifySsl = true
     ) {
         $this->endpointUrl = rtrim($serverUrl, '/') . '/index.php';
         $this->authToken = trim((string) $authToken);
         $this->siteId = $siteId;
         $this->cacheTtl = max(1, $cacheTtl);
         $this->httpTimeout = max(1, $httpTimeout);
+        $this->verifySsl = $verifySsl;
     }
 
     /**
@@ -140,10 +147,15 @@ class MatomoReportingService
             $safeContext = $this->buildSafeContext($payload);
 
             try {
-                $response = Http::asForm()
+                $httpClient = Http::asForm()
                     ->timeout($this->httpTimeout)
-                    ->acceptJson()
-                    ->post($this->endpointUrl, $payload);
+                    ->acceptJson();
+
+                if (!$this->verifySsl) {
+                    $httpClient = $httpClient->withoutVerifying();
+                }
+
+                $response = $httpClient->post($this->endpointUrl, $payload);
             } catch (ConnectionException $exception) {
                 $connectionError = $this->classifyConnectionError($exception);
                 $connectionContext = $safeContext + [
@@ -156,6 +168,7 @@ class MatomoReportingService
                     'dns_resolution' => 'Matomo reporting request failed: host could not be resolved.',
                     'connection_refused' => 'Matomo reporting request failed: connection was refused.',
                     'timeout' => 'Matomo reporting request timed out.',
+                    'ssl_certificate' => 'Matomo reporting request failed: SSL certificate verification failed.',
                     default => 'Matomo reporting request timed out or connection failed.',
                 };
 
@@ -363,6 +376,10 @@ class MatomoReportingService
 
         if (str_contains($message, 'timed out')) {
             return 'timeout';
+        }
+
+        if (str_contains($message, 'ssl certificate') || str_contains($message, 'ssl: certificate') || str_contains($message, 'unable to get local issuer certificate')) {
+            return 'ssl_certificate';
         }
 
         return 'connection_failed';

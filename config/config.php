@@ -103,4 +103,17 @@
 
     'track_maintenance_mode' => false,
 
+    /*
+    |--------------------------------------------------------------------------
+    | Verify SSL Certificates
+    |--------------------------------------------------------------------------
+    |
+    | Whether to verify SSL certificates when making HTTPS requests to Matomo.
+    | Set to false only in development environments with self-signed certificates.
+    | Never disable in production.
+    |
+    */
+
+    'verify_ssl' => env('MATOMO_VERIFY_SSL', true),
+
 ];

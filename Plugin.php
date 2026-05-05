@@ -35,7 +35,8 @@ class Plugin extends PluginBase
                 Config::get('winter.matomo::auth_token'),
                 (int) Config::get('winter.matomo::site_id'),
                 (int) Config::get('winter.matomo::cache_ttl', 900),
-                (int) Config::get('winter.matomo::http_timeout', 10)
+                (int) Config::get('winter.matomo::http_timeout', 10),
+                (bool) Config::get('winter.matomo::verify_ssl', true)
             );
         });
 
@@ -104,6 +105,13 @@ class Plugin extends PluginBase
             ],
             \Winter\Matomo\ReportWidgets\VisitsOverTime::class => [
                 'label' => 'winter.matomo::lang.reportwidgets.visits_over_time.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\TopPages::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.top_pages.label',
                 'context' => 'dashboard',
                 'permissions' => [
                     'winter.matomo.site.view',
