@@ -20,8 +20,21 @@
         margin-top: -15px;
     }
 
+    > img.placeholder {
+        width: 100%;
+    }
+
     table > thead > tr > th {
         padding: 12px 15px;
+    }
+
+    .matomo-report-widget-body {
+        container-type: inline-size;
+        container-name: widget-body;
+
+        .table-container {
+            margin: 0;
+        }
     }
 
     .matomo-report-widget-footer {
@@ -30,9 +43,10 @@
         align-items: flex-start;
         justify-content: space-between;
         flex-wrap: wrap;
-        padding-top: 1rem;
+        margin-top: 1rem;
         container-type: inline-size;
         container-name: widget-footer;
+
 
         @container widget-footer (max-width: 768px) {
             align-items: flex-start;
@@ -67,6 +81,7 @@
                 font-weight: initial;
                 text-align: right;
             }
+
             dd {
                 white-space: nowrap;
             }
@@ -94,27 +109,45 @@
         }
     }
 
-    .matomo-page-toggle {
-        background: transparent;
-        border: none;
-        color: inherit;
-        cursor: pointer;
-        font-size: 1em;
-        line-height: 1;
-        padding: 0 6px 0 0;
 
-        .icon {
-            padding: 1px;
-            border: 1px solid currentColor;
+
+    //
+    // Specifics to widgets
+    //
+    .matomo-device-detection {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        @container widget-body (max-width: 860px) {
+            grid-template-columns: 1fr;
+        }
+
+        .matomo-device-detection-item {
+            min-width: 0;
+
+            > h5 {
+                margin-top: 0;
+            }
         }
     }
 
-    .matomo-page-row {
-        td:first-child {
-            white-space: nowrap;
+    .matomo-countries-table {
+        > tbody > tr > td {
+
+            &:first-child {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+            }
+
+            > span {
+                &:first-child {
+                    font-size: 2rem;
+                }
+            }
         }
     }
-
 
     .matomo-top-pages {
 
@@ -125,6 +158,49 @@
                 max-height: @top-pages-wrapper-max-height;
                 overflow-x: auto;
                 overflow-y: auto;
+            }
+
+            &.table.data {
+                tbody {
+                    tr:nth-child(2n) {
+                        td {
+                            background-color: @sticky-metric-alt-bg;
+                        }
+                    }
+                }
+            }
+
+            .matomo-page-row {
+                td {
+
+                    &.label-cell {
+                        padding-left: calc(var(--matomo-page-level, 0) * @level-indent-step + 22px) !important;
+                        white-space: nowrap;
+                    }
+
+                    &:first-child {
+                        white-space: nowrap;
+                    }
+                }
+
+                &-hidden {
+                    display: none;
+                }
+            }
+
+            .matomo-page-toggle {
+                background: transparent;
+                border: none;
+                color: inherit;
+                cursor: pointer;
+                font-size: 1em;
+                line-height: 1;
+                padding: 0 6px 0 0;
+
+                .icon {
+                    padding: 1px;
+                    border: 1px solid currentColor;
+                }
             }
         }
 
@@ -174,60 +250,39 @@
         }
     }
 
-
-    .matomo-page-row-hidden {
-        display: none;
-    }
-
-    .matomo-page-label-cell {
-        padding-left: calc(var(--matomo-page-level, 0) * @level-indent-step + 22px) !important;
-        white-space: nowrap;
-    }
-
     .matomo-sticky-metric {
         background-clip: padding-box;
         background-color: @sticky-metric-bg;
         position: sticky;
         text-align: center;
         z-index: 1;
-    }
 
-    table.table.data {
-        tbody {
-            tr:nth-child(2n) {
-                .matomo-sticky-metric {
-                    background-color: @sticky-metric-alt-bg;
-                }
-            }
+        &-visits {
+            right: @sticky-visits-right;
+        }
+
+        &-bounce {
+            right: @sticky-bounce-right;
+        }
+
+        &-time {
+            right: @sticky-time-right;
         }
     }
 
-    .matomo-sticky-metric-visits {
-        right: @sticky-visits-right;
-    }
 
-    .matomo-sticky-metric-bounce {
-        right: @sticky-bounce-right;
-    }
+    //
+    // Specific to charts
+    //
 
-    .matomo-sticky-metric-time {
-        right: @sticky-time-right;
-    }
+    .matomo-donut-chart {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: visible;
 
-    .matomo-countries-table {
-        > tbody > tr > td {
-
-            &:first-child {
-                display: flex;
-                align-items: center;
-                gap: .5rem;
-            }
-
-            > span {
-                &:first-child {
-                    font-size: 2rem;
-                }
-            }
+        @container widget-body (max-width: 520px) {
+            overflow-x: auto;
         }
     }
 }

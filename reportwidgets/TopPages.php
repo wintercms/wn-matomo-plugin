@@ -100,9 +100,21 @@ class TopPages extends ReportWidgetBase
      */
     public function render(): string
     {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
         $this->loadData();
 
-        return $this->makePartial('widget');
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
     }
 
     /**
@@ -115,7 +127,7 @@ class TopPages extends ReportWidgetBase
         $this->loadData(true);
 
         return [
-            '#' . $this->getId('content') => $this->makePartial('content'),
+            '#' . $this->alias => $this->makePartial('report'),
         ];
     }
 
@@ -537,7 +549,7 @@ class TopPages extends ReportWidgetBase
             }
 
             $html .= '<tr id="' . $rowId . '" class="' . implode(' ', $rowClasses) . '">';
-            $html .= '<td class="matomo-page-label-cell" style="--matomo-page-level: ' . $level . ';">';
+            $html .= '<td class="label-cell" style="--matomo-page-level: ' . $level . ';">';
 
             if ($hasChildren) {
                 $html .= '<button type="button" class="btn btn-link matomo-page-toggle" data-target="' . $rowId . '" aria-expanded="false" onclick="' . $toggleOnclick . '"><i class="icon icon-2xs icon-plus"></i></button> ';

@@ -8,6 +8,7 @@ use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
+use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders a Matomo visits evolution line chart.
@@ -62,9 +63,21 @@ class VisitsOverTime extends ReportWidgetBase
      */
     public function render(): string
     {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
         $this->loadData();
 
-        return $this->makePartial('widget');
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
     }
 
     /**
@@ -77,7 +90,7 @@ class VisitsOverTime extends ReportWidgetBase
         $this->loadData(true);
 
         return [
-            '#' . $this->getId('content') => $this->makePartial('content'),
+            '#' . $this->alias => $this->makePartial('report'),
         ];
     }
 
@@ -97,6 +110,7 @@ class VisitsOverTime extends ReportWidgetBase
 
         $this->vars['error'] = null;
         $this->vars['chartData'] = '';
+        $this->vars['chartColor'] = WidgetColorPalette::chartSeriesPrimary();
         $this->vars['totalVisits'] = 0;
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta'] = $this->renderWidgetMeta([

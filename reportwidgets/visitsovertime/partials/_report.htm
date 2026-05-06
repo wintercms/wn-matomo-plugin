@@ -1,0 +1,35 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php elseif (empty($chartData)): ?>
+            <div class="callout callout-info">
+                <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.no_data')) ?></div>
+            </div>
+        <?php else: ?>
+            <div
+                data-control="chart-line"
+                data-time-mode="days"
+                style="height: 200px">
+                <span
+                    data-chart="dataset"
+                    data-set-color="<?= e($chartColor ?? '#1098ad') ?>"
+                    data-set-data="<?= e($chartData) ?>"
+                    data-set-name="<?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits')) ?>">
+                </span>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+    </div>
+</div>

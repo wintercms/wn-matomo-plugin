@@ -75,9 +75,21 @@ class UserCountry extends ReportWidgetBase
      */
     public function render(): string
     {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
         $this->loadData();
 
-        return $this->makePartial('widget');
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
     }
 
     /**
@@ -90,7 +102,7 @@ class UserCountry extends ReportWidgetBase
         $this->loadData(true);
 
         return [
-            '#' . $this->getId('content') => $this->makePartial('content'),
+            '#' . $this->alias => $this->makePartial('report'),
         ];
     }
 

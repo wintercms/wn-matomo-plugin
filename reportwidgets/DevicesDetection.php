@@ -8,6 +8,7 @@ use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
+use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders Matomo device types and browser distribution as dual donut charts.
@@ -67,9 +68,21 @@ class DevicesDetection extends ReportWidgetBase
      */
     public function render(): string
     {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
         $this->loadData();
 
-        return $this->makePartial('widget');
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
     }
 
     /**
@@ -82,7 +95,7 @@ class DevicesDetection extends ReportWidgetBase
         $this->loadData(true);
 
         return [
-            '#' . $this->getId('content') => $this->makePartial('content'),
+            '#' . $this->alias => $this->makePartial('report'),
         ];
     }
 
@@ -193,7 +206,7 @@ class DevicesDetection extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => $this->colorForDeviceType($label),
+                    'color' => WidgetColorPalette::deviceType($label),
                 ];
             }
 
@@ -232,7 +245,7 @@ class DevicesDetection extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => $this->colorForBrowser($label),
+                    'color' => WidgetColorPalette::browser($label),
                 ];
             }
 
@@ -284,38 +297,5 @@ class DevicesDetection extends ReportWidgetBase
     {
         return array_key_exists('label', $item)
             && (array_key_exists('nb_visits', $item) || array_key_exists('nb_actions', $item));
-    }
-
-    /**
-     * Maps device type labels to stable chart colors.
-     */
-    protected function colorForDeviceType(string $label): string
-    {
-        $normalized = strtolower(trim($label));
-
-        return match (true) {
-            str_contains($normalized, 'desktop') || str_contains($normalized, 'ordinateur') => '#4c6ef5',
-            str_contains($normalized, 'mobile') || str_contains($normalized, 'smartphone') => '#e8590c',
-            str_contains($normalized, 'tablet') || str_contains($normalized, 'ipad') => '#2f9e44',
-            default => '#868e96',
-        };
-    }
-
-    /**
-     * Maps browser names to stable chart colors.
-     */
-    protected function colorForBrowser(string $label): string
-    {
-        $normalized = strtolower(trim($label));
-
-        return match (true) {
-            str_contains($normalized, 'chrome') => '#4285f4',
-            str_contains($normalized, 'firefox') => '#ff7139',
-            str_contains($normalized, 'safari') => '#555555',
-            str_contains($normalized, 'edge') => '#1098ad',
-            str_contains($normalized, 'opera') => '#c2255c',
-            str_contains($normalized, 'samsung') => '#1f77e6',
-            default => '#868e96',
-        };
     }
 }

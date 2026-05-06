@@ -8,6 +8,7 @@ use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
+use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders Matomo referrer types as a donut chart.
@@ -67,9 +68,21 @@ class Referrers extends ReportWidgetBase
      */
     public function render(): string
     {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
         $this->loadData();
 
-        return $this->makePartial('widget');
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
     }
 
     /**
@@ -82,7 +95,7 @@ class Referrers extends ReportWidgetBase
         $this->loadData(true);
 
         return [
-            '#' . $this->getId('content') => $this->makePartial('content'),
+            '#' . $this->alias => $this->makePartial('report'),
         ];
     }
 
@@ -200,7 +213,7 @@ class Referrers extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => $this->colorForReferrerType($label),
+                    'color' => WidgetColorPalette::referrerType($label),
                 ];
             }
 
@@ -251,22 +264,5 @@ class Referrers extends ReportWidgetBase
     {
         return array_key_exists('label', $item)
             && (array_key_exists('nb_visits', $item) || array_key_exists('nb_actions', $item));
-    }
-
-    /**
-     * Maps common referrer labels to stable chart colors.
-     */
-    protected function colorForReferrerType(string $label): string
-    {
-        $normalized = strtolower(trim($label));
-
-        return match (true) {
-            str_contains($normalized, 'direct') => '#4c6ef5',
-            str_contains($normalized, 'search') || str_contains($normalized, 'moteur') => '#2f9e44',
-            str_contains($normalized, 'social') || str_contains($normalized, 'reseau') || str_contains($normalized, 'réseau') => '#e8590c',
-            str_contains($normalized, 'website') || str_contains($normalized, 'site') => '#1098ad',
-            str_contains($normalized, 'campaign') || str_contains($normalized, 'campagne') => '#c2255c',
-            default => '#868e96',
-        };
     }
 }

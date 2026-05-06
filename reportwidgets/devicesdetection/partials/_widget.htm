@@ -1,7 +1,12 @@
 <div class="report-widget matomo-report-widget">
     <h3><?= e(trans($this->property('title'))) ?></h3>
 
-    <div id="<?= e($this->getId('content')) ?>">
-        <?= $this->makePartial('content') ?>
-    </div>
+    <img
+        src="/plugins/winter/matomo/assets/images/report-placeholder-donut.svg"
+        class="placeholder"
+        width="960"
+        height="360"
+        style="width: 100%; height: auto; display: block;"
+        onload="$.request('<?= $this->alias ?>::onLoad');"
+    />
 </div>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360"
+    preserveAspectRatio="none" fill="none"
+    role="img" aria-labelledby="title desc">
+  <title id="title">Bar graph placeholder</title>
+  <desc id="desc">Bar chart skeleton displayed while report data loads.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f8fa"/>
+      <stop offset="100%" stop-color="#ecf2f600"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#dbe4ea"/>
+      <stop offset="50%" stop-color="#f6f9fb"/>
+      <stop offset="100%" stop-color="#dbe4ea"/>
+      <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;-1 0" dur="1.6s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="960" height="360" rx="12" fill="url(#bg)"/>
+
+  <line x1="58" y1="44" x2="58" y2="324" stroke="#d9e2e8" stroke-width="2"/>
+  <line x1="58" y1="324" x2="902" y2="324" stroke="#d9e2e8" stroke-width="3"/>
+
+  <line x1="78" y1="92" x2="902" y2="92" stroke="#d9e2e8" stroke-width="2"/>
+  <line x1="78" y1="150" x2="902" y2="150" stroke="#d9e2e8" stroke-width="2"/>
+  <line x1="78" y1="208" x2="902" y2="208" stroke="#d9e2e8" stroke-width="2"/>
+  <line x1="78" y1="266" x2="902" y2="266" stroke="#d9e2e8" stroke-width="2"/>
+
+  <g opacity="0.97">
+    <rect x="108" y="238" width="54" height="86" rx="7" fill="#d3dfe7"/>
+    <rect x="188" y="196" width="54" height="128" rx="7" fill="#cddbe5"/>
+    <rect x="268" y="150" width="54" height="174" rx="7" fill="#c6d6e2"/>
+    <rect x="348" y="220" width="54" height="104" rx="7" fill="#d3dfe7"/>
+    <rect x="428" y="132" width="54" height="192" rx="7" fill="url(#shimmer)"/>
+    <rect x="508" y="174" width="54" height="150" rx="7" fill="#c9d9e3"/>
+    <rect x="588" y="112" width="54" height="212" rx="7" fill="#bfd2df"/>
+    <rect x="668" y="206" width="54" height="118" rx="7" fill="#d1dee7"/>
+    <rect x="748" y="164" width="54" height="160" rx="7" fill="url(#shimmer)"/>
+    <rect x="828" y="90" width="54" height="234" rx="7" fill="#b8cede"/>
+  </g>
+
+  <g opacity="0.95">
+    <rect x="106" y="228" width="58" height="8" rx="4" fill="#e8eef2"/>
+    <rect x="266" y="140" width="58" height="8" rx="4" fill="#e8eef2"/>
+    <rect x="426" y="122" width="58" height="8" rx="4" fill="#e8eef2"/>
+    <rect x="586" y="102" width="58" height="8" rx="4" fill="#e8eef2"/>
+    <rect x="826" y="80" width="58" height="8" rx="4" fill="#e8eef2"/>
+  </g>
+</svg>

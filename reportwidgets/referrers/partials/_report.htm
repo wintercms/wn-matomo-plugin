@@ -1,0 +1,38 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php elseif (empty($referrerTypes)): ?>
+            <div class="callout callout-info">
+                <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.referrers.no_data')) ?></div>
+            </div>
+        <?php else: ?>
+            <div
+                class="control-chart matomo-donut-chart"
+                data-control="chart-pie"
+                data-center-text="<?= e(number_format((int) ($totalVisits ?? 0))) ?>"
+                data-size="160">
+                <ul>
+                    <?php foreach ($referrerTypes as $referrerType): ?>
+                        <li data-color="<?= e($referrerType['color']) ?>">
+                            <?= e($referrerType['label']) ?>
+                            <span><?= e(number_format($referrerType['nb_visits'])) ?></span>
+                        </li>
+                    <?php endforeach ?>
+                </ul>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+    </div>
+</div>

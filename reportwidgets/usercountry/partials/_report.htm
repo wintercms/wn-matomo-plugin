@@ -1,0 +1,51 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php else: ?>
+            <div class="table-container">
+                <table class="table data matomo-countries-table">
+                    <thead>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.user_country.columns.country')) ?></th>
+                            <th class="text-center"><?= e(trans('winter.matomo::lang.reportwidgets.user_country.columns.nb_visits')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($countries)): ?>
+                            <tr>
+                                <td colspan="2" class="text-center text-muted">
+                                    <?= e(trans('winter.matomo::lang.reportwidgets.user_country.no_data')) ?>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($countries as $country): ?>
+                                <tr>
+                                    <td>
+                                        <span><?= e($country['country_flag']) ?></span>
+                                        <span><?= e($country['country']) ?></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <?= e(number_format($country['nb_visits'])) ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+    </div>
+</div>
