@@ -23,6 +23,9 @@
             'period_desc'        => 'La période de reporting',
             'period_last_x_days' => ':x derniers jours',
             'refresh'            => 'Actualiser',
+            'groups'             => [
+                'metrics' => 'Indicateurs à afficher'
+            ]
         ],
 
         'visits_over_time' => [
@@ -37,10 +40,17 @@
                 '90' => '90 derniers jours',
             ],
             'days_label'   => 'Période',
-            'total_visits' => 'Total des visites',
-            'no_data'      => 'Aucune donnée de visite disponible pour cette période.',
+            'total_visits'    => 'Total des visites',
+            'total_hits'      => 'Total des hits',
+            'total_pageviews' => 'Total des vues de page',
+            'no_data'         => 'Aucune donnée de visite disponible pour cette période.',
             'metrics' => [
-                'nb_visits' => 'Visites',
+                'nb_visits'    => 'Visites',
+                'nb_actions'   => 'Hits',
+                'nb_pageviews' => 'Vues de page',
+            ],
+            'chart' => [
+                'tooltip_content' => '%s | %x | %y',
             ],
         ],
 

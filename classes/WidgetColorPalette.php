@@ -106,13 +106,32 @@ final class WidgetColorPalette
         'brave'           => '#f08c00',
     ];
 
+    /**
+     * Canonical colors for time-series metric keys.
+     *
+     * @var array<string, string>
+     */
+    private const METRIC_COLORS = [
+        'nb_visits'    => '#1d4ed8',
+        'nb_actions'   => '#2563eb',
+        'nb_pageviews' => '#60a5fa',
+    ];
+
     // -------------------------------------------------------------------------
     // Color accessors — accept canonical keys only
     // -------------------------------------------------------------------------
 
     public static function chartSeriesPrimary(): string
     {
-        return '#1098ad';
+        return self::metric('nb_visits');
+    }
+
+    /**
+     * Returns the color for a metric key (e.g. 'nb_visits', 'nb_actions').
+     */
+    public static function metric(string $metricKey): string
+    {
+        return self::METRIC_COLORS[$metricKey] ?? self::fallbackColor($metricKey);
     }
 
     /**

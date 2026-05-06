@@ -6,7 +6,7 @@
             <div class="callout callout-warning">
                 <div class="content"><?= e($error) ?></div>
             </div>
-        <?php elseif (empty($chartData)): ?>
+        <?php elseif (empty($chartDatasets)): ?>
             <div class="callout callout-info">
                 <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.no_data')) ?></div>
             </div>
@@ -14,13 +14,16 @@
             <div
                 data-control="chart-line"
                 data-time-mode="days"
+                data-chart-options="<?= e($chartOptions ?? '') ?>"
                 style="height: 200px">
+                <?php foreach ($chartDatasets as $dataset): ?>
                 <span
                     data-chart="dataset"
-                    data-set-color="<?= e($chartColor ?? '#1098ad') ?>"
-                    data-set-data="<?= e($chartData) ?>"
-                    data-set-name="<?= e(trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits')) ?>">
+                    data-set-color="<?= e($dataset['color']) ?>"
+                    data-set-data="<?= e($dataset['data']) ?>"
+                    data-set-label="<?= e($dataset['label']) ?>">
                 </span>
+                <?php endforeach ?>
             </div>
         <?php endif ?>
 

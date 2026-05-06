@@ -47,6 +47,24 @@ class VisitsOverTime extends ReportWidgetBase
                 'default' => '30',
                 'required' => true,
             ],
+            'metric_nb_visits' => [
+                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits',
+                'type' => 'checkbox',
+                'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+            ],
+            'metric_nb_actions' => [
+                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
+                'type' => 'checkbox',
+                'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+            ],
+            'metric_nb_pageviews' => [
+                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews',
+                'type' => 'checkbox',
+                'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+            ],
         ];
     }
 
@@ -103,26 +121,22 @@ class VisitsOverTime extends ReportWidgetBase
     protected function loadData(bool $bypassCache = false): void
     {
         $days = (int) $this->property('days', 30);
+        $showVisits    = (bool) $this->property('metric_nb_visits', true);
+        $showHits      = (bool) $this->property('metric_nb_actions', false);
+        $showPageviews = (bool) $this->property('metric_nb_pageviews', false);
+
         $daysLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
             (string) $days
         );
 
-        $this->vars['error'] = null;
-        $this->vars['chartData'] = '';
-        $this->vars['chartColor'] = WidgetColorPalette::chartSeriesPrimary();
-        $this->vars['totalVisits'] = 0;
+        $this->vars['error']         = null;
+        $this->vars['chartDatasets'] = [];
+        // $this->vars['chartOptions']  = $this->buildChartOptions();
+        $this->vars['totalVisits']   = 0;
         $this->vars['refreshButton'] = $this->renderRefreshButton();
-        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
-            [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
-                'value' => (string) ($this->vars['totalVisits'] ?? ''),
-                'show' => !empty($this->vars['totalVisits']),
-            ],
-            [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'),
-                'value' => (string) $daysLabel,
-            ],
+        $this->vars['widgetMeta']    = $this->renderWidgetMeta([
+            ['label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'), 'value' => (string) $daysLabel],
         ]);
 
         try {
@@ -133,26 +147,68 @@ class VisitsOverTime extends ReportWidgetBase
                 $service->clearCache();
             }
 
-            $response = $service->get('VisitsSummary.get', [
-                'period' => 'day',
-                'date'   => 'last' . $days,
-            ]);
+            $datasets  = [];
+            $metaItems = [];
 
-            [$chartData, $totalVisits] = $this->buildChartData($response);
+            if ($showVisits || $showHits) {
+                $summaryResponse = $service->get('VisitsSummary.get', [
+                    'period' => 'day',
+                    'date'   => 'last' . $days,
+                ]);
 
-            $this->vars['chartData'] = $chartData;
-            $this->vars['totalVisits'] = $totalVisits;
-            $this->vars['widgetMeta'] = $this->renderWidgetMeta([
-                [
-                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
-                    'value' => (string) ($this->vars['totalVisits'] ?? ''),
-                    'show' => !empty($this->vars['totalVisits']),
-                ],
-                [
-                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'),
-                    'value' => (string) $daysLabel,
-                ],
-            ]);
+                if ($showVisits) {
+                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_visits');
+                    $datasets[] = [
+                        'data'  => $data,
+                        'color' => WidgetColorPalette::metric('nb_visits'),
+                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits'),
+                    ];
+                    $this->vars['totalVisits'] = $total;
+                    $metaItems[] = [
+                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
+                        'value' => (string) $total,
+                        'show'  => !empty($total),
+                    ];
+                }
+
+                if ($showHits) {
+                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_actions');
+                    $datasets[] = [
+                        'data'  => $data,
+                        'color' => WidgetColorPalette::metric('nb_actions'),
+                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions'),
+                    ];
+                    $metaItems[] = [
+                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_hits'),
+                        'value' => (string) $total,
+                        'show'  => !empty($total),
+                    ];
+                }
+            }
+
+            if ($showPageviews) {
+                $actionsResponse = $service->get('Actions.get', [
+                    'period' => 'day',
+                    'date'   => 'last' . $days,
+                ]);
+                [$data, $total] = $this->buildDatasetFromResponse($actionsResponse, 'nb_pageviews');
+                $datasets[] = [
+                    'data'  => $data,
+                    'color' => WidgetColorPalette::metric('nb_pageviews'),
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews'),
+                ];
+                $metaItems[] = [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_pageviews'),
+                    'value' => (string) $total,
+                    'show'  => !empty($total),
+                ];
+            }
+
+            $this->vars['chartDatasets'] = $datasets;
+            $this->vars['widgetMeta']    = $this->renderWidgetMeta(array_merge(
+                $metaItems,
+                [['label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'), 'value' => (string) $daysLabel]],
+            ));
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);
 
@@ -175,27 +231,25 @@ class VisitsOverTime extends ReportWidgetBase
     }
 
     /**
-     * Converts a Matomo daily response into chart-line dataset string and total.
+     * Converts a Matomo daily response into a chart-line dataset string and total for one metric.
      *
      * Matomo returns either a flat array keyed by date (e.g. {"2026-04-28": {nb_visits: 12}})
      * or, for a single day, a flat metrics array. This helper normalises both.
      *
      * @param  array<string, mixed> $response
-     * @return array{string, int}   [chartData string, totalVisits int]
+     * @return array{string, int}   [chartData string, total int]
      */
-    protected function buildChartData(array $response): array
+    protected function buildDatasetFromResponse(array $response, string $metricKey): array
     {
         $pairs = [];
         $total = 0;
 
         // Single-day flat response — unlikely for period=day&date=lastN but handled for safety.
-        if (array_key_exists('nb_visits', $response)) {
-            $ts = strtotime('today') * 1000;
-            $visits = (int) ($response['nb_visits'] ?? 0);
-            $pairs[] = '[' . $ts . ', ' . $visits . ']';
-            $total = $visits;
+        if (array_key_exists($metricKey, $response)) {
+            $ts    = strtotime('today') * 1000;
+            $value = (int) ($response[$metricKey] ?? 0);
 
-            return [implode(', ', $pairs), $total];
+            return ['[' . $ts . ', ' . $value . ']', $value];
         }
 
         // Standard grouped-by-date response.
@@ -209,11 +263,37 @@ class VisitsOverTime extends ReportWidgetBase
                 continue;
             }
 
-            $visits = (int) ($metrics['nb_visits'] ?? 0);
-            $pairs[] = '[' . ($ts * 1000) . ', ' . $visits . ']';
-            $total += $visits;
+            $value  = (int) ($metrics[$metricKey] ?? 0);
+            $pairs[] = '[' . ($ts * 1000) . ', ' . $value . ']';
+            $total  += $value;
         }
 
         return [implode(', ', $pairs), $total];
+    }
+
+    /**
+     * Builds chart-line options with a localized tooltip format.
+     */
+    protected function buildChartOptions(): string
+    {
+        $tooltipContent = (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.chart.tooltip_content');
+        if ($tooltipContent === 'winter.matomo::lang.reportwidgets.visits_over_time.chart.tooltip_content') {
+            $tooltipContent = '%s | %x | %y';
+        }
+
+        $options = [
+            'tooltip' => true,
+            'tooltipOpts' => [
+                'content' => $tooltipContent,
+                'defaultTheme' => true,
+            ],
+        ];
+
+        $encoded = json_encode($options, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        if (!is_string($encoded) || strlen($encoded) < 2) {
+            return '';
+        }
+
+        return substr($encoded, 1, -1);
     }
 }
