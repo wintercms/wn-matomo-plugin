@@ -133,31 +133,45 @@ class TopPages extends ReportWidgetBase
         $selectedViewMode = (string) $this->property('view_mode', 'flat');
         $excludeLowPop = (bool) $this->property('exclude_low_pop', false);
         $excludeLowPopValue = (int) $this->property('exclude_low_pop_value', 1);
-
-        $this->vars['error'] = null;
-        $this->vars['pages'] = [];
-        $this->vars['selectedPeriod'] = $selectedPeriod;
-        $this->vars['selectedDate'] = $selectedDate;
-        $this->vars['selectedLimit'] = $selectedLimit;
-        $this->vars['selectedViewMode'] = $selectedViewMode;
-        $this->vars['selectedPeriodLabel'] = $this->translatedOptionLabel(
+        $selectedPeriodLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.top_pages.period_options',
             $selectedPeriod
         );
-        $this->vars['selectedDateLabel'] = $this->translatedOptionLabel(
+        $selectedDateLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.top_pages.date_options',
             $selectedDate
         );
-        $this->vars['selectedLimitLabel'] = $this->translatedOptionLabel(
+        $selectedLimitLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.top_pages.limit_options',
             $selectedLimit
         );
-        $this->vars['selectedViewModeLabel'] = $this->translatedOptionLabel(
+        $selectedViewModeLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.top_pages.view_mode_options',
             $selectedViewMode
         );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+
+        $this->vars['error'] = null;
+        $this->vars['pages'] = [];
+        $this->vars['selectedLimit'] = $selectedLimit;
+        $this->vars['selectedViewMode'] = $selectedViewMode;
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_period'),
+                'value' => (string) $selectedPeriodLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_date'),
+                'value' => (string) $selectedDateLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_limit'),
+                'value' => (string) $selectedLimitLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_view_mode'),
+                'value' => (string) $selectedViewModeLabel,
+            ],
         ]);
 
         try {

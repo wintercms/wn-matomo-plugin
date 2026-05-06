@@ -5,7 +5,7 @@
         </div>
     <?php else: ?>
         <div class="control-list">
-            <div class="matomo-top-pages-table-wrapper" style="--max-pages:<?= e($selectedLimit) ?>;">
+            <div class="matomo-top-pages-table-wrapper" style="--max-pages:<?= e((string) ($selectedLimit ?? '10')) ?>;">
             <table class="table data matomo-top-pages-table">
                 <thead>
                     <tr>
@@ -47,22 +47,10 @@
     <?php endif ?>
 
     <div class="matomo-report-widget-footer">
-        <p class="help-block matomo-report-widget-meta">
-            <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.selected_period')) ?>:
-            <strong><?= e((string) ($selectedPeriodLabel ?? ($selectedPeriod ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.selected_date')) ?>:
-            <strong><?= e((string) ($selectedDateLabel ?? ($selectedDate ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.selected_limit')) ?>:
-            <strong><?= e((string) ($selectedLimitLabel ?? ($selectedLimit ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.selected_view_mode')) ?>:
-            <strong><?= e((string) ($selectedViewModeLabel ?? ($selectedViewMode ?? ''))) ?></strong>
-        </p>
+        <?= $widgetMeta ?? '' ?>
 
         <div class="matomo-report-widget-actions">
-            <?= $refreshButton ?>
+            <?= $refreshButton ?? '' ?>
         </div>
     </div>
 

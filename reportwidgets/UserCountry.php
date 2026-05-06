@@ -102,26 +102,35 @@ class UserCountry extends ReportWidgetBase
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
         $selectedLimit = (int) $this->property('limit', 10);
-
-        $this->vars['error'] = null;
-        $this->vars['countries'] = [];
-        $this->vars['selectedPeriod'] = $selectedPeriod;
-        $this->vars['selectedDate'] = $selectedDate;
-        $this->vars['selectedLimit'] = $selectedLimit;
-        $this->vars['selectedPeriodLabel'] = $this->translatedOptionLabel(
+        $selectedPeriodLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.user_country.period_options',
             $selectedPeriod
         );
-        $this->vars['selectedDateLabel'] = $this->translatedOptionLabel(
+        $selectedDateLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.user_country.date_options',
             $selectedDate
         );
-        $this->vars['selectedLimitLabel'] = $this->translatedOptionLabel(
+        $selectedLimitLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.user_country.limit_options',
             $selectedLimit
         );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+
+        $this->vars['error'] = null;
+        $this->vars['countries'] = [];
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_period'),
+                'value' => (string) $selectedPeriodLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_date'),
+                'value' => (string) $selectedDateLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_limit'),
+                'value' => (string) $selectedLimitLabel,
+            ],
         ]);
 
         try {

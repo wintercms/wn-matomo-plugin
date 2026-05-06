@@ -22,6 +22,7 @@
             'period'             => 'Period',
             'period_desc'        => 'The reporting period',
             'period_last_x_days' => 'Last :x days',
+            'refresh'            => 'Refresh',
         ],
 
         'visits_over_time' => [
@@ -83,7 +84,6 @@
             ],
             'selected_period' => 'Selected period',
             'selected_date' => 'Selected date',
-            'refresh' => 'Refresh',
             'metrics' => [
                 'nb_visits' => 'Visits',
                 'nb_uniq_visitors' => 'Unique visitors',
@@ -135,7 +135,6 @@
             'exclude_low_pop_desc' => 'Exclude pages with fewer visits than the threshold below.',
             'exclude_low_pop_value' => 'Minimum visits threshold',
             'exclude_low_pop_value_desc' => 'Pages with fewer visits than this value will be excluded.',
-            'refresh' => 'Refresh',
             'no_data' => 'No page data available for this period.',
             'columns' => [
                 'url' => 'Page URL',
@@ -168,7 +167,6 @@
             'selected_period' => 'Selected period',
             'selected_date' => 'Selected date',
             'total_visits' => 'Total visits',
-            'refresh' => 'Refresh',
             'no_data' => 'No referrer data available for this period.',
             'types' => [
                 'unknown' => 'Unknown source',
@@ -199,7 +197,6 @@
             'selected_date' => 'Selected date',
             'device_types_title' => 'Device Types',
             'browsers_title' => 'Browsers',
-            'refresh' => 'Refresh',
             'no_data' => 'No device or browser data available for this period.',
             'types' => [
                 'unknown' => 'Unknown device',
@@ -239,7 +236,6 @@
             'selected_period' => 'Selected period',
             'selected_date' => 'Selected date',
             'selected_limit' => 'Limit',
-            'refresh' => 'Refresh',
             'no_data' => 'No country data available for this period.',
             'unknown_country' => 'Unknown country',
             'unknown_flag' => '🌍',

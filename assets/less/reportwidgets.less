@@ -25,15 +25,51 @@
     }
 
     .matomo-report-widget-footer {
-        align-items: center;
         display: flex;
         gap: 16px;
+        align-items: flex-start;
         justify-content: space-between;
-        padding-top: 12px;
-    
-        .matomo-report-widget-meta {
+        flex-wrap: wrap;
+        padding-top: 1rem;
+        container-type: inline-size;
+        container-name: widget-footer;
+
+        @container widget-footer (max-width: 768px) {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        dl.matomo-report-widget-meta {
             margin: 0;
             font-size: .90em;
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            column-gap: .35rem;
+            row-gap: .15rem;
+            align-items: baseline;
+            color: #777;
+
+            @container widget-footer (min-width: 480px) {
+                grid-template-columns: repeat(4, max-content);
+
+                dt:nth-of-type(2n) {
+                    margin-left: 1rem;
+                }
+            }
+
+            dt,
+            dd {
+                margin: 0;
+            }
+
+            dt {
+                font-weight: initial;
+                text-align: right;
+            }
+            dd {
+                white-space: nowrap;
+            }
         }
 
         .matomo-report-widget-actions {

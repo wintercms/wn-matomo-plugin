@@ -95,6 +95,64 @@ trait ReportWidgetConcerns
      */
     protected function renderRefreshButton(array $data = []): string
     {
-        return $this->makePartial('$/winter/matomo/views/partials/_report_refresh_button', $data);
+        $defaultData = [
+            'widgetId' => $this->getId(),
+            'icon' => 'wn-icon-refresh',
+            'label' => trans('winter.matomo::lang.reportwidgets.general.refresh'),
+        ];
+
+        return $this->makePartial(
+            '$/winter/matomo/views/partials/_report_refresh_button',
+            array_merge($defaultData, $data)
+        );
+    }
+
+    /**
+     * Render the widget meta partial.
+     *
+     * @param array<int, array{label: string, value: string|int|float|null, show?: bool}> $items
+     */
+    protected function renderWidgetMeta(array $items): string
+    {
+        $metaItems = $this->normalizeWidgetMetaItems($items);
+        if ($metaItems === []) {
+            return '';
+        }
+
+        return $this->makePartial('$/winter/matomo/views/partials/_report_widget_meta', [
+            'items' => $metaItems,
+        ]);
+    }
+
+    /**
+     * Normalize widget meta items before rendering.
+     *
+     * @param array<int, array{label: string, value: string|int|float|null, show?: bool}> $items
+     * @return array<int, array{label: string, value: string}>
+     */
+    protected function normalizeWidgetMetaItems(array $items): array
+    {
+        $metaItems = [];
+
+        foreach ($items as $item) {
+            $show = (bool) ($item['show'] ?? true);
+            if (!$show) {
+                continue;
+            }
+
+            $label = (string) ($item['label'] ?? '');
+            $value = $item['value'] ?? null;
+
+            if ($label === '' || $value === null || $value === '') {
+                continue;
+            }
+
+            $metaItems[] = [
+                'label' => $label,
+                'value' => (string) $value,
+            ];
+        }
+
+        return $metaItems;
     }
 }

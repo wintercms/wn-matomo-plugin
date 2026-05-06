@@ -37,16 +37,10 @@
     <?php endif ?>
 
     <div class="matomo-report-widget-footer">
-        <p class="help-block matomo-report-widget-meta">
-            <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.selected_period')) ?>:
-            <strong><?= e((string) ($selectedPeriodLabel ?? ($selectedPeriod ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.selected_date')) ?>:
-            <strong><?= e((string) ($selectedDateLabel ?? ($selectedDate ?? ''))) ?></strong>
-        </p>
+        <?= $widgetMeta ?? '' ?>
 
         <div class="matomo-report-widget-actions">
-            <?= $refreshButton ?>
+            <?= $refreshButton ?? '' ?>
         </div>
     </div>
 </div>

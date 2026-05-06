@@ -11,7 +11,7 @@
         <div
             class="control-chart"
             data-control="chart-pie"
-            data-center-text="<?= e(number_format($totalVisits)) ?>"
+                        data-center-text="<?= e(number_format((int) ($totalVisits ?? 0))) ?>"
             data-size="160">
             <ul>
                 <?php foreach ($referrerTypes as $referrerType): ?>
@@ -25,21 +25,10 @@
     <?php endif ?>
 
     <div class="matomo-report-widget-footer">
-        <p class="help-block matomo-report-widget-meta">
-            <?php if (!empty($totalVisits)): ?>
-                <?= e(trans('winter.matomo::lang.reportwidgets.referrers.total_visits')) ?>:
-                <strong><?= e((string) $totalVisits) ?></strong>
-                &nbsp;|&nbsp;
-            <?php endif ?>
-            <?= e(trans('winter.matomo::lang.reportwidgets.referrers.selected_period')) ?>:
-            <strong><?= e((string) ($selectedPeriodLabel ?? $selectedPeriod)) ?></strong>
-            &nbsp;|&nbsp;
-            <?= e(trans('winter.matomo::lang.reportwidgets.referrers.selected_date')) ?>:
-            <strong><?= e((string) ($selectedDateLabel ?? $selectedDate)) ?></strong>
-        </p>
+        <?= $widgetMeta ?? '' ?>
 
         <div class="matomo-report-widget-actions">
-            <?= $refreshButton ?>
+            <?= $refreshButton ?? '' ?>
         </div>
     </div>
 </div>

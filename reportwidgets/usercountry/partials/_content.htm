@@ -38,19 +38,10 @@
     <?php endif ?>
 
     <div class="matomo-report-widget-footer">
-        <p class="help-block matomo-report-widget-meta">
-            <?= e(trans('winter.matomo::lang.reportwidgets.user_country.selected_period')) ?>:
-            <strong><?= e((string) ($selectedPeriodLabel ?? ($selectedPeriod ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.user_country.selected_date')) ?>:
-            <strong><?= e((string) ($selectedDateLabel ?? ($selectedDate ?? ''))) ?></strong>
-            |
-            <?= e(trans('winter.matomo::lang.reportwidgets.user_country.selected_limit')) ?>:
-            <strong><?= e((string) ($selectedLimitLabel ?? ($selectedLimit ?? ''))) ?></strong>
-        </p>
+        <?= $widgetMeta ?? '' ?>
 
         <div class="matomo-report-widget-actions">
-            <?= $refreshButton ?>
+            <?= $refreshButton ?? '' ?>
         </div>
     </div>
 </div>

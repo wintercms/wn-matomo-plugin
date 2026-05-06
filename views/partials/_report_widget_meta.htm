@@ -1,0 +1,6 @@
+<dl class="matomo-report-widget-meta">
+    <?php foreach (($items ?? []) as $index => $metaItem): ?>
+        <dt><?= e($metaItem['label']) ?>:</dt>
+        <dd><strong><?= e($metaItem['value']) ?></strong></dd>
+    <?php endforeach ?>
+</dl>

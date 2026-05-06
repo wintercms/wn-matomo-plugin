@@ -93,24 +93,30 @@ class DevicesDetection extends ReportWidgetBase
     {
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
+        $selectedPeriodLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.devices_detection.period_options',
+            $selectedPeriod
+        );
+        $selectedDateLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.devices_detection.date_options',
+            $selectedDate
+        );
 
         $this->vars['error'] = null;
         $this->vars['deviceTypes'] = [];
         $this->vars['browsers'] = [];
         $this->vars['totalDeviceVisits'] = 0;
         $this->vars['totalBrowserVisits'] = 0;
-        $this->vars['selectedPeriod'] = $selectedPeriod;
-        $this->vars['selectedDate'] = $selectedDate;
-        $this->vars['selectedPeriodLabel'] = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.devices_detection.period_options',
-            $selectedPeriod
-        );
-        $this->vars['selectedDateLabel'] = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.devices_detection.date_options',
-            $selectedDate
-        );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.devices_detection.selected_period'),
+                'value' => (string) $selectedPeriodLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.devices_detection.selected_date'),
+                'value' => (string) $selectedDateLabel,
+            ],
         ]);
 
         try {

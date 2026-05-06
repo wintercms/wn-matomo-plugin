@@ -93,22 +93,33 @@ class Referrers extends ReportWidgetBase
     {
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
+        $selectedPeriodLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.referrers.period_options',
+            $selectedPeriod
+        );
+        $selectedDateLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.referrers.date_options',
+            $selectedDate
+        );
 
         $this->vars['error'] = null;
         $this->vars['referrerTypes'] = [];
         $this->vars['totalVisits'] = 0;
-        $this->vars['selectedPeriod'] = $selectedPeriod;
-        $this->vars['selectedDate'] = $selectedDate;
-        $this->vars['selectedPeriodLabel'] = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.referrers.period_options',
-            $selectedPeriod
-        );
-        $this->vars['selectedDateLabel'] = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.referrers.date_options',
-            $selectedDate
-        );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.total_visits'),
+                'value' => (string) ($this->vars['totalVisits'] ?? ''),
+                'show' => !empty($this->vars['totalVisits']),
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_period'),
+                'value' => (string) $selectedPeriodLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_date'),
+                'value' => (string) $selectedDateLabel,
+            ],
         ]);
 
         try {
@@ -128,6 +139,21 @@ class Referrers extends ReportWidgetBase
 
             $this->vars['referrerTypes'] = $referrerTypes;
             $this->vars['totalVisits'] = array_sum(array_column($referrerTypes, 'nb_visits'));
+            $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.total_visits'),
+                    'value' => (string) ($this->vars['totalVisits'] ?? ''),
+                    'show' => !empty($this->vars['totalVisits']),
+                ],
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_period'),
+                    'value' => (string) $selectedPeriodLabel,
+                ],
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_date'),
+                    'value' => (string) $selectedDateLabel,
+                ],
+            ]);
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);
 

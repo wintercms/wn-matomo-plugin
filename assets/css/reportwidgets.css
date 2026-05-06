@@ -5,15 +5,50 @@
   padding: 12px 15px;
 }
 .report-widget.matomo-report-widget .matomo-report-widget-footer {
-  align-items: center;
   display: flex;
   gap: 16px;
+  align-items: flex-start;
   justify-content: space-between;
-  padding-top: 12px;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  container-type: inline-size;
+  container-name: widget-footer;
 }
-.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-meta {
+@container widget-footer (max-width: 768px) {
+  .report-widget.matomo-report-widget .matomo-report-widget-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta {
   margin: 0;
   font-size: 0.9em;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 0.35rem;
+  row-gap: 0.15rem;
+  align-items: baseline;
+  color: #777;
+}
+@container widget-footer (min-width: 480px) {
+  .report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta {
+    grid-template-columns: repeat(4, max-content);
+  }
+  .report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt:nth-of-type(2n) {
+    margin-left: 1rem;
+  }
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt,
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dd {
+  margin: 0;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt {
+  font-weight: initial;
+  text-align: right;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dd {
+  white-space: nowrap;
 }
 .report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions {
   white-space: nowrap;

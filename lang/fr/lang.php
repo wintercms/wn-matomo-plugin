@@ -22,6 +22,7 @@
             'period'             => 'Période',
             'period_desc'        => 'La période de reporting',
             'period_last_x_days' => ':x derniers jours',
+            'refresh'            => 'Actualiser',
         ],
 
         'visits_over_time' => [
@@ -83,7 +84,6 @@
             ],
             'selected_period' => 'Période sélectionnée',
             'selected_date'   => 'Date sélectionnée',
-            'refresh'         => 'Actualiser',
             'metrics' => [
                 'nb_visits'           => 'Visites',
                 'nb_uniq_visitors'    => 'Visiteurs uniques',
@@ -135,7 +135,6 @@
             'exclude_low_pop_desc' => 'Exclure les pages ayant moins de visites que le seuil ci-dessous.',
             'exclude_low_pop_value' => 'Seuil minimum de visites',
             'exclude_low_pop_value_desc' => 'Les pages avec moins de visites que cette valeur seront exclues.',
-            'refresh' => 'Actualiser',
             'no_data' => 'Aucune donnée de page disponible pour cette période.',
             'columns' => [
                 'url' => 'URL de la page',
@@ -168,7 +167,6 @@
             'selected_period' => 'Période sélectionnée',
             'selected_date' => 'Date sélectionnée',
             'total_visits' => 'Total des visites',
-            'refresh' => 'Actualiser',
             'no_data' => 'Aucune donnée de source de trafic disponible pour cette période.',
             'types' => [
                 'unknown' => 'Source inconnue',
@@ -199,7 +197,6 @@
             'selected_date' => 'Date sélectionnée',
             'device_types_title' => 'Types d\'appareils',
             'browsers_title' => 'Navigateurs',
-            'refresh' => 'Actualiser',
             'no_data' => 'Aucune donnée d\'appareil ou de navigateur disponible pour cette période.',
             'types' => [
                 'unknown' => 'Appareil inconnu',
@@ -239,7 +236,6 @@
             'selected_period' => 'Période sélectionnée',
             'selected_date' => 'Date sélectionnée',
             'selected_limit' => 'Limite',
-            'refresh' => 'Actualiser',
             'no_data' => 'Aucune donnée de pays disponible pour cette période.',
             'unknown_country' => 'Pays inconnu',
             'unknown_flag' => '🌍',

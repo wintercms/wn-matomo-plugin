@@ -99,21 +99,27 @@ class VisitsSummary extends ReportWidgetBase
     {
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
-
-        $this->vars['error'] = null;
-        $this->vars['metrics'] = $this->emptyMetrics();
-        $this->vars['selectedPeriod'] = $selectedPeriod;
-        $this->vars['selectedDate'] = $selectedDate;
-        $this->vars['selectedPeriodLabel'] = $this->translatedOptionLabel(
+        $selectedPeriodLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.visits_summary.period_options',
             $selectedPeriod
         );
-        $this->vars['selectedDateLabel'] = $this->translatedOptionLabel(
+        $selectedDateLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.visits_summary.date_options',
             $selectedDate
         );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+
+        $this->vars['error'] = null;
+        $this->vars['metrics'] = $this->emptyMetrics();
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_summary.selected_period'),
+                'value' => (string) $selectedPeriodLabel,
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_summary.selected_date'),
+                'value' => (string) $selectedDateLabel,
+            ],
         ]);
 
         try {

@@ -90,17 +90,25 @@ class VisitsOverTime extends ReportWidgetBase
     protected function loadData(bool $bypassCache = false): void
     {
         $days = (int) $this->property('days', 30);
+        $daysLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
+            (string) $days
+        );
 
         $this->vars['error'] = null;
         $this->vars['chartData'] = '';
         $this->vars['totalVisits'] = 0;
-        $this->vars['days'] = $days;
-        $this->vars['daysLabel'] = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
-            (string) $days
-        );
-        $this->vars['refreshButton'] = $this->renderRefreshButton([
-            'widgetId' => $this->getId(),
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
+                'value' => (string) ($this->vars['totalVisits'] ?? ''),
+                'show' => !empty($this->vars['totalVisits']),
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'),
+                'value' => (string) $daysLabel,
+            ],
         ]);
 
         try {
@@ -120,6 +128,17 @@ class VisitsOverTime extends ReportWidgetBase
 
             $this->vars['chartData'] = $chartData;
             $this->vars['totalVisits'] = $totalVisits;
+            $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
+                    'value' => (string) ($this->vars['totalVisits'] ?? ''),
+                    'show' => !empty($this->vars['totalVisits']),
+                ],
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'),
+                    'value' => (string) $daysLabel,
+                ],
+            ]);
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);
 
