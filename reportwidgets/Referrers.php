@@ -146,6 +146,7 @@ class Referrers extends ReportWidgetBase
             $response = $service->get('Referrers.getReferrerType', [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
+                'language' => 'en',
             ]);
 
             $referrerTypes = $this->normalizeReferrerTypes($response);
@@ -204,24 +205,21 @@ class Referrers extends ReportWidgetBase
                 continue;
             }
 
-            $label = trim((string) ($item['label'] ?? ''));
-            $label = $label !== ''
-                ? $label
-                : (string) trans('winter.matomo::lang.reportwidgets.referrers.types.unknown');
+            $canonicalKey = isset($item['referrer_type'])
+                ? WidgetColorPalette::canonicalReferrerKey((int) $item['referrer_type'])
+                : 'other';
 
-            if (!isset($aggregated[$label])) {
-                $aggregated[$label] = [
+            $label = $this->translateReferrerTypeLabel($canonicalKey);
+
+            if (!isset($aggregated[$canonicalKey])) {
+                $aggregated[$canonicalKey] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::referrerType(
-                        isset($item['typeReferrer'])
-                            ? WidgetColorPalette::canonicalReferrerKey((int) $item['typeReferrer'])
-                            : 'other'
-                    ),
+                    'color' => WidgetColorPalette::referrerType($canonicalKey),
                 ];
             }
 
-            $aggregated[$label]['nb_visits'] += $metricValue;
+            $aggregated[$canonicalKey]['nb_visits'] += $metricValue;
         }
 
         $rows = array_values($aggregated);
@@ -229,6 +227,18 @@ class Referrers extends ReportWidgetBase
         usort($rows, fn(array $a, array $b) => $b['nb_visits'] <=> $a['nb_visits']);
 
         return $rows;
+    }
+
+    protected function translateReferrerTypeLabel(string $canonicalKey): string
+    {
+        $translationKey = 'winter.matomo::lang.reportwidgets.referrers.types.' . $canonicalKey;
+        $translated = (string) trans($translationKey);
+
+        if ($translated === $translationKey) {
+            return (string) trans('winter.matomo::lang.reportwidgets.referrers.types.unknown');
+        }
+
+        return $translated;
     }
 
     /**

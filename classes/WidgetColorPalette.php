@@ -33,11 +33,12 @@ final class WidgetColorPalette
      * @var array<string, string>
      */
     private const REFERRER_COLORS = [
-        'direct'   => '#4c6ef5',
-        'search'   => '#2f9e44',
-        'social'   => '#e8590c',
-        'website'  => '#1098ad',
-        'campaign' => '#c2255c',
+        'direct'   => '#1098ad',
+        'search'   => '#e8590c',
+        'social'   => '#c2255c',
+        'website'  => '#2f9e44',
+        'campaign' => '#7b61ff',
+        'ai'       => '#74b816',
     ];
 
     /**
@@ -52,6 +53,7 @@ final class WidgetColorPalette
         3 => 'website',
         6 => 'campaign',
         7 => 'social',
+        8 => 'ai',
     ];
 
     /**

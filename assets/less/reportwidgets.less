@@ -24,8 +24,13 @@
         width: 100%;
     }
 
-    table > thead > tr > th {
-        padding: 12px 15px;
+    table {
+        > thead > tr > th {
+            padding: 12px 15px;
+        }
+        > tbody > tr > td {
+            padding-block: 8px;
+        }
     }
 
     .matomo-report-widget-body {
@@ -144,6 +149,7 @@
             > span {
                 &:first-child {
                     font-size: 2rem;
+                    line-height: 1;
                 }
             }
         }
@@ -285,4 +291,18 @@
             overflow-x: auto;
         }
     }
+
+
+    //
+    // Palette colors
+    //
+
+    // color: #4c6ef5;
+    // color: #1098ad;
+    // color: #2f9e44;
+    // color: #e8590c;
+    // color: #c2255c;
+    // color: #7b61ff;
+    // color: #495057;
+    // color: #74b816;
 }

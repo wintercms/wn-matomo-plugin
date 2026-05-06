@@ -144,11 +144,13 @@ class DevicesDetection extends ReportWidgetBase
             $deviceTypeResponse = $service->get('DevicesDetection.getType', [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
+                'language' => 'en',
             ]);
 
             $browserResponse = $service->get('DevicesDetection.getBrowsers', [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
+                'language' => 'en',
             ]);
 
             // Process device types
@@ -197,22 +199,21 @@ class DevicesDetection extends ReportWidgetBase
                 continue;
             }
 
-            $label = trim((string) ($item['label'] ?? ''));
-            $label = $label !== ''
-                ? $label
+            $rawLabel = trim((string) ($item['label'] ?? ''));
+            $canonicalKey = WidgetColorPalette::canonicalDeviceKey($rawLabel);
+            $label = $rawLabel !== ''
+                ? $this->translateDeviceTypeLabel($canonicalKey)
                 : (string) trans('winter.matomo::lang.reportwidgets.devices_detection.types.unknown');
 
-            if (!isset($aggregated[$label])) {
-                $aggregated[$label] = [
+            if (!isset($aggregated[$canonicalKey])) {
+                $aggregated[$canonicalKey] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::deviceType(
-                        WidgetColorPalette::canonicalDeviceKey($label)
-                    ),
+                    'color' => WidgetColorPalette::deviceType($canonicalKey),
                 ];
             }
 
-            $aggregated[$label]['nb_visits'] += $metricValue;
+            $aggregated[$canonicalKey]['nb_visits'] += $metricValue;
         }
 
         $rows = array_values($aggregated);
@@ -238,22 +239,21 @@ class DevicesDetection extends ReportWidgetBase
                 continue;
             }
 
-            $label = trim((string) ($item['label'] ?? ''));
-            $label = $label !== ''
-                ? $label
+            $rawLabel = trim((string) ($item['label'] ?? ''));
+            $canonicalKey = WidgetColorPalette::canonicalBrowserKey($rawLabel);
+            $label = $rawLabel !== ''
+                ? $this->translateBrowserLabel($canonicalKey)
                 : (string) trans('winter.matomo::lang.reportwidgets.devices_detection.browsers.unknown');
 
-            if (!isset($aggregated[$label])) {
-                $aggregated[$label] = [
+            if (!isset($aggregated[$canonicalKey])) {
+                $aggregated[$canonicalKey] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::browser(
-                        WidgetColorPalette::canonicalBrowserKey($label)
-                    ),
+                    'color' => WidgetColorPalette::browser($canonicalKey),
                 ];
             }
 
-            $aggregated[$label]['nb_visits'] += $metricValue;
+            $aggregated[$canonicalKey]['nb_visits'] += $metricValue;
         }
 
         $rows = array_values($aggregated);
@@ -262,6 +262,31 @@ class DevicesDetection extends ReportWidgetBase
 
         // Limit to top 10 browsers for readability
         return array_slice($rows, 0, 10);
+    }
+
+    protected function translateDeviceTypeLabel(string $canonicalKey): string
+    {
+        $translationKey = 'winter.matomo::lang.reportwidgets.devices_detection.types.' . $canonicalKey;
+        $translated = (string) trans($translationKey);
+
+        if ($translated === $translationKey) {
+            return ucwords(str_replace(['_', '-'], ' ', $canonicalKey));
+        }
+
+        return $translated;
+    }
+
+    protected function translateBrowserLabel(string $canonicalKey): string
+    {
+        $translationSlug = str_replace([' ', '-'], '_', $canonicalKey);
+        $translationKey = 'winter.matomo::lang.reportwidgets.devices_detection.browsers.' . $translationSlug;
+        $translated = (string) trans($translationKey);
+
+        if ($translated === $translationKey) {
+            return ucwords(str_replace(['_', '-'], ' ', $canonicalKey));
+        }
+
+        return $translated;
     }
 
     /**

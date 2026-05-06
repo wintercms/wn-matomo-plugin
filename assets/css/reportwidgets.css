@@ -7,6 +7,9 @@
 .report-widget.matomo-report-widget table > thead > tr > th {
   padding: 12px 15px;
 }
+.report-widget.matomo-report-widget table > tbody > tr > td {
+  padding-block: 8px;
+}
 .report-widget.matomo-report-widget .matomo-report-widget-body {
   container-type: inline-size;
   container-name: widget-body;
@@ -100,6 +103,7 @@
 }
 .report-widget.matomo-report-widget .matomo-countries-table > tbody > tr > td > span:first-child {
   font-size: 2rem;
+  line-height: 1;
 }
 .report-widget.matomo-report-widget .matomo-top-pages-table {
   min-width: 520px;
