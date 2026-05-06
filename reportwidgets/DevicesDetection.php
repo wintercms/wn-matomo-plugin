@@ -206,7 +206,9 @@ class DevicesDetection extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::deviceType($label),
+                    'color' => WidgetColorPalette::deviceType(
+                        WidgetColorPalette::canonicalDeviceKey($label)
+                    ),
                 ];
             }
 
@@ -245,7 +247,9 @@ class DevicesDetection extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::browser($label),
+                    'color' => WidgetColorPalette::browser(
+                        WidgetColorPalette::canonicalBrowserKey($label)
+                    ),
                 ];
             }
 

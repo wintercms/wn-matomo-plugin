@@ -213,7 +213,11 @@ class Referrers extends ReportWidgetBase
                 $aggregated[$label] = [
                     'label' => $label,
                     'nb_visits' => 0,
-                    'color' => WidgetColorPalette::referrerType($label),
+                    'color' => WidgetColorPalette::referrerType(
+                        isset($item['typeReferrer'])
+                            ? WidgetColorPalette::canonicalReferrerKey((int) $item['typeReferrer'])
+                            : 'other'
+                    ),
                 ];
             }
 
