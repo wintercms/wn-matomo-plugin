@@ -132,7 +132,7 @@ class VisitsOverTime extends ReportWidgetBase
 
         $this->vars['error']         = null;
         $this->vars['chartDatasets'] = [];
-        // $this->vars['chartOptions']  = $this->buildChartOptions();
+        $this->vars['chartOptions']  = $this->buildChartOptions();
         $this->vars['totalVisits']   = 0;
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta']    = $this->renderWidgetMeta([
@@ -273,27 +273,114 @@ class VisitsOverTime extends ReportWidgetBase
 
     /**
      * Builds chart-line options with a localized tooltip format.
+     *
+     * Generates JavaScript literal syntax compatible with Flot's ocJSON parser.
+     *
+     * @return string JavaScript object literal payload (for data-chart-options)
      */
     protected function buildChartOptions(): string
     {
         $tooltipContent = (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.chart.tooltip_content');
         if ($tooltipContent === 'winter.matomo::lang.reportwidgets.visits_over_time.chart.tooltip_content') {
-            $tooltipContent = '%s | %x | %y';
+            $tooltipContent = '%s | %x: <strong>%y</strong>';
+        }
+
+        $monthNames = trans('winter.matomo::lang.reportwidgets.general.calendar.monthNamesShort');
+        if (!is_array($monthNames) || count($monthNames) !== 12) {
+            $monthNames = trans('system::lang.client.datepicker.months');
+        }
+        if (!is_array($monthNames) || count($monthNames) !== 12) {
+            $monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        }
+
+        $dayNames = trans('winter.matomo::lang.reportwidgets.general.calendar.weekdaysShort');
+        if (!is_array($dayNames) || count($dayNames) !== 7) {
+            $dayNames = trans('system::lang.client.datepicker.weekdaysShort');
+        }
+        if (!is_array($dayNames) || count($dayNames) !== 7) {
+            $dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         }
 
         $options = [
+            'xaxis' => [
+                'mode' => 'time',
+                'tickLength' => 5,
+                'monthNames' => array_values($monthNames),
+                'dayNames' => array_values($dayNames),
+            ],
+
             'tooltip' => true,
             'tooltipOpts' => [
+                'defaultTheme' => false,
                 'content' => $tooltipContent,
-                'defaultTheme' => true,
             ],
         ];
 
-        $encoded = json_encode($options, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        if (!is_string($encoded) || strlen($encoded) < 2) {
-            return '';
+        return $this->toJsLiteral($options);
+    }
+
+    /**
+     * Converts a PHP value to a JavaScript literal string.
+     *
+     * @param mixed $value Value to convert
+     * @return string JavaScript literal representation
+     */
+    protected function toJsLiteral(mixed $value): string
+    {
+        if (is_array($value)) {
+            if (array_is_list($value)) {
+                return $this->toJsArrayLiteral($value);
+            }
+
+            return $this->toJsObjectLiteral($value);
         }
 
-        return substr($encoded, 1, -1);
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return (string) $value;
+        }
+
+        if ($value === null) {
+            return 'null';
+        }
+
+        return "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $value) . "'";
+    }
+
+    /**
+     * Converts a PHP indexed array to a JavaScript array literal.
+     *
+     * @param array<mixed> $array Indexed array values
+     * @return string JavaScript array literal
+     */
+    protected function toJsArrayLiteral(array $array): string
+    {
+        $parts = [];
+
+        foreach ($array as $value) {
+            $parts[] = $this->toJsLiteral($value);
+        }
+
+        return '[' . implode(', ', $parts) . ']';
+    }
+
+    /**
+     * Converts a PHP associative array to a JavaScript object literal.
+     *
+     * @param array<mixed> $object Associative array of options
+     * @return string JavaScript object literal
+     */
+    protected function toJsObjectLiteral(array $object): string
+    {
+        $parts = [];
+
+        foreach ($object as $key => $value) {
+            $parts[] = "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $key) . "':" . $this->toJsLiteral($value);
+        }
+
+        return '{' . implode(', ', $parts) . '}';
     }
 }

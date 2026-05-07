@@ -23,6 +23,12 @@
             'period_desc'        => 'The reporting period',
             'period_last_x_days' => 'Last :x days',
             'refresh'            => 'Refresh',
+            'calendar' => [
+                'monthNames' => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                'monthNamesShort' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                'weekdays' => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                'weekdaysShort' => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+            ],
             'groups'             => [
                 'metrics' => 'Metrics to display'
             ]

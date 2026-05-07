@@ -23,6 +23,12 @@
             'period_desc'        => 'La période de reporting',
             'period_last_x_days' => ':x derniers jours',
             'refresh'            => 'Actualiser',
+            'calendar' => [
+                'monthNames' => ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
+                'monthNamesShort' => ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                'weekdays' => ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
+                'weekdaysShort' => ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
+            ],
             'groups'             => [
                 'metrics' => 'Indicateurs à afficher'
             ]
