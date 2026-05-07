@@ -6,9 +6,10 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\ReportValueFormatter;
+use Winter\Matomo\Classes\Helpers\WidgetColorPalette;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
-use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders a Matomo visits evolution line chart.
@@ -166,7 +167,7 @@ class VisitsOverTime extends ReportWidgetBase
                     $this->vars['totalVisits'] = $total;
                     $metaItems[] = [
                         'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
-                        'value' => (string) $total,
+                        'value' => ReportValueFormatter::integer($total),
                         'show'  => !empty($total),
                     ];
                 }
@@ -180,7 +181,7 @@ class VisitsOverTime extends ReportWidgetBase
                     ];
                     $metaItems[] = [
                         'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_hits'),
-                        'value' => (string) $total,
+                        'value' => ReportValueFormatter::integer($total),
                         'show'  => !empty($total),
                     ];
                 }
@@ -199,7 +200,7 @@ class VisitsOverTime extends ReportWidgetBase
                 ];
                 $metaItems[] = [
                     'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_pageviews'),
-                    'value' => (string) $total,
+                    'value' => ReportValueFormatter::integer($total),
                     'show'  => !empty($total),
                 ];
             }

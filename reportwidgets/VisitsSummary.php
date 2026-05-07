@@ -6,6 +6,7 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\ReportValueFormatter;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
 
@@ -153,9 +154,9 @@ class VisitsSummary extends ReportWidgetBase
                 'nb_visits' => (int) ($metricsPayload['nb_visits'] ?? 0),
                 'nb_uniq_visitors' => (int) ($metricsPayload['nb_uniq_visitors'] ?? 0),
                 'nb_actions' => (int) ($metricsPayload['nb_actions'] ?? 0),
-                'bounce_rate' => (string) ($metricsPayload['bounce_rate'] ?? '0%'),
-                'nb_actions_per_visit' => (string) ($metricsPayload['nb_actions_per_visit'] ?? '0'),
-                'avg_time_on_site' => $this->formatDuration((int) ($metricsPayload['avg_time_on_site'] ?? 0)),
+                'bounce_rate' => ReportValueFormatter::numericValue($metricsPayload['bounce_rate'] ?? 0),
+                'nb_actions_per_visit' => ReportValueFormatter::numericValue($metricsPayload['nb_actions_per_visit'] ?? 0),
+                'avg_time_on_site' => (int) ($metricsPayload['avg_time_on_site'] ?? 0),
             ];
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);
@@ -213,9 +214,9 @@ class VisitsSummary extends ReportWidgetBase
             'nb_visits' => 0,
             'nb_uniq_visitors' => 0,
             'nb_actions' => 0,
-            'bounce_rate' => '0%',
-            'nb_actions_per_visit' => '0',
-            'avg_time_on_site' => '00:00',
+            'bounce_rate' => 0.0,
+            'nb_actions_per_visit' => 0.0,
+            'avg_time_on_site' => 0,
         ];
     }
 }

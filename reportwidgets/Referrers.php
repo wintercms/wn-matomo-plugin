@@ -6,9 +6,10 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\ReportValueFormatter;
+use Winter\Matomo\Classes\Helpers\WidgetColorPalette;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
-use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders Matomo referrer types as a donut chart.
@@ -150,14 +151,15 @@ class Referrers extends ReportWidgetBase
             ]);
 
             $referrerTypes = $this->normalizeReferrerTypes($response);
+            $totalVisits = array_sum(array_column($referrerTypes, 'nb_visits'));
 
             $this->vars['referrerTypes'] = $referrerTypes;
-            $this->vars['totalVisits'] = array_sum(array_column($referrerTypes, 'nb_visits'));
+            $this->vars['totalVisits'] = $totalVisits;
             $this->vars['widgetMeta'] = $this->renderWidgetMeta([
                 [
                     'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.total_visits'),
-                    'value' => (string) ($this->vars['totalVisits'] ?? ''),
-                    'show' => !empty($this->vars['totalVisits']),
+                    'value' => ReportValueFormatter::integer($totalVisits),
+                    'show' => !empty($totalVisits),
                 ],
                 [
                     'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_period'),

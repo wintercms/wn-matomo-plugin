@@ -36,9 +36,9 @@
                                                 <?= e($page['url']) ?>
                                             </span>
                                         </td>
-                                        <td class="matomo-sticky-metric matomo-sticky-metric-visits"><?= e(number_format($page['nb_visits'])) ?></td>
-                                        <td class="matomo-sticky-metric matomo-sticky-metric-bounce"><?= e($page['bounce_rate']) ?></td>
-                                        <td class="matomo-sticky-metric matomo-sticky-metric-time"><?= e($page['avg_time_on_site']) ?></td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-visits"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($page['nb_visits'] ?? 0)) ?></td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-bounce"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::percentage($page['bounce_rate'] ?? 0)) ?></td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-time"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::duration($page['avg_time_on_site'] ?? 0)) ?></td>
                                     </tr>
                                 <?php endforeach ?>
                             <?php endif ?>

@@ -6,9 +6,9 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\WidgetColorPalette;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
-use Winter\Matomo\Classes\WidgetColorPalette;
 
 /**
  * Native WinterCMS report widget that renders Matomo device types and browser distribution as dual donut charts.

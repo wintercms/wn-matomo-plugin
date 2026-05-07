@@ -30,7 +30,7 @@
                                         <span><?= e($country['country']) ?></span>
                                     </td>
                                     <td class="text-center">
-                                        <?= e(number_format($country['nb_visits'])) ?>
+                                        <?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($country['nb_visits'] ?? 0)) ?>
                                     </td>
                                 </tr>
                             <?php endforeach ?>

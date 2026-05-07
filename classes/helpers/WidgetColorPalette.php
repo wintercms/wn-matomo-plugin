@@ -1,6 +1,6 @@
 <?php
 
-namespace Winter\Matomo\Classes;
+namespace Winter\Matomo\Classes\Helpers;
 
 /**
  * Centralized color palette and semantic mappings for Matomo widgets.

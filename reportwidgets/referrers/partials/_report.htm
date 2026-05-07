@@ -14,13 +14,13 @@
             <div
                 class="control-chart matomo-donut-chart"
                 data-control="chart-pie"
-                data-center-text="<?= e(number_format((int) ($totalVisits ?? 0))) ?>"
+                data-center-text="<?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($totalVisits ?? 0)) ?>"
                 data-size="160">
                 <ul>
                     <?php foreach ($referrerTypes as $referrerType): ?>
                         <li data-color="<?= e($referrerType['color']) ?>">
                             <?= e($referrerType['label']) ?>
-                            <span><?= e(number_format($referrerType['nb_visits'])) ?></span>
+                            <span><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($referrerType['nb_visits'] ?? 0)) ?></span>
                         </li>
                     <?php endforeach ?>
                 </ul>

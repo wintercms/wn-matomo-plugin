@@ -6,6 +6,7 @@ use Backend\Classes\ReportWidgetBase;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\ReportValueFormatter;
 use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
 
@@ -311,7 +312,7 @@ class TopPages extends ReportWidgetBase
                     $page['entry_nb_visits'],
                     $page['bounce_rate']
                 ),
-                'avg_time_on_site' => $this->formatDuration($averageSeconds),
+                'avg_time_on_site' => $averageSeconds,
             ];
         }, $aggregated);
 
@@ -393,14 +394,14 @@ class TopPages extends ReportWidgetBase
      * Applies computed display fields recursively to hierarchical pages.
      *
      * @param array $pages Hierarchical pages tree
-     * @return array Hierarchical pages tree with formatted fields
+    * @return array Hierarchical pages tree with computed display values
      */
     protected function formatHierarchicalPages(array $pages): array
     {
         foreach ($pages as &$page) {
             $page['avg_time_on_site'] = $page['avg_time_on_page_weight'] > 0
-                ? $this->formatDuration((int) round($page['avg_time_on_page_total'] / $page['avg_time_on_page_weight']))
-                : '00:00';
+                ? (int) round($page['avg_time_on_page_total'] / $page['avg_time_on_page_weight'])
+                : 0;
 
             $page['bounce_rate'] = $this->formatBounceRate(
                 $page['bounce_count'],
@@ -557,9 +558,9 @@ class TopPages extends ReportWidgetBase
 
             $html .= '<span class="matomo-top-pages-url-text" title="' . e($page['label']) . '">' . e($page['label']) . '</span>';
             $html .= '</td>';
-            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-visits">' . e(number_format($page['nb_visits'])) . '</td>';
-            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-bounce">' . e($page['bounce_rate']) . '</td>';
-            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-time">' . e($page['avg_time_on_site']) . '</td>';
+            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-visits">' . e(ReportValueFormatter::integer($page['nb_visits'])) . '</td>';
+            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-bounce">' . e(ReportValueFormatter::percentage($page['bounce_rate'])) . '</td>';
+            $html .= '<td class="matomo-sticky-metric matomo-sticky-metric-time">' . e(ReportValueFormatter::duration($page['avg_time_on_site'])) . '</td>';
             $html .= '</tr>';
 
             if ($hasChildren) {
@@ -631,13 +632,13 @@ class TopPages extends ReportWidgetBase
      * @param string $fallback
      * @return string
      */
-    protected function formatBounceRate(int $bounceCount, int $entryVisits, string $fallback): string
+    protected function formatBounceRate(int $bounceCount, int $entryVisits, string $fallback): float
     {
         if ($entryVisits > 0) {
-            return (string) round($bounceCount / $entryVisits * 100) . '%';
+            return (float) round($bounceCount / $entryVisits * 100, 0);
         }
 
-        return $fallback;
+        return ReportValueFormatter::numericValue($fallback);
     }
 
     /**
