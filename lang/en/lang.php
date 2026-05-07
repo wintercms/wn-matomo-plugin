@@ -30,8 +30,11 @@
                 'weekdaysShort' => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             ],
             'groups'             => [
-                'metrics' => 'Metrics to display'
-            ]
+                'metrics' => 'Metrics to display',
+                'display' => 'Display options',
+            ],
+            'show_refresh_button' => 'Show refresh button',
+            'show_widget_meta'    => 'Show widget metadata'
         ],
 
         'visits_over_time' => [

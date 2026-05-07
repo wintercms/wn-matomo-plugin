@@ -29,7 +29,7 @@ class Referrers extends ReportWidgetBase
      */
     public function defineProperties(): array
     {
-        return [
+        return array_merge([
             'title' => [
                 'title' => 'backend::lang.dashboard.widget_title_label',
                 'type' => 'string',
@@ -52,7 +52,7 @@ class Referrers extends ReportWidgetBase
                 'default' => 'last7',
                 'required' => true,
             ],
-        ];
+        ], $this->getDisplayProperties());
     }
 
     /**

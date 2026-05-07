@@ -32,7 +32,7 @@ class VisitsOverTime extends ReportWidgetBase
      */
     public function defineProperties(): array
     {
-        return [
+        return array_merge([
             'title' => [
                 'title' => 'backend::lang.dashboard.widget_title_label',
                 'type' => 'string',
@@ -65,7 +65,7 @@ class VisitsOverTime extends ReportWidgetBase
                 'default' => true,
                 'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
-        ];
+        ], $this->getDisplayProperties());
     }
 
     /**

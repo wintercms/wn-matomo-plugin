@@ -88,13 +88,48 @@ trait ReportWidgetConcerns
     }
 
     /**
+     * Returns display control properties for use in defineProperties().
+     *
+     * Provides checkbox properties to control visibility of refresh button and widget metadata.
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    protected function getDisplayProperties(): array
+    {
+        return [
+            'show_refresh_button' => [
+                'title' => 'winter.matomo::lang.reportwidgets.general.show_refresh_button',
+                'type' => 'checkbox',
+                'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.display',
+            ],
+            'show_widget_meta' => [
+                'title' => 'winter.matomo::lang.reportwidgets.general.show_widget_meta',
+                'type' => 'checkbox',
+                'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.display',
+            ],
+        ];
+    }
+
+    /**
      * Render the refresh button partial
      *
+     * @param bool $shouldRender Whether to render the button (defaults to property value)
      * @param array $data Additional data to pass to the partial
      * @return string
      */
-    protected function renderRefreshButton(array $data = []): string
+    protected function renderRefreshButton(bool $shouldRender = null, array $data = []): string
     {
+        // If not explicitly passed, check the property
+        if ($shouldRender === null) {
+            $shouldRender = (bool) $this->property('show_refresh_button', true);
+        }
+
+        if (!$shouldRender) {
+            return '';
+        }
+
         $defaultData = [
             'widgetId' => $this->getId(),
             'icon' => 'wn-icon-refresh',
@@ -108,12 +143,29 @@ trait ReportWidgetConcerns
     }
 
     /**
+     * Render the refresh button partial (legacy compatibility).
+     *
+     * @param array $data Additional data to pass to the partial
+     * @return string
+     */
+    /**
      * Render the widget meta partial.
      *
      * @param array<int, array{label: string, value: string|int|float|null, show?: bool}> $items
+     * @param bool|null $shouldRender Whether to render the metadata (defaults to property value)
+     * @return string
      */
-    protected function renderWidgetMeta(array $items): string
+    protected function renderWidgetMeta(array $items, bool $shouldRender = null): string
     {
+        // If not explicitly passed, check the property
+        if ($shouldRender === null) {
+            $shouldRender = (bool) $this->property('show_widget_meta', true);
+        }
+
+        if (!$shouldRender) {
+            return '';
+        }
+
         $metaItems = $this->normalizeWidgetMetaItems($items);
         if ($metaItems === []) {
             return '';

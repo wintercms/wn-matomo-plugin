@@ -28,7 +28,7 @@ class UserCountry extends ReportWidgetBase
      */
     public function defineProperties(): array
     {
-        return [
+        return array_merge([
             'title' => [
                 'title' => 'backend::lang.dashboard.widget_title_label',
                 'type' => 'string',
@@ -59,7 +59,7 @@ class UserCountry extends ReportWidgetBase
                 'default' => 10,
                 'required' => true,
             ],
-        ];
+        ], $this->getDisplayProperties());
     }
 
     /**

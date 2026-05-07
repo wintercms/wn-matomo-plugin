@@ -30,8 +30,11 @@
                 'weekdaysShort' => ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
             ],
             'groups'             => [
-                'metrics' => 'Indicateurs à afficher'
-            ]
+                'metrics' => 'Indicateurs à afficher',
+                'display' => 'Options d\'affichage',
+            ],
+            'show_refresh_button' => 'Afficher le bouton d\'actualisation',
+            'show_widget_meta'    => 'Afficher les métadonnées du widget'
         ],
 
         'visits_over_time' => [

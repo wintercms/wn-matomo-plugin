@@ -31,7 +31,7 @@ class TopPages extends ReportWidgetBase
      */
     public function defineProperties(): array
     {
-        return [
+        return array_merge([
             'title' => [
                 'title' => 'backend::lang.dashboard.widget_title_label',
                 'type' => 'string',
@@ -84,7 +84,7 @@ class TopPages extends ReportWidgetBase
                 'validationPattern' => '^[0-9]+$',
                 'validationMessage' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value_validation',
             ],
-        ];
+        ], $this->getDisplayProperties());
     }
 
     /**
