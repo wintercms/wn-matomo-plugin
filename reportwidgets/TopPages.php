@@ -192,10 +192,6 @@ class TopPages extends ReportWidgetBase
             /** @var MatomoReportingService $service */
             $service = app(MatomoReportingService::class);
 
-            if ($bypassCache) {
-                $service->clearCache();
-            }
-
             $requestParams = [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
@@ -214,7 +210,20 @@ class TopPages extends ReportWidgetBase
                 $requestParams['filter_excludelowpop_value'] = $excludeLowPopValue;
             }
 
-            $response = $service->get('Actions.getPageUrls', $requestParams);
+            if ($bypassCache) {
+                // Clear cache only for TopPages widget with these specific parameters
+                $cacheIdentifier = 'TopPages:' . md5(json_encode([
+                    'period' => $selectedPeriod,
+                    'date' => $selectedDate,
+                    'limit' => $selectedLimit,
+                    'view_mode' => $selectedViewMode,
+                    'exclude_low_pop' => $excludeLowPop,
+                    'exclude_low_pop_value' => $excludeLowPopValue,
+                ]));
+                $service->clearCache($cacheIdentifier);
+            }
+
+            $response = $service->get('Actions.getPageUrls', $requestParams, 'TopPages');
 
             $this->vars['pages'] = $this->normalizePagesData($response, $selectedViewMode);
         } catch (Throwable $exception) {

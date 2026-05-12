@@ -137,7 +137,12 @@ class DevicesDetection extends ReportWidgetBase
             $service = app(MatomoReportingService::class);
 
             if ($bypassCache) {
-                $service->clearCache();
+                // Clear cache only for DevicesDetection widget with these specific parameters
+                $cacheIdentifier = 'DevicesDetection:' . md5(json_encode([
+                    'period' => $selectedPeriod,
+                    'date' => $selectedDate,
+                ]));
+                $service->clearCache($cacheIdentifier);
             }
 
             // Fetch device types and browsers with separate requests
@@ -145,13 +150,13 @@ class DevicesDetection extends ReportWidgetBase
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
                 'language' => 'en',
-            ]);
+            ], 'DevicesDetection');
 
             $browserResponse = $service->get('DevicesDetection.getBrowsers', [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
                 'language' => 'en',
-            ]);
+            ], 'DevicesDetection');
 
             // Process device types
             $deviceTypes = $this->normalizeDeviceTypes($deviceTypeResponse);

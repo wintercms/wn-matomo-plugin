@@ -150,14 +150,20 @@ class UserCountry extends ReportWidgetBase
             $service = app(MatomoReportingService::class);
 
             if ($bypassCache) {
-                $service->clearCache();
+                // Clear cache only for UserCountry widget with these specific parameters
+                $cacheIdentifier = 'UserCountry:' . md5(json_encode([
+                    'period' => $selectedPeriod,
+                    'date' => $selectedDate,
+                    'limit' => $selectedLimit,
+                ]));
+                $service->clearCache($cacheIdentifier);
             }
 
             $response = $service->get('UserCountry.getCountry', [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
                 'filter_limit' => $selectedLimit,
-            ]);
+            ], 'UserCountry');
 
             $this->vars['countries'] = $this->normalizeCountries($response, $selectedLimit);
         } catch (Throwable $exception) {

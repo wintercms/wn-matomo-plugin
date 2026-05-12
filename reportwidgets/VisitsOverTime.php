@@ -145,7 +145,14 @@ class VisitsOverTime extends ReportWidgetBase
             $service = app(MatomoReportingService::class);
 
             if ($bypassCache) {
-                $service->clearCache();
+                // Clear cache only for VisitsOverTime widget with these specific parameters
+                $cacheIdentifier = 'VisitsOverTime:' . md5(json_encode([
+                    'days' => $days,
+                    'show_visits' => $showVisits,
+                    'show_hits' => $showHits,
+                    'show_pageviews' => $showPageviews,
+                ]));
+                $service->clearCache($cacheIdentifier);
             }
 
             $datasets  = [];
@@ -155,7 +162,7 @@ class VisitsOverTime extends ReportWidgetBase
                 $summaryResponse = $service->get('VisitsSummary.get', [
                     'period' => 'day',
                     'date'   => 'last' . $days,
-                ]);
+                ], 'VisitsOverTime');
 
                 if ($showVisits) {
                     [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_visits');
@@ -191,7 +198,7 @@ class VisitsOverTime extends ReportWidgetBase
                 $actionsResponse = $service->get('Actions.get', [
                     'period' => 'day',
                     'date'   => 'last' . $days,
-                ]);
+                ], 'VisitsOverTime');
                 [$data, $total] = $this->buildDatasetFromResponse($actionsResponse, 'nb_pageviews');
                 $datasets[] = [
                     'data'  => $data,
