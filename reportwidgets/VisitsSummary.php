@@ -185,27 +185,59 @@ class VisitsSummary extends ReportWidgetBase
     }
 
     /**
-     * Extracts the metrics object from Matomo responses.
+     * Extracts and aggregates metrics from Matomo responses.
      *
-     * Some responses are flat arrays, while others are grouped by period/date.
-     * This helper normalizes both formats.
+     * Some responses are flat arrays (single bucket), while others are grouped by period/date (multiple buckets).
+     * This helper normalizes both formats and aggregates multiple buckets into a single payload.
      *
      * @param array<string, mixed> $response
      * @return array<string, mixed>
      */
     protected function extractMetricsPayload(array $response): array
     {
+        // If the response itself contains metrics, return it directly
         if (array_key_exists('nb_visits', $response)) {
             return $response;
         }
 
+        // Collect all buckets that contain metrics
+        $buckets = [];
+
         foreach ($response as $value) {
             if (is_array($value) && array_key_exists('nb_visits', $value)) {
-                return $value;
+                $buckets[] = $value;
             }
         }
 
-        return [];
+        // If no buckets found, return empty
+        if (empty($buckets)) {
+            return [];
+        }
+
+        // If only one bucket, return it as-is
+        if (count($buckets) === 1) {
+            return $buckets[0];
+        }
+
+        // Multiple buckets: aggregate numeric metrics
+        $aggregated = [];
+
+        foreach ($buckets as $bucket) {
+            foreach ($bucket as $key => $value) {
+                if (is_numeric($value)) {
+                    // Sum numeric fields across buckets
+                    if (!array_key_exists($key, $aggregated)) {
+                        $aggregated[$key] = 0;
+                    }
+                    $aggregated[$key] += (float) $value;
+                } elseif (!array_key_exists($key, $aggregated)) {
+                    // Keep non-numeric fields from first bucket (representative value)
+                    $aggregated[$key] = $value;
+                }
+            }
+        }
+
+        return $aggregated;
     }
 
     /**
