@@ -94,6 +94,7 @@ class TopPages extends ReportWidgetBase
     protected function loadAssets(): void
     {
         $this->addCss('/plugins/winter/matomo/assets/css/reportwidgets.css');
+        $this->addJs('/plugins/winter/matomo/assets/js/toppages-hierarchy.js');
     }
 
     /**
@@ -336,6 +337,14 @@ class TopPages extends ReportWidgetBase
                 continue;
             }
 
+            $isTopLevelPageRow = $this->isHierarchicalPageRow($groupData);
+
+            if ($isTopLevelPageRow) {
+                $node = $this->buildHierarchicalPageNode($groupData);
+                $tree = $this->mergeHierarchicalNodes($tree, $node);
+                continue;
+            }
+
             foreach ($groupData as $pageData) {
                 if (!is_array($pageData)) {
                     continue;
@@ -532,15 +541,16 @@ class TopPages extends ReportWidgetBase
      * @param array $pages Hierarchical pages to render
      * @param int $level Current tree depth level
      * @param string|null $parentId Parent row identifier for child rows
+     * @param string|null $widgetToken Stable token used to namespace row IDs per widget instance
      * @return string Rendered HTML rows
      */
-    protected function renderHierarchicalRows(array $pages, int $level = 0, ?string $parentId = null): string
+    protected function renderHierarchicalRows(array $pages, int $level = 0, ?string $parentId = null, ?string $widgetToken = null): string
     {
         $html = '';
-        $toggleOnclick = htmlspecialchars($this->hierarchyToggleOnclick(), ENT_QUOTES, 'UTF-8');
+        $widgetToken = $widgetToken ?: preg_replace('/[^a-z0-9_-]/i', '-', (string) $this->getId());
 
         foreach ($pages as $page) {
-            $rowId = 'matomo-page-' . md5($page['segment'] ?? $page['url'] ?? $page['label'] ?? uniqid('', true));
+            $rowId = 'mp-' . md5($widgetToken . '|' . ($page['segment'] ?? $page['url'] ?? $page['label'] ?? uniqid('', true)));
             $hasChildren = !empty($page['children']);
             $rowClasses = ['matomo-page-row'];
 
@@ -553,7 +563,7 @@ class TopPages extends ReportWidgetBase
             $html .= '<td class="label-cell" style="--matomo-page-level: ' . $level . ';">';
 
             if ($hasChildren) {
-                $html .= '<button type="button" class="btn btn-link matomo-page-toggle" data-target="' . $rowId . '" aria-expanded="false" onclick="' . $toggleOnclick . '"><i class="icon icon-2xs icon-plus"></i></button> ';
+                $html .= '<button type="button" class="btn btn-link matomo-page-toggle" data-target="' . $rowId . '" aria-expanded="false" onclick="return (window.WinterMatomoTopPages && window.WinterMatomoTopPages.toggleHierarchy) ? window.WinterMatomoTopPages.toggleHierarchy(this) : false;"><i class="icon icon-2xs icon-plus"></i></button> ';
             }
 
             $html .= '<span class="matomo-top-pages-url-text" title="' . e($page['label']) . '">' . e($page['label']) . '</span>';
@@ -564,52 +574,11 @@ class TopPages extends ReportWidgetBase
             $html .= '</tr>';
 
             if ($hasChildren) {
-                $html .= $this->renderHierarchicalRows(array_values($page['children']), $level + 1, $rowId);
+                $html .= $this->renderHierarchicalRows(array_values($page['children']), $level + 1, $rowId, $widgetToken);
             }
         }
 
         return $html;
-    }
-
-    /**
-     * Returns the inline JavaScript handler used to toggle hierarchy rows.
-     *
-     * @return string JavaScript code for the toggle button onclick handler
-     */
-    protected function hierarchyToggleOnclick(): string
-    {
-        return "var target=this.dataset.target;"
-            . "if(!target){return false;}"
-            . "var expanded=this.getAttribute('aria-expanded')!=='true';"
-            . "var icon=this.querySelector('i');"
-            . "this.setAttribute('aria-expanded',expanded?'true':'false');"
-            . "if(icon){icon.classList.toggle('icon-plus',!expanded);icon.classList.toggle('icon-minus',expanded);}"
-            . "var rows=document.querySelectorAll('.child-of-'+target);"
-            . "rows.forEach(function(row){row.classList.toggle('matomo-page-row-hidden',!expanded);});"
-            . "if(!expanded){"
-            . "var queue=[target];"
-            . "while(queue.length){"
-            . "var parentId=queue.shift();"
-            . "document.querySelectorAll('.child-of-'+parentId).forEach(function(row){"
-            . "row.classList.add('matomo-page-row-hidden');"
-            . "queue.push(row.id);"
-            . "});"
-            . "}"
-            . "var buttonQueue=[target];"
-            . "while(buttonQueue.length){"
-            . "var buttonParentId=buttonQueue.shift();"
-            . "document.querySelectorAll('.child-of-'+buttonParentId).forEach(function(row){"
-            . "var childButton=row.querySelector('.matomo-page-toggle[aria-expanded=\\\"true\\\"]');"
-            . "if(childButton){"
-            . "childButton.setAttribute('aria-expanded','false');"
-            . "var childIcon=childButton.querySelector('i');"
-            . "if(childIcon){childIcon.classList.remove('icon-minus');childIcon.classList.add('icon-plus');}"
-            . "buttonQueue.push(row.id);"
-            . "}"
-            . "});"
-            . "}"
-            . "}"
-            . "return false;";
     }
 
     /**
@@ -622,6 +591,22 @@ class TopPages extends ReportWidgetBase
     {
         return array_key_exists('label', $item)
             && (array_key_exists('nb_visits', $item) || array_key_exists('nb_hits', $item));
+    }
+
+    /**
+     * Determines whether an array can be treated as a hierarchical page row.
+     *
+     * Hierarchical payloads may include top-level rows with children (`subtable`) even
+     * when metric fields are sparse, so this check is broader than isPageRow().
+     *
+     * @param array $item
+     * @return bool
+     */
+    protected function isHierarchicalPageRow(array $item): bool
+    {
+        return $this->isPageRow($item)
+            || array_key_exists('subtable', $item)
+            || (array_key_exists('label', $item) && array_key_exists('url', $item));
     }
 
     /**

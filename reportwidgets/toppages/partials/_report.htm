@@ -58,4 +58,70 @@
         </div>
 
     </div>
+
+    <script>
+        window.WinterMatomoTopPages = window.WinterMatomoTopPages || {};
+
+        if (!window.WinterMatomoTopPages.toggleHierarchy) {
+            window.WinterMatomoTopPages.toggleHierarchy = function (button) {
+                var target = button.dataset.target;
+                if (!target) {
+                    return false;
+                }
+
+                var root = button.closest('.matomo-report-widget') || document;
+                var expanded = button.getAttribute('aria-expanded') !== 'true';
+                var icon = button.querySelector('i');
+
+                button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+
+                if (icon) {
+                    icon.classList.toggle('icon-plus', !expanded);
+                    icon.classList.toggle('icon-minus', expanded);
+                }
+
+                root.querySelectorAll('.child-of-' + target).forEach(function (row) {
+                    row.classList.toggle('matomo-page-row-hidden', !expanded);
+                });
+
+                if (!expanded) {
+                    var queue = [target];
+
+                    while (queue.length) {
+                        var parentId = queue.shift();
+
+                        root.querySelectorAll('.child-of-' + parentId).forEach(function (row) {
+                            row.classList.add('matomo-page-row-hidden');
+                            queue.push(row.id);
+                        });
+                    }
+
+                    var buttonQueue = [target];
+
+                    while (buttonQueue.length) {
+                        var buttonParentId = buttonQueue.shift();
+
+                        root.querySelectorAll('.child-of-' + buttonParentId).forEach(function (row) {
+                            var childButton = row.querySelector('.matomo-page-toggle[aria-expanded="true"]');
+
+                            if (childButton) {
+                                childButton.setAttribute('aria-expanded', 'false');
+
+                                var childIcon = childButton.querySelector('i');
+
+                                if (childIcon) {
+                                    childIcon.classList.remove('icon-minus');
+                                    childIcon.classList.add('icon-plus');
+                                }
+
+                                buttonQueue.push(row.id);
+                            }
+                        });
+                    }
+                }
+
+                return false;
+            };
+        }
+    </script>
 </div>

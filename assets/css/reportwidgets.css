@@ -109,7 +109,7 @@
   min-width: 520px;
 }
 .report-widget.matomo-report-widget .matomo-top-pages-table-wrapper {
-  max-height: calc(calc(var(--max-pages) + 1) * 44.55px);
+  max-height: calc(calc(var(--max-pages) + 1) * 36.1667px);
   overflow-x: auto;
   overflow-y: auto;
 }
