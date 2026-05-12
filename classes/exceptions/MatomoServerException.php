@@ -7,23 +7,8 @@ namespace Winter\Matomo\Classes\Exceptions;
  */
 class MatomoServerException extends MatomoReportingException
 {
-    public function errorCode(): string
-    {
-        return 'matomo_server_error';
-    }
-
-    public function userMessageKey(): string
-    {
-        return 'winter.matomo::lang.reportwidgets.errors.server';
-    }
-
-    public function isRetryable(): bool
-    {
-        return true;
-    }
-
-    public function severity(): string
-    {
-        return 'error';
-    }
+    protected const ERROR_CODE = 'matomo_server_error';
+    protected const USER_MESSAGE_KEY = 'winter.matomo::lang.reportwidgets.errors.server';
+    protected const IS_RETRYABLE = true;
+    protected const SEVERITY = 'error';
 }

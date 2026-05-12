@@ -8,6 +8,15 @@ namespace Winter\Matomo\Classes\Exceptions;
 class MatomoReportingException extends \RuntimeException
 {
     /**
+     * Protected constants for error classification.
+     * Child classes override these constants to customize behavior.
+     */
+    protected const ERROR_CODE = 'matomo_reporting_error';
+    protected const USER_MESSAGE_KEY = 'winter.matomo::lang.reportwidgets.errors.reporting';
+    protected const IS_RETRYABLE = false;
+    protected const SEVERITY = 'warning';
+
+    /**
      * Safe context values intended for logs and diagnostics.
      *
      * @var array<string, mixed>
@@ -43,7 +52,7 @@ class MatomoReportingException extends \RuntimeException
      */
     public function errorCode(): string
     {
-        return 'matomo_reporting_error';
+        return static::ERROR_CODE;
     }
 
     /**
@@ -51,7 +60,7 @@ class MatomoReportingException extends \RuntimeException
      */
     public function userMessageKey(): string
     {
-        return 'winter.matomo::lang.reportwidgets.errors.reporting';
+        return static::USER_MESSAGE_KEY;
     }
 
     /**
@@ -59,7 +68,7 @@ class MatomoReportingException extends \RuntimeException
      */
     public function isRetryable(): bool
     {
-        return false;
+        return static::IS_RETRYABLE;
     }
 
     /**
@@ -67,6 +76,6 @@ class MatomoReportingException extends \RuntimeException
      */
     public function severity(): string
     {
-        return 'warning';
+        return static::SEVERITY;
     }
 }

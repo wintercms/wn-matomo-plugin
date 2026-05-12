@@ -7,11 +7,12 @@ namespace Winter\Matomo\Classes\Exceptions;
  */
 class MatomoRequestTimeoutException extends MatomoReportingException
 {
-    public function errorCode(): string
-    {
-        return 'matomo_request_timeout';
-    }
+    protected const ERROR_CODE = 'matomo_request_timeout';
+    protected const SEVERITY = 'warning';
 
+    /**
+     * Override to provide context-aware message key based on connection error type.
+     */
     public function userMessageKey(): string
     {
         $connectionError = $this->context()['connection_error'] ?? 'connection_failed';
@@ -25,16 +26,14 @@ class MatomoRequestTimeoutException extends MatomoReportingException
         };
     }
 
+    /**
+     * Override to provide context-aware retry logic based on connection error type.
+     */
     public function isRetryable(): bool
     {
         $connectionError = $this->context()['connection_error'] ?? 'connection_failed';
 
         // SSL certificate errors are not retryable without configuration changes
         return $connectionError !== 'ssl_certificate';
-    }
-
-    public function severity(): string
-    {
-        return 'warning';
     }
 }

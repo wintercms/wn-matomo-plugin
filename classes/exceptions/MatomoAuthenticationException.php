@@ -7,23 +7,8 @@ namespace Winter\Matomo\Classes\Exceptions;
  */
 class MatomoAuthenticationException extends MatomoReportingException
 {
-    public function errorCode(): string
-    {
-        return 'matomo_authentication_error';
-    }
-
-    public function userMessageKey(): string
-    {
-        return 'winter.matomo::lang.reportwidgets.errors.authentication';
-    }
-
-    public function isRetryable(): bool
-    {
-        return false;
-    }
-
-    public function severity(): string
-    {
-        return 'warning';
-    }
+    protected const ERROR_CODE = 'matomo_authentication_error';
+    protected const USER_MESSAGE_KEY = 'winter.matomo::lang.reportwidgets.errors.authentication';
+    protected const IS_RETRYABLE = false;
+    protected const SEVERITY = 'warning';
 }
