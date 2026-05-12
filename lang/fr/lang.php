@@ -154,6 +154,7 @@
             'exclude_low_pop_desc' => 'Exclure les pages ayant moins de visites que le seuil ci-dessous.',
             'exclude_low_pop_value' => 'Seuil minimum de visites',
             'exclude_low_pop_value_desc' => 'Les pages avec moins de visites que cette valeur seront exclues.',
+            'exclude_low_pop_value_validation' => 'Le seuil minimum de visites doit être un entier positif.',
             'no_data' => 'Aucune donnée de page disponible pour cette période.',
             'columns' => [
                 'url' => 'URL de la page',

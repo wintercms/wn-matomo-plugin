@@ -154,6 +154,7 @@
             'exclude_low_pop_desc' => 'Exclude pages with fewer visits than the threshold below.',
             'exclude_low_pop_value' => 'Minimum visits threshold',
             'exclude_low_pop_value_desc' => 'Pages with fewer visits than this value will be excluded.',
+            'exclude_low_pop_value_validation' => 'The minimum visits threshold must be a positive integer.',
             'no_data' => 'No page data available for this period.',
             'columns' => [
                 'url' => 'Page URL',
