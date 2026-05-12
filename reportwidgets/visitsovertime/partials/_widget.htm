@@ -2,9 +2,12 @@
     <h3><?= e(trans($this->property('title'))) ?></h3>
 
     <img
-        src="/plugins/winter/matomo/assets/images/report-placeholder-line.svg"
+        src="<?= asset('plugins/winter/matomo/assets/images/report-placeholder-line.svg') ?>"
         class="placeholder"
         style="height: 200px;"
         onload="$.request('<?= $this->alias ?>::onLoad');"
+        onerror="$.request('<?= $this->alias ?>::onLoad');"
+        alt=""
+        aria-hidden="true"
     />
 </div>
