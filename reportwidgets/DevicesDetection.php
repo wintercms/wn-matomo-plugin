@@ -136,27 +136,26 @@ class DevicesDetection extends ReportWidgetBase
             /** @var MatomoReportingService $service */
             $service = app(MatomoReportingService::class);
 
+            $deviceTypeParams = [
+                'period' => $selectedPeriod,
+                'date' => $selectedDate,
+                'language' => 'en',
+            ];
+            $browserParams = [
+                'period' => $selectedPeriod,
+                'date' => $selectedDate,
+                'language' => 'en',
+            ];
+
             if ($bypassCache) {
-                // Clear cache only for DevicesDetection widget with these specific parameters
-                $cacheIdentifier = 'DevicesDetection:' . md5(json_encode([
-                    'period' => $selectedPeriod,
-                    'date' => $selectedDate,
-                ]));
-                $service->clearCache($cacheIdentifier);
+                $service->clearCache($this->resolveCacheIdentifier($service, 'DevicesDetection.getType', $deviceTypeParams));
+                $service->clearCache($this->resolveCacheIdentifier($service, 'DevicesDetection.getBrowsers', $browserParams));
             }
 
             // Fetch device types and browsers with separate requests
-            $deviceTypeResponse = $service->get('DevicesDetection.getType', [
-                'period' => $selectedPeriod,
-                'date' => $selectedDate,
-                'language' => 'en',
-            ], 'DevicesDetection');
+            $deviceTypeResponse = $service->get('DevicesDetection.getType', $deviceTypeParams);
 
-            $browserResponse = $service->get('DevicesDetection.getBrowsers', [
-                'period' => $selectedPeriod,
-                'date' => $selectedDate,
-                'language' => 'en',
-            ], 'DevicesDetection');
+            $browserResponse = $service->get('DevicesDetection.getBrowsers', $browserParams);
 
             // Process device types
             $deviceTypes = $this->normalizeDeviceTypes($deviceTypeResponse);

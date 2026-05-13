@@ -211,19 +211,10 @@ class TopPages extends ReportWidgetBase
             }
 
             if ($bypassCache) {
-                // Clear cache only for TopPages widget with these specific parameters
-                $cacheIdentifier = 'TopPages:' . md5(json_encode([
-                    'period' => $selectedPeriod,
-                    'date' => $selectedDate,
-                    'limit' => $selectedLimit,
-                    'view_mode' => $selectedViewMode,
-                    'exclude_low_pop' => $excludeLowPop,
-                    'exclude_low_pop_value' => $excludeLowPopValue,
-                ]));
-                $service->clearCache($cacheIdentifier);
+                $service->clearCache($this->resolveCacheIdentifier($service, 'Actions.getPageUrls', $requestParams));
             }
 
-            $response = $service->get('Actions.getPageUrls', $requestParams, 'TopPages');
+            $response = $service->get('Actions.getPageUrls', $requestParams);
 
             $this->vars['pages'] = $this->normalizePagesData($response, $selectedViewMode);
         } catch (Throwable $exception) {

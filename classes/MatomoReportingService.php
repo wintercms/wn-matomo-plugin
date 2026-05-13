@@ -133,7 +133,7 @@ class MatomoReportingService
             return;
         }
 
-        if ($identifier === null) {
+        if ($identifier === null || $identifier === '') {
             // Clear all caches
             foreach ($cacheIndex as $entry) {
                 $cacheKey = is_array($entry) ? $entry['key'] : $entry;
@@ -143,16 +143,33 @@ class MatomoReportingService
             Cache::forget(static::CACHE_INDEX_KEY);
         } else {
             // Clear only caches matching the identifier
+            $normalizedIdentifier = $this->normalizeCacheIdentifier($identifier);
             $remainingEntries = [];
 
             foreach ($cacheIndex as $entry) {
-                if (is_array($entry) && isset($entry['identifier']) && $entry['identifier'] === $identifier) {
-                    // This entry matches the identifier, forget it
-                    Cache::forget($entry['key']);
-                } else {
-                    // Keep this entry
-                    $remainingEntries[] = $entry;
+                if (!is_array($entry)) {
+                    if (is_string($entry) && str_starts_with($entry, $normalizedIdentifier)) {
+                        Cache::forget($entry);
+                        continue;
+                    }
+
+                    if (is_string($entry)) {
+                        $remainingEntries[] = $entry;
+                    }
+
+                    continue;
                 }
+
+                $entryIdentifier = (string) ($entry['identifier'] ?? $entry['key'] ?? '');
+                $entryKey = (string) ($entry['key'] ?? '');
+
+                if ($entryKey !== '' && str_starts_with($entryIdentifier, $normalizedIdentifier)) {
+                    // This entry matches the identifier prefix, forget it.
+                    Cache::forget($entryKey);
+                    continue;
+                }
+
+                $remainingEntries[] = $entry;
             }
 
             // Update the index only if there are remaining entries
@@ -165,6 +182,24 @@ class MatomoReportingService
     }
 
     /**
+     * Returns the canonical cache identifier for a GET request method and params.
+     *
+     * @param array<string, mixed> $params
+     */
+    public function getCacheIdentifier(string $method, array $params = []): string
+    {
+        $payload = array_merge($params, [
+            'module' => 'API',
+            'method' => $method,
+            'idSite' => $this->siteId,
+            'format' => 'json',
+            'token_auth' => $this->authToken,
+        ]);
+
+        return $this->buildCacheIdentifier($method, $payload);
+    }
+
+    /**
      * Executes a request with caching and typed exception handling.
      * Optional $scope is used to generate widget-scoped cache identifiers for granular invalidation.
      */
@@ -172,17 +207,9 @@ class MatomoReportingService
     {
         $this->validateConfiguration($payload);
 
-        $cacheKey = static::CACHE_PREFIX . md5(json_encode($this->normalizeForHash($payload)));
-
-        // Generate identifier based on scope (if provided) and method for granular cache invalidation
-        $method = $payload['method'] ?? 'unknown';
-        if ($scope) {
-            // Widget-scoped identifier: includes scope for grouped invalidation
-            $identifier = $scope . ':' . $method . ':' . md5(json_encode($this->normalizeForHash($payload)));
-        } else {
-            // Method-scoped identifier: fallback for non-scoped requests
-            $identifier = $method . ':' . md5(json_encode($this->normalizeForHash($payload)));
-        }
+        $method = (string) ($payload['method'] ?? 'request');
+        $identifier = $this->buildCacheIdentifier($method, $payload);
+        $cacheKey = $identifier;
 
         $this->rememberCacheKey($cacheKey, $identifier);
 
@@ -377,6 +404,29 @@ class MatomoReportingService
         ];
 
         Cache::forever(static::CACHE_INDEX_KEY, $cacheIndex);
+    }
+
+    /**
+     * Builds the canonical scoped cache identifier for one payload.
+     *
+     * @param array<string, mixed> $payload
+     */
+    protected function buildCacheIdentifier(string $scope, array $payload): string
+    {
+        return $this->normalizeCacheIdentifier($scope)
+            . md5(json_encode($this->normalizeForHash($payload)));
+    }
+
+    /**
+     * Normalizes a method name or raw identifier to the canonical cache prefix.
+     */
+    protected function normalizeCacheIdentifier(string $identifier): string
+    {
+        if (str_starts_with($identifier, static::CACHE_PREFIX)) {
+            return $identifier;
+        }
+
+        return static::CACHE_PREFIX . trim($identifier, '.') . '.';
     }
 
     /**

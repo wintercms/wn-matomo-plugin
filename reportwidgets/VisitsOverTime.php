@@ -144,25 +144,30 @@ class VisitsOverTime extends ReportWidgetBase
             /** @var MatomoReportingService $service */
             $service = app(MatomoReportingService::class);
 
+            $summaryParams = [
+                'period' => 'day',
+                'date'   => 'last' . $days,
+            ];
+            $actionsParams = [
+                'period' => 'day',
+                'date'   => 'last' . $days,
+            ];
+
             if ($bypassCache) {
-                // Clear cache only for VisitsOverTime widget with these specific parameters
-                $cacheIdentifier = 'VisitsOverTime:' . md5(json_encode([
-                    'days' => $days,
-                    'show_visits' => $showVisits,
-                    'show_hits' => $showHits,
-                    'show_pageviews' => $showPageviews,
-                ]));
-                $service->clearCache($cacheIdentifier);
+                if ($showVisits || $showHits) {
+                    $service->clearCache($this->resolveCacheIdentifier($service, 'VisitsSummary.get', $summaryParams));
+                }
+
+                if ($showPageviews) {
+                    $service->clearCache($this->resolveCacheIdentifier($service, 'Actions.get', $actionsParams));
+                }
             }
 
             $datasets  = [];
             $metaItems = [];
 
             if ($showVisits || $showHits) {
-                $summaryResponse = $service->get('VisitsSummary.get', [
-                    'period' => 'day',
-                    'date'   => 'last' . $days,
-                ], 'VisitsOverTime');
+                $summaryResponse = $service->get('VisitsSummary.get', $summaryParams);
 
                 if ($showVisits) {
                     [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_visits');
@@ -195,10 +200,7 @@ class VisitsOverTime extends ReportWidgetBase
             }
 
             if ($showPageviews) {
-                $actionsResponse = $service->get('Actions.get', [
-                    'period' => 'day',
-                    'date'   => 'last' . $days,
-                ], 'VisitsOverTime');
+                $actionsResponse = $service->get('Actions.get', $actionsParams);
                 [$data, $total] = $this->buildDatasetFromResponse($actionsResponse, 'nb_pageviews');
                 $datasets[] = [
                     'data'  => $data,

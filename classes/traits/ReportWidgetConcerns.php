@@ -5,6 +5,7 @@ namespace Winter\Matomo\Classes\Traits;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\Exceptions\MatomoRequestTimeoutException;
+use Winter\Matomo\Classes\MatomoReportingService;
 
 /**
  * Shared behaviour for native Matomo report widgets.
@@ -74,6 +75,16 @@ trait ReportWidgetConcerns
         }
 
         return (string) ($options[$selectedValue] ?? $selectedValue);
+    }
+
+    /**
+     * Resolves the canonical cache identifier for a widget request.
+     *
+     * @param array<string, mixed> $params
+     */
+    protected function resolveCacheIdentifier(MatomoReportingService $service, string $scope, array $params = []): string
+    {
+        return $service->getCacheIdentifier($scope, $params);
     }
 
     /**

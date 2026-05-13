@@ -140,20 +140,17 @@ class Referrers extends ReportWidgetBase
             /** @var MatomoReportingService $service */
             $service = app(MatomoReportingService::class);
 
-            if ($bypassCache) {
-                // Clear cache only for Referrers widget with these specific parameters
-                $cacheIdentifier = 'Referrers:' . md5(json_encode([
-                    'period' => $selectedPeriod,
-                    'date' => $selectedDate,
-                ]));
-                $service->clearCache($cacheIdentifier);
-            }
-
-            $response = $service->get('Referrers.getReferrerType', [
+            $requestParams = [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
                 'language' => 'en',
-            ], 'Referrers');
+            ];
+
+            if ($bypassCache) {
+                $service->clearCache($this->resolveCacheIdentifier($service, 'Referrers.getReferrerType', $requestParams));
+            }
+
+            $response = $service->get('Referrers.getReferrerType', $requestParams);
 
             $referrerTypes = $this->normalizeReferrerTypes($response);
             $totalVisits = array_sum(array_column($referrerTypes, 'nb_visits'));
