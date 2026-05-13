@@ -139,19 +139,18 @@ class VisitsSummary extends ReportWidgetBase
             /** @var MatomoReportingService $service */
             $service = app(MatomoReportingService::class);
 
-            if ($bypassCache) {
-                // Clear cache only for VisitsSummary widget with these specific parameters
-                $cacheIdentifier = 'VisitsSummary:' . md5(json_encode([
-                    'period' => $selectedPeriod,
-                    'date' => $selectedDate,
-                ]));
-                $service->clearCache($cacheIdentifier);
-            }
-
-            $response = $service->get('VisitsSummary.get', [
+            $requestParams = [
                 'period' => $selectedPeriod,
                 'date' => $selectedDate,
-            ], 'VisitsSummary');
+            ];
+
+            if ($bypassCache) {
+                $service->clearCache(
+                    $this->resolveCacheIdentifier($service, 'VisitsSummary.get', $requestParams, 'VisitsSummary')
+                );
+            }
+
+            $response = $service->get('VisitsSummary.get', $requestParams, 'VisitsSummary');
 
             $metricsPayload = $this->extractMetricsPayload($response);
 

@@ -108,7 +108,7 @@ class MatomoReportingService
                 'format' => 'json',
             ]);
 
-            $bulkUrls[] = '?' . http_build_query($requestPayload, '', '&', PHP_QUERY_RFC3986);
+            $bulkUrls[] = http_build_query($requestPayload, '', '&', PHP_QUERY_RFC3986);
         }
 
         return $this->request([
