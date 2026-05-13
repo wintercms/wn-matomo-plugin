@@ -219,22 +219,40 @@ class VisitsSummary extends ReportWidgetBase
             return $buckets[0];
         }
 
-        // Multiple buckets: aggregate numeric metrics
+        // Multiple buckets: sum totals; weighted-average ratio/average fields by visits.
         $aggregated = [];
+        $weightedNumerators = [
+            'bounce_rate' => 0.0,
+            'nb_actions_per_visit' => 0.0,
+            'avg_time_on_site' => 0.0,
+        ];
+        $totalVisits = 0.0;
 
         foreach ($buckets as $bucket) {
+            $bucketVisits = (float) ($bucket['nb_visits'] ?? 0);
+            $totalVisits += $bucketVisits;
+
             foreach ($bucket as $key => $value) {
                 if (is_numeric($value)) {
-                    // Sum numeric fields across buckets
-                    if (!array_key_exists($key, $aggregated)) {
-                        $aggregated[$key] = 0;
+                    if (array_key_exists($key, $weightedNumerators)) {
+                        $weightedNumerators[$key] += (float) $value * $bucketVisits;
+                    } else {
+                        if (!array_key_exists($key, $aggregated)) {
+                            $aggregated[$key] = 0;
+                        }
+                        $aggregated[$key] += (float) $value;
                     }
-                    $aggregated[$key] += (float) $value;
                 } elseif (!array_key_exists($key, $aggregated)) {
-                    // Keep non-numeric fields from first bucket (representative value)
+                    // Keep non-numeric fields from first bucket (representative value).
                     $aggregated[$key] = $value;
                 }
             }
+        }
+
+        if ($totalVisits > 0) {
+            $aggregated['bounce_rate'] = $weightedNumerators['bounce_rate'] / $totalVisits;
+            $aggregated['nb_actions_per_visit'] = $weightedNumerators['nb_actions_per_visit'] / $totalVisits;
+            $aggregated['avg_time_on_site'] = $weightedNumerators['avg_time_on_site'] / $totalVisits;
         }
 
         return $aggregated;
@@ -243,7 +261,7 @@ class VisitsSummary extends ReportWidgetBase
     /**
      * Provides default metric values used before API data is loaded.
      *
-     * @return array<string, int|string>
+     * @return array<string, int|float>
      */
     protected function emptyMetrics(): array
     {

@@ -82,9 +82,12 @@ trait ReportWidgetConcerns
      *
      * @param array<string, mixed> $params
      */
-    protected function resolveCacheIdentifier(MatomoReportingService $service, string $scope, array $params = []): string
-    {
-        return $service->getCacheIdentifier($scope, $params);
+    protected function resolveCacheIdentifier(
+        MatomoReportingService $service,
+        string $method,
+        array $params = [],
+        ?string $scope = null): string {
+        return $service->getCacheIdentifier($method, $params, $scope);
     }
 
     /**

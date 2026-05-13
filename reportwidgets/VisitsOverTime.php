@@ -54,16 +54,16 @@ class VisitsOverTime extends ReportWidgetBase
                 'default' => true,
                 'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
-            'metric_nb_actions' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
-                'type' => 'checkbox',
-                'default' => true,
-                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
-            ],
             'metric_nb_pageviews' => [
                 'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews',
                 'type' => 'checkbox',
                 'default' => true,
+                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+            ],
+            'metric_nb_actions' => [
+                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
+                'type' => 'checkbox',
+                'default' => false,
                 'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
         ], $this->getDisplayProperties());
@@ -123,8 +123,8 @@ class VisitsOverTime extends ReportWidgetBase
     {
         $days = (int) $this->property('days', 30);
         $showVisits    = (bool) $this->property('metric_nb_visits', true);
+        $showPageviews = (bool) $this->property('metric_nb_pageviews', true);
         $showHits      = (bool) $this->property('metric_nb_actions', false);
-        $showPageviews = (bool) $this->property('metric_nb_pageviews', false);
 
         $daysLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.visits_over_time.days_options',

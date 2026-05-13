@@ -615,7 +615,7 @@ class TopPages extends ReportWidgetBase
      * @param int $bounceCount
      * @param int $entryVisits
      * @param string $fallback
-     * @return string
+        * @return float
      */
     protected function formatBounceRate(int $bounceCount, int $entryVisits, string $fallback): float
     {

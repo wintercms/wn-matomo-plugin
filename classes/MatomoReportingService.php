@@ -127,21 +127,25 @@ class MatomoReportingService
      */
     public function clearCache(?string $identifier = null): void
     {
-        $cacheIndex = Cache::get(static::CACHE_INDEX_KEY, []);
+        $this->withCacheIndexLock(function () use ($identifier): void {
+            $cacheIndex = Cache::get(self::CACHE_INDEX_KEY, []);
 
-        if (empty($cacheIndex)) {
-            return;
-        }
-
-        if ($identifier === null || $identifier === '') {
-            // Clear all caches
-            foreach ($cacheIndex as $entry) {
-                $cacheKey = is_array($entry) ? $entry['key'] : $entry;
-                Cache::forget($cacheKey);
+            if (empty($cacheIndex)) {
+                return;
             }
 
-            Cache::forget(static::CACHE_INDEX_KEY);
-        } else {
+            if ($identifier === null || $identifier === '') {
+                // Clear all caches
+                foreach ($cacheIndex as $entry) {
+                    $cacheKey = is_array($entry) ? $entry['key'] : $entry;
+                    Cache::forget($cacheKey);
+                }
+
+                Cache::forget(self::CACHE_INDEX_KEY);
+
+                return;
+            }
+
             // Clear only caches matching the identifier
             $normalizedIdentifier = $this->normalizeCacheIdentifier($identifier);
             $remainingEntries = [];
@@ -174,11 +178,11 @@ class MatomoReportingService
 
             // Update the index only if there are remaining entries
             if (!empty($remainingEntries)) {
-                Cache::forever(static::CACHE_INDEX_KEY, $remainingEntries);
+                Cache::forever(self::CACHE_INDEX_KEY, $remainingEntries);
             } else {
-                Cache::forget(static::CACHE_INDEX_KEY);
+                Cache::forget(self::CACHE_INDEX_KEY);
             }
-        }
+        });
     }
 
     /**
@@ -186,7 +190,7 @@ class MatomoReportingService
      *
      * @param array<string, mixed> $params
      */
-    public function getCacheIdentifier(string $method, array $params = []): string
+    public function getCacheIdentifier(string $method, array $params = [], ?string $scope = null): string
     {
         $payload = array_merge($params, [
             'module' => 'API',
@@ -196,7 +200,7 @@ class MatomoReportingService
             'token_auth' => $this->authToken,
         ]);
 
-        return $this->buildCacheIdentifier($method, $payload);
+        return $this->buildCacheIdentifier($method, $payload, $scope);
     }
 
     /**
@@ -208,7 +212,7 @@ class MatomoReportingService
         $this->validateConfiguration($payload);
 
         $method = (string) ($payload['method'] ?? 'request');
-        $identifier = $this->buildCacheIdentifier($method, $payload);
+        $identifier = $this->buildCacheIdentifier($method, $payload, $scope);
         $cacheKey = $identifier;
 
         $this->rememberCacheKey($cacheKey, $identifier);
@@ -389,21 +393,23 @@ class MatomoReportingService
      */
     protected function rememberCacheKey(string $cacheKey, string $identifier): void
     {
-        $cacheIndex = Cache::get(static::CACHE_INDEX_KEY, []);
+        $this->withCacheIndexLock(function () use ($cacheKey, $identifier): void {
+            $cacheIndex = Cache::get(self::CACHE_INDEX_KEY, []);
 
-        // Check if this exact cache key already exists
-        foreach ($cacheIndex as $entry) {
-            if (is_array($entry) && $entry['key'] === $cacheKey) {
-                return;
+            // Check if this exact cache key already exists
+            foreach ($cacheIndex as $entry) {
+                if (is_array($entry) && $entry['key'] === $cacheKey) {
+                    return;
+                }
             }
-        }
 
-        $cacheIndex[] = [
-            'key' => $cacheKey,
-            'identifier' => $identifier,
-        ];
+            $cacheIndex[] = [
+                'key' => $cacheKey,
+                'identifier' => $identifier,
+            ];
 
-        Cache::forever(static::CACHE_INDEX_KEY, $cacheIndex);
+            Cache::forever(self::CACHE_INDEX_KEY, $cacheIndex);
+        });
     }
 
     /**
@@ -411,9 +417,13 @@ class MatomoReportingService
      *
      * @param array<string, mixed> $payload
      */
-    protected function buildCacheIdentifier(string $scope, array $payload): string
+    protected function buildCacheIdentifier(string $method, array $payload, ?string $scope = null): string
     {
-        return $this->normalizeCacheIdentifier($scope)
+        $identifierScope = ($scope !== null && $scope !== '')
+            ? $scope . ':' . $method
+            : $method;
+
+        return $this->normalizeCacheIdentifier($identifierScope)
             . md5(json_encode($this->normalizeForHash($payload)));
     }
 
@@ -422,11 +432,29 @@ class MatomoReportingService
      */
     protected function normalizeCacheIdentifier(string $identifier): string
     {
-        if (str_starts_with($identifier, static::CACHE_PREFIX)) {
+        if (str_starts_with($identifier, self::CACHE_PREFIX)) {
             return $identifier;
         }
 
-        return static::CACHE_PREFIX . trim($identifier, '.') . '.';
+        return self::CACHE_PREFIX . trim($identifier, '.') . '.';
+    }
+
+    /**
+     * Executes a callback while holding a cache-index lock when supported.
+     */
+    protected function withCacheIndexLock(callable $callback): void
+    {
+        $store = Cache::getStore();
+
+        if (method_exists($store, 'lock')) {
+            Cache::lock(self::CACHE_INDEX_KEY . '.lock', 10)->block(5, function () use ($callback): void {
+                $callback();
+            });
+
+            return;
+        }
+
+        $callback();
     }
 
     /**
