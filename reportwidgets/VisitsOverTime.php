@@ -35,36 +35,36 @@ class VisitsOverTime extends ReportWidgetBase
     {
         return array_merge([
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'type' => 'string',
-                'default' => 'winter.matomo::lang.reportwidgets.visits_over_time.title_default',
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.visits_over_time.title_default',
                 'required' => true,
             ],
-            'days' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.days',
+            'date' => [
+                'title'       => 'winter.matomo::lang.reportwidgets.visits_over_time.days',
                 'description' => 'winter.matomo::lang.reportwidgets.visits_over_time.days_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
-                'default' => '30',
-                'required' => true,
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'default'     => 'last30',
+                'required'    => true,
             ],
             'metric_nb_visits' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits',
-                'type' => 'checkbox',
+                'title'   => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits',
+                'type'    => 'checkbox',
                 'default' => true,
-                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+                'group'   => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
             'metric_nb_pageviews' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews',
-                'type' => 'checkbox',
+                'title'   => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews',
+                'type'    => 'checkbox',
                 'default' => true,
-                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+                'group'   => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
             'metric_nb_actions' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
-                'type' => 'checkbox',
+                'title'   => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
+                'type'    => 'checkbox',
                 'default' => false,
-                'group' => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+                'group'   => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
             ],
         ], $this->getDisplayProperties());
     }
@@ -121,15 +121,20 @@ class VisitsOverTime extends ReportWidgetBase
      */
     protected function loadData(bool $bypassCache = false): void
     {
-        $days = (int) $this->property('days', 30);
+        // $days          = (string) $this->property('days', 'last30');
         $showVisits    = (bool) $this->property('metric_nb_visits', true);
         $showPageviews = (bool) $this->property('metric_nb_pageviews', true);
         $showHits      = (bool) $this->property('metric_nb_actions', false);
-
-        $daysLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
-            (string) $days
+        $selectedDate = (string) $this->property('date', 'last30');
+        $selectedDateLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.general.date_options',
+            $selectedDate
         );
+
+        // $daysLabel = $this->translatedOptionLabel(
+        //     'winter.matomo::lang.reportwidgets.general.date_options',
+        //     (string) $days
+        // );
 
         $this->vars['error']         = null;
         $this->vars['chartDatasets'] = [];
@@ -137,7 +142,7 @@ class VisitsOverTime extends ReportWidgetBase
         $this->vars['totalVisits']   = 0;
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta']    = $this->renderWidgetMeta([
-            ['label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'), 'value' => (string) $daysLabel],
+            ['label' => (string) trans('winter.matomo::lang.reportwidgets.general.date_label'), 'value' => (string) $selectedDateLabel],
         ]);
 
         try {
@@ -146,11 +151,11 @@ class VisitsOverTime extends ReportWidgetBase
 
             $summaryParams = [
                 'period' => 'day',
-                'date'   => 'last' . $days,
+                'date'   => $selectedDate,
             ];
             $actionsParams = [
                 'period' => 'day',
-                'date'   => 'last' . $days,
+                'date'   => $selectedDate,
             ];
 
             if ($bypassCache) {
@@ -217,7 +222,7 @@ class VisitsOverTime extends ReportWidgetBase
             $this->vars['chartDatasets'] = $datasets;
             $this->vars['widgetMeta']    = $this->renderWidgetMeta(array_merge(
                 $metaItems,
-                [['label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.days_label'), 'value' => (string) $daysLabel]],
+                [['label' => (string) trans('winter.matomo::lang.reportwidgets.general.date_label'), 'value' => (string) $selectedDateLabel]],
             ));
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);

@@ -32,26 +32,26 @@ class Referrers extends ReportWidgetBase
     {
         return array_merge([
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'type' => 'string',
-                'default' => 'winter.matomo::lang.reportwidgets.referrers.title_default',
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.referrers.title_default',
                 'required' => true,
             ],
             'period' => [
-                'title' => 'winter.matomo::lang.reportwidgets.referrers.period',
-                'description' => 'winter.matomo::lang.reportwidgets.referrers.period_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.referrers.period_options',
-                'default' => 'week',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.period',
+                'description' => 'winter.matomo::lang.reportwidgets.general.period_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.period_options',
+                'default'     => 'week',
+                'required'    => true,
             ],
             'date' => [
-                'title' => 'winter.matomo::lang.reportwidgets.referrers.date',
-                'description' => 'winter.matomo::lang.reportwidgets.referrers.date_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.referrers.date_options',
-                'default' => 'last7',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'default'     => 'last30',
+                'required'    => true,
             ],
         ], $this->getDisplayProperties());
     }
@@ -108,11 +108,11 @@ class Referrers extends ReportWidgetBase
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
         $selectedPeriodLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.referrers.period_options',
+            'winter.matomo::lang.reportwidgets.general.period_options',
             $selectedPeriod
         );
         $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.referrers.date_options',
+            'winter.matomo::lang.reportwidgets.general.date_options',
             $selectedDate
         );
 
@@ -127,11 +127,11 @@ class Referrers extends ReportWidgetBase
                 'show' => !empty($this->vars['totalVisits']),
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_period'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
                 'value' => (string) $selectedPeriodLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_date'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
                 'value' => (string) $selectedDateLabel,
             ],
         ]);
@@ -164,11 +164,11 @@ class Referrers extends ReportWidgetBase
                     'show' => !empty($totalVisits),
                 ],
                 [
-                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_period'),
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
                     'value' => (string) $selectedPeriodLabel,
                 ],
                 [
-                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.selected_date'),
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
                     'value' => (string) $selectedDateLabel,
                 ],
             ]);

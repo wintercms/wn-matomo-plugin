@@ -34,26 +34,26 @@ class VisitsSummary extends ReportWidgetBase
     {
         return array_merge([
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'type' => 'string',
-                'default' => 'winter.matomo::lang.reportwidgets.visits_summary.title_default',
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.visits_summary.title_default',
                 'required' => true,
             ],
             'period' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_summary.period',
-                'description' => 'winter.matomo::lang.reportwidgets.visits_summary.period_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.visits_summary.period_options',
-                'default' => 'week',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.period',
+                'description' => 'winter.matomo::lang.reportwidgets.general.period_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.period_options',
+                'default'     => 'week',
+                'required'    => true,
             ],
             'date' => [
-                'title' => 'winter.matomo::lang.reportwidgets.visits_summary.date',
-                'description' => 'winter.matomo::lang.reportwidgets.visits_summary.date_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.visits_summary.date_options',
-                'default' => 'last7',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'default'     => 'last30',
+                'required'    => true,
             ],
         ], $this->getDisplayProperties());
     }
@@ -113,11 +113,11 @@ class VisitsSummary extends ReportWidgetBase
         $selectedPeriod = (string) $this->property('period', 'week');
         $selectedDate = (string) $this->property('date', 'last7');
         $selectedPeriodLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.visits_summary.period_options',
+            'winter.matomo::lang.reportwidgets.general.period_options',
             $selectedPeriod
         );
         $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.visits_summary.date_options',
+            'winter.matomo::lang.reportwidgets.general.date_options',
             $selectedDate
         );
 
@@ -126,11 +126,11 @@ class VisitsSummary extends ReportWidgetBase
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta'] = $this->renderWidgetMeta([
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_summary.selected_period'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
                 'value' => (string) $selectedPeriodLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_summary.selected_date'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
                 'value' => (string) $selectedDateLabel,
             ],
         ]);

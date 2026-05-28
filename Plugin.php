@@ -51,8 +51,6 @@ class Plugin extends PluginBase
 
             return $api;
         });
-
-        // $this->loadViewsFrom(plugins_path(__DIR__ .'/partials'));
     }
 
     /**

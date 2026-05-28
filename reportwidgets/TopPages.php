@@ -34,54 +34,54 @@ class TopPages extends ReportWidgetBase
     {
         return array_merge([
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'type' => 'string',
-                'default' => 'winter.matomo::lang.reportwidgets.top_pages.title_default',
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.top_pages.title_default',
                 'required' => true,
             ],
             'period' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.period',
-                'description' => 'winter.matomo::lang.reportwidgets.top_pages.period_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.top_pages.period_options',
-                'default' => 'week',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.period',
+                'description' => 'winter.matomo::lang.reportwidgets.general.period_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.period_options',
+                'default'     => 'week',
+                'required'    => true,
             ],
             'date' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.date',
-                'description' => 'winter.matomo::lang.reportwidgets.top_pages.date_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.top_pages.date_options',
-                'default' => 'last7',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'default'     => 'last30',
+                'required'    => true,
             ],
             'limit' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.limit',
+                'title'       => 'winter.matomo::lang.reportwidgets.general.limit',
                 'description' => 'winter.matomo::lang.reportwidgets.top_pages.limit_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.top_pages.limit_options',
-                'default' => 10,
-                'required' => true,
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.top_pages.limit_options',
+                'default'     => 10,
+                'required'    => true,
             ],
             'view_mode' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.view_mode',
+                'title'       => 'winter.matomo::lang.reportwidgets.top_pages.view_mode',
                 'description' => 'winter.matomo::lang.reportwidgets.top_pages.view_mode_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.top_pages.view_mode_options',
-                'default' => 'flat',
-                'required' => true,
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.top_pages.view_mode_options',
+                'default'     => 'flat',
+                'required'    => true,
             ],
             'exclude_low_pop' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop',
+                'title'       => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop',
                 'description' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_desc',
-                'type' => 'checkbox',
-                'default' => false,
+                'type'        => 'checkbox',
+                'default'     => false,
             ],
             'exclude_low_pop_value' => [
-                'title' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value',
-                'description' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value_desc',
-                'type' => 'string',
-                'default' => '1',
+                'title'             => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value',
+                'description'       => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value_desc',
+                'type'              => 'string',
+                'default'           => '1',
                 'validationPattern' => '^[0-9]+$',
                 'validationMessage' => 'winter.matomo::lang.reportwidgets.top_pages.exclude_low_pop_value_validation',
             ],
@@ -148,11 +148,11 @@ class TopPages extends ReportWidgetBase
         $excludeLowPop = (bool) $this->property('exclude_low_pop', false);
         $excludeLowPopValue = (int) $this->property('exclude_low_pop_value', 1);
         $selectedPeriodLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.top_pages.period_options',
+            'winter.matomo::lang.reportwidgets.general.period_options',
             $selectedPeriod
         );
         $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.top_pages.date_options',
+            'winter.matomo::lang.reportwidgets.general.date_options',
             $selectedDate
         );
         $selectedLimitLabel = $this->translatedOptionLabel(
@@ -171,15 +171,15 @@ class TopPages extends ReportWidgetBase
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta'] = $this->renderWidgetMeta([
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_period'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
                 'value' => (string) $selectedPeriodLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_date'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
                 'value' => (string) $selectedDateLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.top_pages.selected_limit'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_limit'),
                 'value' => (string) $selectedLimitLabel,
             ],
             [

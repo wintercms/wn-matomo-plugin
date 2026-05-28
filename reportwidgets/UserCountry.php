@@ -30,34 +30,34 @@ class UserCountry extends ReportWidgetBase
     {
         return array_merge([
             'title' => [
-                'title' => 'backend::lang.dashboard.widget_title_label',
-                'type' => 'string',
-                'default' => 'winter.matomo::lang.reportwidgets.user_country.title_default',
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.user_country.title_default',
                 'required' => true,
             ],
             'period' => [
-                'title' => 'winter.matomo::lang.reportwidgets.user_country.period',
-                'description' => 'winter.matomo::lang.reportwidgets.user_country.period_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.user_country.period_options',
-                'default' => 'week',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.period',
+                'description' => 'winter.matomo::lang.reportwidgets.general.period_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.period_options',
+                'default'     => 'week',
+                'required'    => true,
             ],
             'date' => [
-                'title' => 'winter.matomo::lang.reportwidgets.user_country.date',
-                'description' => 'winter.matomo::lang.reportwidgets.user_country.date_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.user_country.date_options',
-                'default' => 'last7',
-                'required' => true,
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'default'     => 'last30',
+                'required'    => true,
             ],
             'limit' => [
-                'title' => 'winter.matomo::lang.reportwidgets.user_country.limit',
+                'title'       => 'winter.matomo::lang.reportwidgets.general.limit',
                 'description' => 'winter.matomo::lang.reportwidgets.user_country.limit_desc',
-                'type' => 'dropdown',
-                'options' => 'winter.matomo::lang.reportwidgets.user_country.limit_options',
-                'default' => 10,
-                'required' => true,
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.user_country.limit_options',
+                'default'     => 10,
+                'required'    => true,
             ],
         ], $this->getDisplayProperties());
     }
@@ -119,7 +119,7 @@ class UserCountry extends ReportWidgetBase
             $selectedPeriod
         );
         $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.user_country.date_options',
+            'winter.matomo::lang.reportwidgets.general.date_options',
             $selectedDate
         );
         $selectedLimitLabel = $this->translatedOptionLabel(
@@ -132,15 +132,15 @@ class UserCountry extends ReportWidgetBase
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta'] = $this->renderWidgetMeta([
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_period'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
                 'value' => (string) $selectedPeriodLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_date'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
                 'value' => (string) $selectedDateLabel,
             ],
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.user_country.selected_limit'),
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_limit'),
                 'value' => (string) $selectedLimitLabel,
             ],
         ]);
