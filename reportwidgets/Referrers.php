@@ -34,7 +34,7 @@ class Referrers extends ReportWidgetBase
             'title' => [
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.referrers.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.referrers.label',
                 'required' => true,
             ],
             'period' => [

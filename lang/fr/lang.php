@@ -73,7 +73,6 @@
 
         'devices_detection' => [
             'label'              => 'Appareils & Navigateurs',
-            'title_default'      => 'Appareils & Navigateurs',
             'device_types_title' => 'Types d\'appareils',
             'browsers_title'     => 'Navigateurs',
             'no_data'            => 'Aucune donnée d\'appareil ou de navigateur disponible pour cette période.',
@@ -107,7 +106,6 @@
 
         'referrers' => [
             'label'         => 'Sources de trafic',
-            'title_default' => 'Sources de trafic',
             'no_data'       => 'Aucune donnée de source de trafic disponible pour cette période.',
             'total_visits'  => 'Total des visites',
             'types'         => [
@@ -124,7 +122,6 @@
 
         'top_pages' => [
             'label'                            => 'Pages populaires',
-            'title_default'                    => 'Pages populaires',
             'limit_desc'                       => 'Nombre maximum de pages à afficher.',
             'limit_options'                    => [
                 5  => '5 pages',
@@ -153,8 +150,7 @@
         ],
 
         'user_country' => [
-            'label'           => 'Pays',
-            'title_default'   => 'Top Pays',
+            'label'           => 'Top Pays',
             'limit_desc'      => 'Nombre maximal de pays à afficher.',
             'limit_options'   => [
                 5  => '5 pays',
@@ -172,7 +168,6 @@
 
         'visits_over_time' => [
             'label'           => 'Visites dans le temps',
-            'title_default'   => 'Visites dans le temps',
             'days'            => 'Période',
             'days_desc'       => 'Nombre de jours passés à afficher sur le graphique.',
             'days_label'      => 'Période',
@@ -192,7 +187,6 @@
 
         'visits_summary' => [
             'label'         => 'Résumé des visites',
-            'title_default' => 'Résumé des visites',
             'metrics'       => [
                 'nb_visits'            => 'Visites',
                 'nb_uniq_visitors'     => 'Visiteurs uniques',

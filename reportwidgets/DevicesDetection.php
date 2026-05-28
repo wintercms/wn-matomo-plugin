@@ -33,7 +33,7 @@ class DevicesDetection extends ReportWidgetBase
             'title' => [
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.devices_detection.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.devices_detection.label',
                 'required' => true,
             ],
             'period' => [

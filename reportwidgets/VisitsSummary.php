@@ -36,7 +36,7 @@ class VisitsSummary extends ReportWidgetBase
             'title' => [
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.visits_summary.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.visits_summary.label',
                 'required' => true,
             ],
             'period' => [

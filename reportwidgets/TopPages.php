@@ -36,7 +36,7 @@ class TopPages extends ReportWidgetBase
             'title' => [
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.top_pages.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.top_pages.label',
                 'required' => true,
             ],
             'period' => [

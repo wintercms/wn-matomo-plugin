@@ -26,7 +26,7 @@ class EmbeddedDashboard extends ReportWidgetBase
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'description' => 'winter.core::lang.reportwidgets.general.title_desc',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.embedded_dashboard.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.embedded_dashboard.label',
                 'required' => true,
             ],
             'period' => [

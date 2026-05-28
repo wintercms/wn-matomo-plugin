@@ -73,7 +73,6 @@
 
         'devices_detection' => [
             'label'              => 'Devices & Browsers',
-            'title_default'      => 'Devices & Browsers',
             'device_types_title' => 'Device Types',
             'browsers_title'     => 'Browsers',
             'no_data'            => 'No device or browser data available for this period.',
@@ -107,7 +106,6 @@
 
         'referrers' => [
             'label'         => 'Traffic Sources',
-            'title_default' => 'Traffic Sources',
             'no_data'       => 'No referrer data available for this period.',
             'total_visits'  => 'Total visits',
             'types'         => [
@@ -124,7 +122,6 @@
 
         'top_pages' => [
             'label'                            => 'Top Pages',
-            'title_default'                    => 'Top Pages',
             'limit_desc'                       => 'Maximum number of pages to display.',
             'limit_options'                    => [
                 5  => '5 pages',
@@ -153,8 +150,7 @@
         ],
 
         'user_country' => [
-            'label'           => 'Countries',
-            'title_default'   => 'Top Countries',
+            'label'           => 'Top Countries',
             'limit_desc'      => 'Maximum number of countries to display.',
             'limit_options'   => [
                 5 => '5 countries',
@@ -172,7 +168,6 @@
 
         'visits_over_time' => [
             'label'           => 'Visits Over Time',
-            'title_default'   => 'Visits Over Time',
             'days'            => 'Period',
             'days_desc'       => 'Number of past days to display on the chart.',
             'days_label'      => 'Period',
@@ -192,7 +187,6 @@
 
         'visits_summary' => [
             'label'         => 'Visits Summary',
-            'title_default' => 'Visits Summary',
             'metrics'       => [
                 'nb_visits'            => 'Visits',
                 'nb_uniq_visitors'     => 'Unique visitors',

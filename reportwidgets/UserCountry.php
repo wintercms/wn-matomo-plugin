@@ -32,7 +32,7 @@ class UserCountry extends ReportWidgetBase
             'title' => [
                 'title'    => 'backend::lang.dashboard.widget_title_label',
                 'type'     => 'string',
-                'default'  => 'winter.matomo::lang.reportwidgets.user_country.title_default',
+                'default'  => 'winter.matomo::lang.reportwidgets.user_country.label',
                 'required' => true,
             ],
             'period' => [
