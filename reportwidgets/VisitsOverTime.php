@@ -331,71 +331,7 @@ class VisitsOverTime extends ReportWidgetBase
             ],
         ];
 
-        return $this->toJsLiteral($options);
-    }
-
-    /**
-     * Converts a PHP value to a JavaScript literal string.
-     *
-     * @param mixed $value Value to convert
-     * @return string JavaScript literal representation
-     */
-    protected function toJsLiteral(mixed $value): string
-    {
-        if (is_array($value)) {
-            if (array_is_list($value)) {
-                return $this->toJsArrayLiteral($value);
-            }
-
-            return $this->toJsObjectLiteral($value);
-        }
-
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
-        }
-
-        if (is_int($value) || is_float($value)) {
-            return (string) $value;
-        }
-
-        if ($value === null) {
-            return 'null';
-        }
-
-        return "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $value) . "'";
-    }
-
-    /**
-     * Converts a PHP indexed array to a JavaScript array literal.
-     *
-     * @param array<mixed> $array Indexed array values
-     * @return string JavaScript array literal
-     */
-    protected function toJsArrayLiteral(array $array): string
-    {
-        $parts = [];
-
-        foreach ($array as $value) {
-            $parts[] = $this->toJsLiteral($value);
-        }
-
-        return '[' . implode(', ', $parts) . ']';
-    }
-
-    /**
-     * Converts a PHP associative array to a JavaScript object literal.
-     *
-     * @param array<mixed> $object Associative array of options
-     * @return string JavaScript object literal
-     */
-    protected function toJsObjectLiteral(array $object): string
-    {
-        $parts = [];
-
-        foreach ($object as $key => $value) {
-            $parts[] = "'" . str_replace(['\\', "'"], ['\\\\', "\\'"], (string) $key) . "':" . $this->toJsLiteral($value);
-        }
-
-        return '{' . implode(', ', $parts) . '}';
+        $options = json_encode($options, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        return str_replace('"', "'", $options);
     }
 }
