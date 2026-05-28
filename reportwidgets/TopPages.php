@@ -142,7 +142,7 @@ class TopPages extends ReportWidgetBase
     protected function loadData(bool $bypassCache = false): void
     {
         $selectedPeriod = (string) $this->property('period', 'week');
-        $selectedDate = (string) $this->property('date', 'last7');
+        $selectedDate = (string) $this->property('date', 'last30');
         $selectedLimit = (int) $this->property('limit', 10);
         $selectedViewMode = (string) $this->property('view_mode', 'flat');
         $excludeLowPop = (bool) $this->property('exclude_low_pop', false);

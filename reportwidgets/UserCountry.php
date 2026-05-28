@@ -112,7 +112,7 @@ class UserCountry extends ReportWidgetBase
     protected function loadData(bool $bypassCache = false): void
     {
         $selectedPeriod = (string) $this->property('period', 'week');
-        $selectedDate = (string) $this->property('date', 'last7');
+        $selectedDate = (string) $this->property('date', 'last30');
         $selectedLimit = (int) $this->property('limit', 10);
         $selectedPeriodLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.user_country.period_options',

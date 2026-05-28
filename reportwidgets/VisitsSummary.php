@@ -111,7 +111,7 @@ class VisitsSummary extends ReportWidgetBase
     protected function loadData(bool $bypassCache = false): void
     {
         $selectedPeriod = (string) $this->property('period', 'week');
-        $selectedDate = (string) $this->property('date', 'last7');
+        $selectedDate = (string) $this->property('date', 'last30');
         $selectedPeriodLabel = $this->translatedOptionLabel(
             'winter.matomo::lang.reportwidgets.general.period_options',
             $selectedPeriod
