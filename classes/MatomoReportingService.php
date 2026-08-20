@@ -128,9 +128,11 @@ class MatomoReportingService
     public function clearCache(?string $identifier = null): void
     {
         $this->withCacheIndexLock(function () use ($identifier): void {
-            $cacheIndex = Cache::get(self::CACHE_INDEX_KEY, []);
+            $cacheIndex = $this->pruneExpiredIndexEntries(Cache::get(self::CACHE_INDEX_KEY, []));
 
             if (empty($cacheIndex)) {
+                Cache::forget(self::CACHE_INDEX_KEY);
+
                 return;
             }
 
@@ -394,7 +396,7 @@ class MatomoReportingService
     protected function rememberCacheKey(string $cacheKey, string $identifier): void
     {
         $this->withCacheIndexLock(function () use ($cacheKey, $identifier): void {
-            $cacheIndex = Cache::get(self::CACHE_INDEX_KEY, []);
+            $cacheIndex = $this->pruneExpiredIndexEntries(Cache::get(self::CACHE_INDEX_KEY, []));
 
             // Check if this exact cache key already exists
             foreach ($cacheIndex as $entry) {
@@ -406,10 +408,31 @@ class MatomoReportingService
             $cacheIndex[] = [
                 'key' => $cacheKey,
                 'identifier' => $identifier,
+                'expires_at' => time() + $this->cacheTtl,
             ];
 
             Cache::forever(self::CACHE_INDEX_KEY, $cacheIndex);
         });
+    }
+
+    /**
+     * Removes index entries whose underlying cache entry has already expired.
+     *
+     * @param array<int, mixed> $cacheIndex
+     * @return array<int, mixed>
+     */
+    protected function pruneExpiredIndexEntries(array $cacheIndex): array
+    {
+        $now = time();
+
+        return array_values(array_filter($cacheIndex, function ($entry) use ($now): bool {
+            // Legacy string entries have no expiry metadata, keep them until explicitly cleared.
+            if (!is_array($entry) || !isset($entry['expires_at'])) {
+                return true;
+            }
+
+            return (int) $entry['expires_at'] > $now;
+        }));
     }
 
     /**
