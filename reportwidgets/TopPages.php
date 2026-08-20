@@ -215,7 +215,7 @@ class TopPages extends ReportWidgetBase
 
             $response = $service->get('Actions.getPageUrls', $requestParams);
 
-            $this->vars['pages'] = $this->normalizePagesData($response, $selectedViewMode);
+            $this->vars['pages'] = $this->normalizePagesData($response, $selectedViewMode, $selectedLimit);
         } catch (Throwable $exception) {
             $this->vars['error'] = $this->resolveUserErrorMessage($exception);
 
@@ -240,26 +240,32 @@ class TopPages extends ReportWidgetBase
     /**
      * Normalizes Matomo response data according to the selected display mode.
      *
+     * For `lastN` date ranges Matomo returns one table per period, and `filter_limit`
+     * is applied per table, so the union of tables can exceed the configured limit.
+     * The limit is therefore re-applied to the final top-level result here.
+     *
      * @param array $response Raw Matomo API response
      * @param string $viewMode Selected display mode (flat or hierarchical)
+     * @param int $limit Maximum number of top-level rows to keep
      * @return array Normalized pages data for rendering
      */
-    protected function normalizePagesData(array $response, string $viewMode): array
+    protected function normalizePagesData(array $response, string $viewMode, int $limit): array
     {
         if ($viewMode === 'hierarchical') {
-            return $this->normalizeHierarchicalPagesData($response);
+            return $this->normalizeHierarchicalPagesData($response, $limit);
         }
 
-        return $this->normalizeFlatPagesData($response);
+        return $this->normalizeFlatPagesData($response, $limit);
     }
 
     /**
      * Normalizes Matomo page rows into a flat, aggregated page list.
      *
      * @param array $response Raw Matomo API response
+     * @param int $limit Maximum number of rows to keep after aggregation
      * @return array Aggregated flat pages data
      */
-    protected function normalizeFlatPagesData(array $response): array
+    protected function normalizeFlatPagesData(array $response, int $limit): array
     {
         $rows = $this->flattenPageRows($response);
 
@@ -319,16 +325,20 @@ class TopPages extends ReportWidgetBase
 
         usort($pages, fn(array $a, array $b) => $b['nb_visits'] <=> $a['nb_visits']);
 
-        return $pages;
+        return $limit > 0 ? array_slice($pages, 0, $limit) : $pages;
     }
 
     /**
      * Normalizes Matomo grouped response into a hierarchical page tree.
      *
+     * The limit is enforced only on the top-level nodes; child rows nested under an
+     * expanded top-level page are kept intact so the hierarchy stays consistent.
+     *
      * @param array $response Raw Matomo API response
+     * @param int $limit Maximum number of top-level rows to keep
      * @return array Hierarchical pages data ready for rendering
      */
-    protected function normalizeHierarchicalPagesData(array $response): array
+    protected function normalizeHierarchicalPagesData(array $response, int $limit): array
     {
         $tree = [];
 
@@ -355,7 +365,10 @@ class TopPages extends ReportWidgetBase
             }
         }
 
-        return $this->formatHierarchicalPages($this->sortHierarchicalPages(array_values($tree)));
+        $sorted = $this->sortHierarchicalPages(array_values($tree));
+        $limited = $limit > 0 ? array_slice($sorted, 0, $limit) : $sorted;
+
+        return $this->formatHierarchicalPages($limited);
     }
 
     /**
@@ -369,6 +382,11 @@ class TopPages extends ReportWidgetBase
         $key = (string) ($pageData['segment'] ?? $pageData['url'] ?? $pageData['label'] ?? '');
         $label = (string) ($pageData['label'] ?? $pageData['url'] ?? '');
         $pageUrl = (string) ($pageData['url'] ?? $label);
+
+        if ($this->stripDomainFromUrl($pageUrl) === '/') {
+            $label = '/';
+        }
+
         $entryVisits = (int) ($pageData['entry_nb_visits'] ?? 0);
         $timeSpent = (float) ($pageData['sum_time_spent'] ?? 0);
         $timeSpentHits = (int) ($pageData['nb_hits'] ?? 0);
@@ -644,6 +662,11 @@ class TopPages extends ReportWidgetBase
         }
 
         $result = $parsed['path'];
+
+        // Matomo reports the homepage as "/index"; display it as the site root instead.
+        if (rtrim($result, '/') === '/index') {
+            $result = '/';
+        }
 
         if (!empty($parsed['query'])) {
             $result .= '?' . $parsed['query'];
