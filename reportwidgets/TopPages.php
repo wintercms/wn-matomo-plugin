@@ -94,7 +94,6 @@ class TopPages extends ReportWidgetBase
     protected function loadAssets(): void
     {
         $this->addCss('/plugins/winter/matomo/assets/css/reportwidgets.css');
-        $this->addJs('/plugins/winter/matomo/assets/js/toppages-hierarchy.js');
     }
 
     /**
