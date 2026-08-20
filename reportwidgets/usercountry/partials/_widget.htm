@@ -5,8 +5,8 @@
         src="<?= asset('plugins/winter/matomo/assets/images/report-placeholder-table.svg') ?>"
         class="placeholder"
         style="height: 360px;"
-        onload="$.request('<?= $this->alias ?>::onLoad');"
-        onerror="$.request('<?= $this->alias ?>::onLoad');"
+        onload="$.request('<?= $this->getEventHandler('onLoad'); ?>');"
+        onerror="$.request('<?= $this->getEventHandler('onLoad'); ?>');"
         alt=""
         aria-hidden="true"
     />
