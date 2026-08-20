@@ -115,7 +115,7 @@ class UserCountry extends ReportWidgetBase
         $selectedDate = (string) $this->property('date', 'last30');
         $selectedLimit = (int) $this->property('limit', 10);
         $selectedPeriodLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.user_country.period_options',
+            'winter.matomo::lang.reportwidgets.general.period_options',
             $selectedPeriod
         );
         $selectedDateLabel = $this->translatedOptionLabel(
