@@ -264,8 +264,21 @@ class DevicesDetection extends ReportWidgetBase
 
         usort($rows, fn(array $a, array $b) => $b['nb_visits'] <=> $a['nb_visits']);
 
-        // Limit to top 10 browsers for readability
-        return array_slice($rows, 0, 10);
+        // Merge overflow beyond top 10 into an "Other" slice so the total stays accurate
+        if (count($rows) > 10) {
+            $topRows = array_slice($rows, 0, 10);
+            $otherVisits = array_sum(array_column(array_slice($rows, 10), 'nb_visits'));
+
+            $topRows[] = [
+                'label' => $this->translateBrowserLabel('other'),
+                'nb_visits' => $otherVisits,
+                'color' => WidgetColorPalette::browser('other'),
+            ];
+
+            $rows = $topRows;
+        }
+
+        return $rows;
     }
 
     protected function translateDeviceTypeLabel(string $canonicalKey): string
