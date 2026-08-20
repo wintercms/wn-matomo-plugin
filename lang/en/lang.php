@@ -21,7 +21,7 @@
         'general' => [
             'date'                => 'Date',
             'date_desc'           => 'Number of days to display on the graph.',
-            'date_label'          => 'Dates range',
+            'date_label'          => 'Date range',
             'limit'               => 'Limit',
             'period'              => 'Period',
             'period_desc'         => 'The reporting period',
