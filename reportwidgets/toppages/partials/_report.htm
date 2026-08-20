@@ -74,6 +74,7 @@
                 var icon = button.querySelector('i');
 
                 button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                button.setAttribute('aria-label', expanded ? button.dataset.collapseLabel : button.dataset.expandLabel);
 
                 if (icon) {
                     icon.classList.toggle('icon-plus', !expanded);
@@ -106,6 +107,7 @@
 
                             if (childButton) {
                                 childButton.setAttribute('aria-expanded', 'false');
+                                childButton.setAttribute('aria-label', childButton.dataset.expandLabel);
 
                                 var childIcon = childButton.querySelector('i');
 

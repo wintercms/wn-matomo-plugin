@@ -562,7 +562,9 @@ class TopPages extends ReportWidgetBase
             $html .= '<td class="label-cell" style="--matomo-page-level: ' . $level . ';">';
 
             if ($hasChildren) {
-                $html .= '<button type="button" class="btn btn-link matomo-page-toggle" data-target="' . $rowId . '" aria-expanded="false" onclick="return (window.WinterMatomoTopPages && window.WinterMatomoTopPages.toggleHierarchy) ? window.WinterMatomoTopPages.toggleHierarchy(this) : false;"><i class="icon icon-2xs icon-plus"></i></button> ';
+                $expandLabel = (string) trans('winter.matomo::lang.reportwidgets.top_pages.expand_row');
+                $collapseLabel = (string) trans('winter.matomo::lang.reportwidgets.top_pages.collapse_row');
+                $html .= '<button type="button" class="btn btn-link matomo-page-toggle" data-target="' . $rowId . '" aria-expanded="false" aria-label="' . e($expandLabel) . '" data-expand-label="' . e($expandLabel) . '" data-collapse-label="' . e($collapseLabel) . '" onclick="return (window.WinterMatomoTopPages && window.WinterMatomoTopPages.toggleHierarchy) ? window.WinterMatomoTopPages.toggleHierarchy(this) : false;"><i class="icon icon-2xs icon-plus"></i></button> ';
             }
 
             $html .= '<span class="matomo-top-pages-url-text" title="' . e($page['label']) . '">' . e($page['label']) . '</span>';

@@ -141,6 +141,8 @@
             'exclude_low_pop_value_desc'       => 'Pages with fewer visits than this value will be excluded.',
             'exclude_low_pop_value_validation' => 'The minimum visits threshold must be a positive integer.',
             'no_data'                          => 'No page data available for this period.',
+            'expand_row'                       => 'Expand sub-pages',
+            'collapse_row'                     => 'Collapse sub-pages',
             'columns'                          => [
                 'url'              => 'Page URL',
                 'nb_visits'        => 'Visits',

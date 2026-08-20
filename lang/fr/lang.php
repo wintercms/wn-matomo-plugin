@@ -141,6 +141,8 @@
             'exclude_low_pop_value_desc'       => 'Les pages avec moins de visites que cette valeur seront exclues.',
             'exclude_low_pop_value_validation' => 'Le seuil minimum de visites doit être un entier positif.',
             'no_data'                          => 'Aucune donnée de page disponible pour cette période.',
+            'expand_row'                       => 'Développer les sous-pages',
+            'collapse_row'                     => 'Réduire les sous-pages',
             'columns'                          => [
                 'url'              => 'URL de la page',
                 'nb_visits'        => 'Visites',
