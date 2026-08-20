@@ -5,7 +5,6 @@ namespace Winter\Matomo\Classes;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Winter\Matomo\Classes\Exceptions\MatomoAuthenticationException;
 use Winter\Matomo\Classes\Exceptions\MatomoConfigurationException;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
@@ -248,8 +247,6 @@ class MatomoReportingService
                     default => 'Matomo reporting request timed out or connection failed.',
                 };
 
-                Log::warning($logMessage, $connectionContext);
-
                 throw new MatomoRequestTimeoutException(
                     $logMessage,
                     $connectionContext,
@@ -257,10 +254,6 @@ class MatomoReportingService
                     $exception
                 );
             } catch (\Throwable $exception) {
-                Log::error('Matomo reporting request failed before receiving a response.', $safeContext + [
-                    'exception' => $exception->getMessage(),
-                ]);
-
                 throw new MatomoServerException(
                     'Matomo request failed before receiving a response.',
                     $safeContext,
@@ -270,10 +263,6 @@ class MatomoReportingService
             }
 
             if ($response->status() === 401) {
-                Log::warning('Matomo authentication failed for reporting request.', $safeContext + [
-                    'status' => 401,
-                ]);
-
                 throw new MatomoAuthenticationException(
                     'Matomo authentication failed. Verify your token configuration.',
                     $safeContext + ['status' => 401]
@@ -281,10 +270,6 @@ class MatomoReportingService
             }
 
             if (!$response->successful()) {
-                Log::error('Matomo API returned a non-successful response status.', $safeContext + [
-                    'status' => $response->status(),
-                ]);
-
                 throw new MatomoServerException(
                     'Matomo API returned an unexpected response status: ' . $response->status(),
                     $safeContext + ['status' => $response->status()]
@@ -293,8 +278,6 @@ class MatomoReportingService
 
             $data = $response->json();
             if (!is_array($data)) {
-                Log::error('Matomo API response could not be parsed as JSON.', $safeContext);
-
                 throw new MatomoServerException(
                     'Matomo API response could not be parsed as JSON.',
                     $safeContext
@@ -305,19 +288,11 @@ class MatomoReportingService
                 $message = (string) ($data['message'] ?? 'Unknown Matomo API error.');
 
                 if (stripos($message, 'token') !== false || stripos($message, 'authentication') !== false) {
-                    Log::warning('Matomo API returned an authentication error payload.', $safeContext + [
-                        'api_message' => $message,
-                    ]);
-
                     throw new MatomoAuthenticationException(
                         'Matomo authentication failed. Verify your token configuration.',
                         $safeContext + ['api_message' => $message]
                     );
                 }
-
-                Log::warning('Matomo API returned a reporting error payload.', $safeContext + [
-                    'api_message' => $message,
-                ]);
 
                 throw new MatomoReportingException(
                     'Matomo API error: ' . $message,
@@ -339,8 +314,6 @@ class MatomoReportingService
         $safeContext = $this->buildSafeContext($payload);
 
         if ($this->siteId <= 0) {
-            Log::warning('Matomo reporting configuration is invalid: site id must be positive.', $safeContext);
-
             throw new MatomoConfigurationException(
                 'Matomo configuration invalid: site id must be greater than 0.',
                 $safeContext
@@ -348,8 +321,6 @@ class MatomoReportingService
         }
 
         if ($this->authToken === '') {
-            Log::warning('Matomo reporting configuration is invalid: auth token is missing.', $safeContext);
-
             throw new MatomoConfigurationException(
                 'Matomo configuration invalid: auth token is missing.',
                 $safeContext
@@ -360,10 +331,6 @@ class MatomoReportingService
         $isValidUrl = filter_var($this->endpointUrl, FILTER_VALIDATE_URL) !== false;
 
         if (!$isValidUrl || !in_array($scheme, ['http', 'https'], true)) {
-            Log::warning('Matomo reporting configuration is invalid: server URL is malformed.', $safeContext + [
-                'endpoint' => $this->endpointUrl,
-            ]);
-
             throw new MatomoConfigurationException(
                 'Matomo configuration invalid: server URL must be a valid http(s) URL.',
                 $safeContext + ['endpoint' => $this->endpointUrl]
