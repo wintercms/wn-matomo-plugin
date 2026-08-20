@@ -277,7 +277,8 @@ class TopPages extends ReportWidgetBase
 
             $pageUrl = (string) ($pageData['url'] ?? $pageData['label'] ?? '');
             $entryVisits = (int) ($pageData['entry_nb_visits'] ?? 0);
-            $avgTimeOnPage = (float) ($pageData['avg_time_on_page'] ?? $pageData['avg_time_on_site'] ?? 0);
+            $timeSpent = (float) ($pageData['sum_time_spent'] ?? 0);
+            $timeSpentHits = (int) ($pageData['nb_hits'] ?? 0);
 
             if (!isset($aggregated[$key])) {
                 $aggregated[$key] = [
@@ -295,8 +296,8 @@ class TopPages extends ReportWidgetBase
             $aggregated[$key]['nb_visits'] += (int) ($pageData['nb_visits'] ?? 0);
             $aggregated[$key]['bounce_count'] += (int) ($pageData['entry_bounce_count'] ?? 0);
             $aggregated[$key]['entry_nb_visits'] += $entryVisits;
-            $aggregated[$key]['avg_time_on_page_total'] += $avgTimeOnPage * max(1, $entryVisits);
-            $aggregated[$key]['avg_time_on_page_weight'] += max(1, $entryVisits);
+            $aggregated[$key]['avg_time_on_page_total'] += $timeSpent;
+            $aggregated[$key]['avg_time_on_page_weight'] += $timeSpentHits;
         }
 
         $pages = array_map(function (array $page) {
@@ -369,7 +370,8 @@ class TopPages extends ReportWidgetBase
         $label = (string) ($pageData['label'] ?? $pageData['url'] ?? '');
         $pageUrl = (string) ($pageData['url'] ?? $label);
         $entryVisits = (int) ($pageData['entry_nb_visits'] ?? 0);
-        $avgTimeOnPage = (float) ($pageData['avg_time_on_page'] ?? $pageData['avg_time_on_site'] ?? 0);
+        $timeSpent = (float) ($pageData['sum_time_spent'] ?? 0);
+        $timeSpentHits = (int) ($pageData['nb_hits'] ?? 0);
 
         $children = [];
         if (!empty($pageData['subtable']) && is_array($pageData['subtable'])) {
@@ -391,8 +393,8 @@ class TopPages extends ReportWidgetBase
             'nb_visits' => (int) ($pageData['nb_visits'] ?? 0),
             'bounce_count' => (int) ($pageData['entry_bounce_count'] ?? 0),
             'entry_nb_visits' => $entryVisits,
-            'avg_time_on_page_total' => $avgTimeOnPage * max(1, $entryVisits),
-            'avg_time_on_page_weight' => max(1, $entryVisits),
+            'avg_time_on_page_total' => $timeSpent,
+            'avg_time_on_page_weight' => $timeSpentHits,
             'bounce_rate' => (string) ($pageData['bounce_rate'] ?? '0%'),
             'children' => $children,
         ];
