@@ -2,6 +2,7 @@
 
 namespace Winter\Matomo\Classes\Traits;
 
+use Carbon\Carbon;
 use Throwable;
 use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
 use Winter\Matomo\Classes\Exceptions\MatomoRequestTimeoutException;
@@ -62,6 +63,48 @@ trait ReportWidgetConcerns
         $parsed = parse_url($endpoint, PHP_URL_HOST);
 
         return (is_string($parsed) && $parsed !== '') ? $parsed : null;
+    }
+
+    /**
+     * Resolves the Matomo `period` and `date` API parameters for a single date range preset.
+     *
+     * Matomo's own UI never lets a "Last N" shortcut be combined with an arbitrary period type;
+     * each preset already implies its own period. This mirrors that pairing so widgets cannot
+     * end up with mismatched combinations (e.g. period=year with date=last90).
+     *
+     * The `lastN` presets use `period=range` with an explicit computed date span so Matomo
+     * returns a single aggregated archive instead of N separate per-day archives (period=day
+     * with date=lastN), which is significantly slower and can time out on heavier reports.
+     *
+     * @return array{period: string, date: string}
+     */
+    protected function resolveDateRange(string $dateRange): array
+    {
+        return match ($dateRange) {
+            'today' => ['period' => 'day', 'date' => 'today'],
+            'yesterday' => ['period' => 'day', 'date' => 'yesterday'],
+            'last7' => ['period' => 'range', 'date' => $this->lastNDaysRange(7)],
+            'last30' => ['period' => 'range', 'date' => $this->lastNDaysRange(30)],
+            'last90' => ['period' => 'range', 'date' => $this->lastNDaysRange(90)],
+            'previous_week' => ['period' => 'week', 'date' => 'previous1'],
+            'previous_month' => ['period' => 'month', 'date' => 'previous1'],
+            'previous_year' => ['period' => 'year', 'date' => 'previous1'],
+            'current_week' => ['period' => 'week', 'date' => 'today'],
+            'current_month' => ['period' => 'month', 'date' => 'today'],
+            'current_year' => ['period' => 'year', 'date' => 'today'],
+            default => ['period' => 'range', 'date' => $this->lastNDaysRange(30)],
+        };
+    }
+
+    /**
+     * Builds a Matomo `period=range` date span covering the last N days (inclusive of today).
+     */
+    private function lastNDaysRange(int $days): string
+    {
+        $end = Carbon::today();
+        $start = $end->copy()->subDays($days - 1);
+
+        return $start->format('Y-m-d') . ',' . $end->format('Y-m-d');
     }
 
     /**

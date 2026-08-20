@@ -44,7 +44,7 @@ class VisitsOverTime extends ReportWidgetBase
                 'title'       => 'winter.matomo::lang.reportwidgets.visits_over_time.days',
                 'description' => 'winter.matomo::lang.reportwidgets.visits_over_time.days_desc',
                 'type'        => 'dropdown',
-                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'options'     => 'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
                 'default'     => 'last30',
                 'required'    => true,
             ],
@@ -62,6 +62,12 @@ class VisitsOverTime extends ReportWidgetBase
             ],
             'metric_nb_actions' => [
                 'title'   => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions',
+                'type'    => 'checkbox',
+                'default' => false,
+                'group'   => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
+            ],
+            'metric_avg_time_on_site' => [
+                'title'   => 'winter.matomo::lang.reportwidgets.visits_over_time.metrics.avg_time_on_site',
                 'type'    => 'checkbox',
                 'default' => false,
                 'group'   => 'winter.matomo::lang.reportwidgets.general.groups.metrics',
@@ -125,9 +131,10 @@ class VisitsOverTime extends ReportWidgetBase
         $showVisits    = (bool) $this->property('metric_nb_visits', true);
         $showPageviews = (bool) $this->property('metric_nb_pageviews', true);
         $showHits      = (bool) $this->property('metric_nb_actions', false);
+        $showAvgTime   = (bool) $this->property('metric_avg_time_on_site', false);
         $selectedDate = (string) $this->property('date', 'last30');
         $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.general.date_options',
+            'winter.matomo::lang.reportwidgets.visits_over_time.days_options',
             $selectedDate
         );
 
@@ -159,7 +166,7 @@ class VisitsOverTime extends ReportWidgetBase
             ];
 
             if ($bypassCache) {
-                if ($showVisits || $showHits) {
+                if ($showVisits || $showHits || $showAvgTime) {
                     $service->clearCache($this->resolveCacheIdentifier($service, 'VisitsSummary.get', $summaryParams));
                 }
 
@@ -171,7 +178,7 @@ class VisitsOverTime extends ReportWidgetBase
             $datasets  = [];
             $metaItems = [];
 
-            if ($showVisits || $showHits) {
+            if ($showVisits || $showHits || $showAvgTime) {
                 $summaryResponse = $service->get('VisitsSummary.get', $summaryParams);
 
                 if ($showVisits) {
@@ -205,6 +212,17 @@ class VisitsOverTime extends ReportWidgetBase
                         'value' => ReportValueFormatter::integer($total),
                         'show'  => !empty($total),
                     ];
+                }
+
+                if ($showAvgTime) {
+                    [$data] = $this->buildDatasetFromResponse($summaryResponse, 'avg_time_on_site', $selectedDate);
+                    if ($data !== '') {
+                        $datasets[] = [
+                            'data'  => $data,
+                            'color' => WidgetColorPalette::metric('avg_time_on_site'),
+                            'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.avg_time_on_site'),
+                        ];
+                    }
                 }
             }
 

@@ -19,17 +19,16 @@
 
     'reportwidgets' => [
         'general' => [
-            'date'                => 'Date',
-            'date_desc'           => 'Nombre de jours passés à afficher sur le graphique.',
+            'date_range'          => 'Plage de dates',
+            'date_range_desc'     => 'Plage de dates prédéfinie sur laquelle portera le rapport.',
             'date_label'          => 'Plage de dates',
             'limit'               => 'Limite',
             'period'              => 'Période',
             'period_desc'         => 'Sélectionnez la période de reporting pour le résumé.',
             'period_last_x_days'  => ':x derniers jours',
             'refresh'             => 'Actualiser',
-            'selected_date'       => 'Date sélectionnée',
+            'selected_date_range' => 'Plage de dates sélectionnée',
             'selected_limit'      => 'Limite sélectionnée',
-            'selected_period'     => 'Période sélectionnée',
             'show_refresh_button' => 'Afficher le bouton d\'actualisation',
             'show_widget_meta'    => 'Afficher les métadonnées du widget',
             'calendar'            => [
@@ -38,22 +37,22 @@
                 'weekdays'        => ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
                 'weekdaysShort'   => ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
             ],
-            'date_options'        => [
-                'today'     => "Aujourd'hui",
-                'yesterday' => 'Hier',
-                'last7'     => '7 derniers jours',
-                'last30'    => '30 derniers jours',
-                'last90'    => '90 derniers jours',
+            'date_range_options'  => [
+                'today'          => "Aujourd'hui",
+                'yesterday'      => 'Hier',
+                'last7'          => '7 derniers jours',
+                'last30'         => '30 derniers jours',
+                'last90'         => '90 derniers jours',
+                'current_week'   => 'Semaine en cours (à ce jour)',
+                'current_month'  => 'Mois en cours (à ce jour)',
+                'current_year'   => 'Année en cours (à ce jour)',
+                'previous_week'  => 'Semaine précédente',
+                'previous_month' => 'Mois précédent',
+                'previous_year'  => 'Année précédente',
             ],
             'groups'              => [
                 'metrics' => 'Indicateurs à afficher',
                 'display' => 'Options d\'affichage',
-            ],
-            'period_options'      => [
-                'day'   => 'Jour',
-                'week'  => 'Semaine',
-                'month' => 'Mois',
-                'year'  => 'Année',
             ],
         ],
 
@@ -173,6 +172,13 @@
             'days'            => 'Période',
             'days_desc'       => 'Nombre de jours passés à afficher sur le graphique.',
             'days_label'      => 'Période',
+            'days_options'    => [
+                'last7'  => '7 derniers jours',
+                'last30' => '30 derniers jours',
+                'last90' => '90 derniers jours',
+                'last180' => 'Dernier semestre',
+                'last365' => 'Dernière année',
+            ],
             'total_visits'    => 'Total des visites',
             'total_hits'      => 'Total des hits',
             'total_pageviews' => 'Total des vues de page',
@@ -181,6 +187,7 @@
                 'nb_visits'    => 'Visites',
                 'nb_actions'   => 'Hits',
                 'nb_pageviews' => 'Vues de page',
+                'avg_time_on_site' => 'Durée moy. des visites (en secondes)',
             ],
             'chart' => [
                 'tooltip_content' => '%s | %x | %y',

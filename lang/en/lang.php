@@ -19,17 +19,16 @@
 
     'reportwidgets' => [
         'general' => [
-            'date'                => 'Date',
-            'date_desc'           => 'Number of days to display on the graph.',
+            'date_range'          => 'Date range',
+            'date_range_desc'     => 'Predefined date range Matomo will report on.',
             'date_label'          => 'Date range',
             'limit'               => 'Limit',
             'period'              => 'Period',
             'period_desc'         => 'The reporting period',
             'period_last_x_days'  => 'Last :x days',
             'refresh'             => 'Refresh',
-            'selected_date'       => 'Selected date',
+            'selected_date_range' => 'Selected date range',
             'selected_limit'      => 'Selected limit',
-            'selected_period'     => 'Selected period',
             'show_refresh_button' => 'Show refresh button',
             'show_widget_meta'    => 'Show widget metadata',
             'calendar'            => [
@@ -38,22 +37,22 @@
                 'weekdays'        => ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
                 'weekdaysShort'   => ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             ],
-            'date_options'        => [
-                'today'     => 'Today',
-                'yesterday' => 'Yesterday',
-                'last7'     => 'Last 7 days',
-                'last30'    => 'Last 30 days',
-                'last90'    => 'Last 90 days',
+            'date_range_options'  => [
+                'today'          => 'Today',
+                'yesterday'      => 'Yesterday',
+                'last7'          => 'Last 7 days',
+                'last30'         => 'Last 30 days',
+                'last90'         => 'Last 90 days',
+                'current_week'   => 'Current week (to date)',
+                'current_month'  => 'Current month (to date)',
+                'current_year'   => 'Current year (to date)',
+                'previous_week'  => 'Previous week',
+                'previous_month' => 'Previous month',
+                'previous_year'  => 'Previous year',
             ],
             'groups'              => [
                 'metrics' => 'Metrics to display',
                 'display' => 'Display options',
-            ],
-            'period_options'      => [
-                'day'   => 'Day',
-                'week'  => 'Week',
-                'month' => 'Month',
-                'year'  => 'Year',
             ],
         ],
 
@@ -173,6 +172,13 @@
             'days'            => 'Period',
             'days_desc'       => 'Number of past days to display on the chart.',
             'days_label'      => 'Period',
+            'days_options'    => [
+                'last7'  => 'Last 7 days',
+                'last30' => 'Last 30 days',
+                'last90' => 'Last 90 days',
+                'last180' => 'Last half-year',
+                'last365' => 'Last year',
+            ],
             'total_visits'    => 'Total visits',
             'total_hits'      => 'Total hits',
             'total_pageviews' => 'Total page views',
@@ -181,6 +187,7 @@
                 'nb_visits'    => 'Visits',
                 'nb_actions'   => 'Hits',
                 'nb_pageviews' => 'Page views',
+                'avg_time_on_site' => 'Average visit duration (in seconds)',
             ],
             'chart'           => [
                 'tooltip_content' => '%s | %x | %y',

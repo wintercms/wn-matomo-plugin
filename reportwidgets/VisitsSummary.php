@@ -39,19 +39,11 @@ class VisitsSummary extends ReportWidgetBase
                 'default'  => 'winter.matomo::lang.reportwidgets.visits_summary.label',
                 'required' => true,
             ],
-            'period' => [
-                'title'       => 'winter.matomo::lang.reportwidgets.general.period',
-                'description' => 'winter.matomo::lang.reportwidgets.general.period_desc',
+            'date_range' => [
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date_range',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_range_desc',
                 'type'        => 'dropdown',
-                'options'     => 'winter.matomo::lang.reportwidgets.general.period_options',
-                'default'     => 'week',
-                'required'    => true,
-            ],
-            'date' => [
-                'title'       => 'winter.matomo::lang.reportwidgets.general.date',
-                'description' => 'winter.matomo::lang.reportwidgets.general.date_desc',
-                'type'        => 'dropdown',
-                'options'     => 'winter.matomo::lang.reportwidgets.general.date_options',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_range_options',
                 'default'     => 'last30',
                 'required'    => true,
             ],
@@ -110,15 +102,11 @@ class VisitsSummary extends ReportWidgetBase
      */
     protected function loadData(bool $bypassCache = false): void
     {
-        $selectedPeriod = (string) $this->property('period', 'week');
-        $selectedDate = (string) $this->property('date', 'last30');
-        $selectedPeriodLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.general.period_options',
-            $selectedPeriod
-        );
-        $selectedDateLabel = $this->translatedOptionLabel(
-            'winter.matomo::lang.reportwidgets.general.date_options',
-            $selectedDate
+        $selectedDateRange = (string) $this->property('date_range', 'last30');
+        ['period' => $selectedPeriod, 'date' => $selectedDate] = $this->resolveDateRange($selectedDateRange);
+        $selectedDateRangeLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.general.date_range_options',
+            $selectedDateRange
         );
 
         $this->vars['error'] = null;
@@ -126,12 +114,8 @@ class VisitsSummary extends ReportWidgetBase
         $this->vars['refreshButton'] = $this->renderRefreshButton();
         $this->vars['widgetMeta'] = $this->renderWidgetMeta([
             [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_period'),
-                'value' => (string) $selectedPeriodLabel,
-            ],
-            [
-                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date'),
-                'value' => (string) $selectedDateLabel,
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date_range'),
+                'value' => (string) $selectedDateRangeLabel,
             ],
         ]);
 
