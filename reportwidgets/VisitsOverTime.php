@@ -175,12 +175,14 @@ class VisitsOverTime extends ReportWidgetBase
                 $summaryResponse = $service->get('VisitsSummary.get', $summaryParams);
 
                 if ($showVisits) {
-                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_visits');
-                    $datasets[] = [
-                        'data'  => $data,
-                        'color' => WidgetColorPalette::metric('nb_visits'),
-                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits'),
-                    ];
+                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_visits', $selectedDate);
+                    if ($data !== '') {
+                        $datasets[] = [
+                            'data'  => $data,
+                            'color' => WidgetColorPalette::metric('nb_visits'),
+                            'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_visits'),
+                        ];
+                    }
                     $this->vars['totalVisits'] = $total;
                     $metaItems[] = [
                         'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_visits'),
@@ -190,12 +192,14 @@ class VisitsOverTime extends ReportWidgetBase
                 }
 
                 if ($showHits) {
-                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_actions');
-                    $datasets[] = [
-                        'data'  => $data,
-                        'color' => WidgetColorPalette::metric('nb_actions'),
-                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions'),
-                    ];
+                    [$data, $total] = $this->buildDatasetFromResponse($summaryResponse, 'nb_actions', $selectedDate);
+                    if ($data !== '') {
+                        $datasets[] = [
+                            'data'  => $data,
+                            'color' => WidgetColorPalette::metric('nb_actions'),
+                            'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_actions'),
+                        ];
+                    }
                     $metaItems[] = [
                         'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_hits'),
                         'value' => ReportValueFormatter::integer($total),
@@ -206,12 +210,14 @@ class VisitsOverTime extends ReportWidgetBase
 
             if ($showPageviews) {
                 $actionsResponse = $service->get('Actions.get', $actionsParams);
-                [$data, $total] = $this->buildDatasetFromResponse($actionsResponse, 'nb_pageviews');
-                $datasets[] = [
-                    'data'  => $data,
-                    'color' => WidgetColorPalette::metric('nb_pageviews'),
-                    'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews'),
-                ];
+                [$data, $total] = $this->buildDatasetFromResponse($actionsResponse, 'nb_pageviews', $selectedDate);
+                if ($data !== '') {
+                    $datasets[] = [
+                        'data'  => $data,
+                        'color' => WidgetColorPalette::metric('nb_pageviews'),
+                        'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.metrics.nb_pageviews'),
+                    ];
+                }
                 $metaItems[] = [
                     'label' => (string) trans('winter.matomo::lang.reportwidgets.visits_over_time.total_pageviews'),
                     'value' => ReportValueFormatter::integer($total),
@@ -254,14 +260,14 @@ class VisitsOverTime extends ReportWidgetBase
      * @param  array<string, mixed> $response
      * @return array{string, int}   [chartData string, total int]
      */
-    protected function buildDatasetFromResponse(array $response, string $metricKey): array
+    protected function buildDatasetFromResponse(array $response, string $metricKey, string $selectedDate): array
     {
         $pairs = [];
         $total = 0;
 
         // Single-day flat response — unlikely for period=day&date=lastN but handled for safety.
         if (array_key_exists($metricKey, $response)) {
-            $ts    = strtotime('today') * 1000;
+            $ts    = strtotime($selectedDate) * 1000;
             $value = (int) ($response[$metricKey] ?? 0);
 
             return ['[' . $ts . ', ' . $value . ']', $value];
