@@ -52,13 +52,6 @@
         container-type: inline-size;
         container-name: widget-footer;
 
-
-        @container widget-footer (max-width: 768px) {
-            align-items: flex-start;
-            flex-direction: column;
-            gap: 8px;
-        }
-
         dl.matomo-report-widget-meta {
             margin: 0;
             font-size: .90em;
@@ -112,6 +105,19 @@
                 }
             }
         }
+
+        @container widget-body (max-width: 360px) {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+
+            .matomo-report-widget-actions {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+
     }
 
 

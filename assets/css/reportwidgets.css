@@ -27,13 +27,6 @@
   container-type: inline-size;
   container-name: widget-footer;
 }
-@container widget-footer (max-width: 768px) {
-  .report-widget.matomo-report-widget .matomo-report-widget-footer {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
-}
 .report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta {
   margin: 0;
   font-size: 0.9em;
@@ -79,6 +72,18 @@
 }
 .report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh:before {
   margin-right: 2px;
+}
+@container widget-body (max-width: 360px) {
+  .report-widget.matomo-report-widget .matomo-report-widget-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
 }
 .report-widget.matomo-report-widget .matomo-device-detection {
   display: grid;
