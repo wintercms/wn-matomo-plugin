@@ -232,16 +232,20 @@ class VisitsSummary extends ReportWidgetBase
             $totalVisits += $bucketVisits;
 
             foreach ($bucket as $key => $value) {
+                if (array_key_exists($key, $weightedNumerators)) {
+                    $weightedNumerators[$key] += ReportValueFormatter::numericValue($value) * $bucketVisits;
+                    continue;
+                }
+
                 if (is_numeric($value)) {
-                    if (array_key_exists($key, $weightedNumerators)) {
-                        $weightedNumerators[$key] += (float) $value * $bucketVisits;
-                    } else {
-                        if (!array_key_exists($key, $aggregated)) {
-                            $aggregated[$key] = 0;
-                        }
-                        $aggregated[$key] += (float) $value;
+                    if (!array_key_exists($key, $aggregated)) {
+                        $aggregated[$key] = 0;
                     }
-                } elseif (!array_key_exists($key, $aggregated)) {
+                    $aggregated[$key] += (float) $value;
+                    continue;
+                }
+
+                if (!array_key_exists($key, $aggregated)) {
                     // Keep non-numeric fields from first bucket (representative value).
                     $aggregated[$key] = $value;
                 }
