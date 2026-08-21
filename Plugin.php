@@ -1,7 +1,10 @@
-<?php namespace Winter\Matomo;
+<?php
 
-use Config;
+namespace Winter\Matomo;
+
+use Illuminate\Support\Facades\Config;
 use System\Classes\PluginBase;
+use Winter\Matomo\Classes\MatomoReportingService;
 use Winter\Matomo\Classes\ReportingAPI;
 
 /**
@@ -14,25 +17,38 @@ class Plugin extends PluginBase
      *
      * @return array
      */
-    public function pluginDetails()
+    public function pluginDetails(): array
     {
         return [
             'name'        => 'winter.matomo::lang.plugin.name',
             'description' => 'winter.matomo::lang.plugin.description',
             'author'      => 'Winter CMS',
-            'icon'        => 'icon-area-chart'
+            'icon'        => 'icon-area-chart',
         ];
     }
 
-    public function boot()
+    public function boot(): void
     {
+        $this->app->scoped(MatomoReportingService::class, function () {
+            return new MatomoReportingService(
+                Config::get('winter.matomo::server'),
+                Config::get('winter.matomo::auth_token'),
+                (int) Config::get('winter.matomo::site_id'),
+                (int) Config::get('winter.matomo::cache_ttl', 900),
+                (int) Config::get('winter.matomo::http_timeout', 10),
+                (bool) Config::get('winter.matomo::verify_ssl', true)
+            );
+        });
+
         $this->app->scoped(ReportingAPI::class, function () {
             $api = new ReportingAPI(
                 Config::get('winter.matomo::server'),
                 Config::get('winter.matomo::auth_token'),
                 Config::get('winter.matomo::site_id')
             );
-            $api->setCacheTtl(Config::get('winter.matomo::reportingapi_cache_ttl'));
+
+            $api->setCacheTtl((int) Config::get('winter.matomo::reportingapi_cache_ttl', Config::get('winter.matomo::cache_ttl', 900)));
+
             return $api;
         });
     }
@@ -75,6 +91,48 @@ class Plugin extends PluginBase
             ],
             \Winter\Matomo\ReportWidgets\EmbeddedWidget::class => [
                 'label' => 'winter.matomo::lang.reportwidgets.embedded_widget.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\VisitsSummary::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.visits_summary.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\VisitsOverTime::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.visits_over_time.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\TopPages::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.top_pages.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\Referrers::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.referrers.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\DevicesDetection::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.devices_detection.label',
+                'context' => 'dashboard',
+                'permissions' => [
+                    'winter.matomo.site.view',
+                ],
+            ],
+            \Winter\Matomo\ReportWidgets\UserCountry::class => [
+                'label' => 'winter.matomo::lang.reportwidgets.user_country.label',
                 'context' => 'dashboard',
                 'permissions' => [
                     'winter.matomo.site.view',

@@ -1,0 +1,67 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php elseif (empty($deviceTypes) && empty($browsers)): ?>
+            <div class="callout callout-info">
+                <div class="content"><?= e(trans('winter.matomo::lang.reportwidgets.devices_detection.no_data')) ?></div>
+            </div>
+        <?php else: ?>
+            <div class="matomo-device-detection">
+                <!-- Device Types Chart -->
+                <?php if (!empty($deviceTypes)): ?>
+                    <div class="matomo-device-detection-item">
+                        <h5><?= e(trans('winter.matomo::lang.reportwidgets.devices_detection.device_types_title')) ?></h5>
+                        <div
+                            class="control-chart matomo-donut-chart"
+                            data-control="chart-pie"
+                            data-center-text="<?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($totalDeviceVisits ?? 0)) ?>"
+                            data-size="160">
+                            <ul>
+                                <?php foreach ($deviceTypes as $device): ?>
+                                    <li data-color="<?= e($device['color']) ?>">
+                                        <?= e($device['label']) ?>
+                                        <span><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($device['nb_visits'] ?? 0)) ?></span>
+                                    </li>
+                                <?php endforeach ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endif ?>
+
+                <!-- Browsers Chart -->
+                <?php if (!empty($browsers)): ?>
+                    <div class="matomo-device-detection-item">
+                        <h5><?= e(trans('winter.matomo::lang.reportwidgets.devices_detection.browsers_title')) ?></h5>
+                        <div
+                            class="control-chart matomo-donut-chart"
+                            data-control="chart-pie"
+                            data-center-text="<?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($totalBrowserVisits ?? 0)) ?>"
+                            data-size="160">
+                            <ul>
+                                <?php foreach ($browsers as $browser): ?>
+                                    <li data-color="<?= e($browser['color']) ?>">
+                                        <?= e($browser['label']) ?>
+                                        <span><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($browser['nb_visits'] ?? 0)) ?></span>
+                                    </li>
+                                <?php endforeach ?>
+                            </ul>
+                        </div>
+                    </div>
+                <?php endif ?>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+    </div>
+</div>

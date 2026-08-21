@@ -36,7 +36,7 @@
     */
 
     'auth_token' => env('MATOMO_TOKEN'),
-    
+
     /*
     |--------------------------------------------------------------------------
     | Reporting API Cache TTL
@@ -53,6 +53,29 @@
     */
 
     'reportingapi_cache_ttl' => 60 * 60 * 24 * 2,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reporting Service Cache TTL
+    |--------------------------------------------------------------------------
+    |
+    | This TTL (in seconds) is used by the MatomoReportingService cache.
+    |
+    */
+
+    'cache_ttl' => env('MATOMO_CACHE_TTL', 900),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Reporting Service HTTP Timeout
+    |--------------------------------------------------------------------------
+    |
+    | This timeout (in seconds) defines how long reporting API requests are
+    | allowed to run before they fail.
+    |
+    */
+
+    'http_timeout' => env('MATOMO_HTTP_TIMEOUT', 10),
 
     /*
     |--------------------------------------------------------------------------
@@ -79,5 +102,18 @@
     */
 
     'track_maintenance_mode' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Verify SSL Certificates
+    |--------------------------------------------------------------------------
+    |
+    | Whether to verify SSL certificates when making HTTPS requests to Matomo.
+    | Set to false only in development environments with self-signed certificates.
+    | Never disable in production.
+    |
+    */
+
+    'verify_ssl' => env('MATOMO_VERIFY_SSL', true),
 
 ];

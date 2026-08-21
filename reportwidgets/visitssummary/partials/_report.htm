@@ -1,0 +1,50 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php else: ?>
+            <div class="table-container">
+                <table class="table data">
+                    <tbody>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_visits')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($metrics['nb_visits'] ?? 0)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_uniq_visitors')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($metrics['nb_uniq_visitors'] ?? 0)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_actions')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($metrics['nb_actions'] ?? 0)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.bounce_rate')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::percentage($metrics['bounce_rate'] ?? 0)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.nb_actions_per_visit')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::decimal($metrics['nb_actions_per_visit'] ?? 0, 2)) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?= e(trans('winter.matomo::lang.reportwidgets.visits_summary.metrics.avg_time_on_site')) ?></th>
+                            <td><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::duration($metrics['avg_time_on_site'] ?? 0)) ?></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+    </div>
+</div>

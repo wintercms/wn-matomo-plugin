@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540"
+  preserveAspectRatio="none" fill="none"
+  role="img" aria-labelledby="title desc">
+  <title id="title">Report placeholder</title>
+  <desc id="desc">Skeleton chart placeholder shown while widget data is loading.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f8fa"/>
+      <stop offset="100%" stop-color="#ecf2f600"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#dbe4ea"/>
+      <stop offset="50%" stop-color="#f6f9fb"/>
+      <stop offset="100%" stop-color="#dbe4ea"/>
+      <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;-1 0" dur="1.6s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="540" fill="url(#bg)" rx="12"/>
+
+  <g>
+    <line x1="58" y1="486" x2="902" y2="486" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="58" y1="86" x2="58" y2="486" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="80" y1="146" x2="902" y2="146" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="80" y1="222" x2="902" y2="222" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="80" y1="298" x2="902" y2="298" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="80" y1="374" x2="902" y2="374" stroke="#d9e2e8" stroke-width="2"/>
+    <line x1="80" y1="450" x2="902" y2="450" stroke="#d9e2e8" stroke-width="2"/>
+    <polyline points="80,430 180,350 280,376 380,264 480,306 580,224 680,276 780,172 880,208" fill="none" stroke="#b4cad8" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g opacity="0.95">
+    <rect x="120" y="362" width="54" height="124" rx="6" fill="#d6e1e8"/>
+    <rect x="208" y="308" width="54" height="178" rx="6" fill="#cfdde6"/>
+    <rect x="296" y="392" width="54" height="94" rx="6" fill="#dbe5eb"/>
+    <rect x="384" y="246" width="54" height="240" rx="6" fill="#c9d9e3"/>
+    <rect x="472" y="324" width="54" height="162" rx="6" fill="#d3dfe7"/>
+    <rect x="560" y="278" width="54" height="208" rx="6" fill="url(#shimmer)"/>
+    <rect x="648" y="348" width="54" height="138" rx="6" fill="#d3dfe7"/>
+  </g>
+</svg>

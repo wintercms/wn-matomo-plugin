@@ -1,0 +1,314 @@
+// out: "../css/reportwidgets.css", compress: false, sourceMap: false
+
+@top-pages-header-bg: #ffffff;
+@sticky-metric-bg: #fff;
+@sticky-metric-alt-bg: #ecf0f1;
+
+@top-pages-wrapper-max-height: calc(calc(var(--max-pages) + 1) * 36.1667px);
+@top-pages-table-min-width: 520px;
+@top-pages-url-min-width: 200px;
+@top-pages-url-max-width: 300px;
+
+@sticky-visits-right: 200px;
+@sticky-bounce-right: 90px;
+@sticky-time-right: 0;
+
+@level-indent-step: 16px;
+
+.report-widget.matomo-report-widget {
+    > div {
+        margin-top: -15px;
+    }
+
+    > img.placeholder {
+        width: 100%;
+    }
+
+    table {
+        > thead > tr > th {
+            padding: 12px 15px;
+        }
+        > tbody > tr > td {
+            padding-block: 8px;
+        }
+    }
+
+    .matomo-report-widget-body {
+        container-type: inline-size;
+        container-name: widget-body;
+
+        .table-container {
+            margin: 0;
+        }
+    }
+
+    .matomo-report-widget-footer {
+        display: flex;
+        gap: 16px;
+        align-items: flex-start;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        container-type: inline-size;
+        container-name: widget-footer;
+
+        dl.matomo-report-widget-meta {
+            margin: 0;
+            font-size: .90em;
+            display: grid;
+            grid-template-columns: repeat(2, max-content);
+            column-gap: .35rem;
+            row-gap: .15rem;
+            align-items: baseline;
+            color: #777;
+
+            @container widget-footer (min-width: 480px) {
+                grid-template-columns: repeat(4, max-content);
+
+                dt:nth-of-type(2n) {
+                    margin-left: 1rem;
+                }
+            }
+
+            dt,
+            dd {
+                margin: 0;
+            }
+
+            dt {
+                font-weight: initial;
+                text-align: right;
+            }
+
+            dd {
+                white-space: nowrap;
+            }
+        }
+
+        .matomo-report-widget-actions {
+            white-space: nowrap;
+
+            .btn-refresh {
+                background: white;
+                border: 1px solid #2896b2;
+                color: #24849d;
+                font-weight: 500;
+
+                &:hover {
+                    background: #24849d;
+                    border-color: #2896b2;
+                    color: #fff;
+                }
+
+                &:before {
+                    margin-right: 2px;
+                }
+            }
+        }
+
+        @container widget-body (max-width: 360px) {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+
+            .matomo-report-widget-actions {
+                display: flex;
+                justify-content: flex-end;
+                width: 100%;
+            }
+        }
+
+    }
+
+
+
+    //
+    // Specifics to widgets
+    //
+    .matomo-device-detection {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        @container widget-body (max-width: 860px) {
+            grid-template-columns: 1fr;
+        }
+
+        .matomo-device-detection-item {
+            min-width: 0;
+
+            > h5 {
+                margin-top: 0;
+            }
+        }
+    }
+
+    .matomo-countries-table {
+        > tbody > tr > td {
+
+            &:first-child {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+            }
+
+            > span {
+                &:first-child {
+                    font-size: 2rem;
+                    line-height: 1;
+                }
+            }
+        }
+    }
+
+    .matomo-top-pages {
+
+        &-table {
+            min-width: @top-pages-table-min-width;
+
+            &-wrapper {
+                max-height: @top-pages-wrapper-max-height;
+                overflow-x: auto;
+                overflow-y: auto;
+            }
+
+            &.table.data {
+                tbody {
+                    tr:nth-child(2n) {
+                        td {
+                            background-color: @sticky-metric-alt-bg;
+                        }
+                    }
+                }
+            }
+
+            .matomo-page-row {
+                td {
+
+                    &.label-cell {
+                        padding-left: calc(var(--matomo-page-level, 0) * @level-indent-step + 22px) !important;
+                        white-space: nowrap;
+                    }
+
+                    &:first-child {
+                        white-space: nowrap;
+                    }
+                }
+
+                &-hidden {
+                    display: none;
+                }
+            }
+
+            .matomo-page-toggle {
+                background: transparent;
+                border: none;
+                color: inherit;
+                cursor: pointer;
+                font-size: 1em;
+                line-height: 1;
+                padding: 0 6px 0 0;
+
+                .icon {
+                    padding: 1px;
+                    border: 1px solid currentColor;
+                }
+            }
+        }
+
+        &-header {
+            background: @top-pages-header-bg;
+            position: sticky;
+            top: 0;
+
+            &-url {
+                min-width: @top-pages-url-min-width;
+                z-index: 2;
+            }
+
+            &-metric {
+                white-space: nowrap;
+                text-align: center;
+                z-index: 3;
+            }
+
+            &-visits {
+                min-width: 80px;
+                right: @sticky-visits-right;
+            }
+
+            &-bounce {
+                min-width: 110px;
+                right: @sticky-bounce-right;
+            }
+
+            &-time {
+                min-width: 90px;
+                right: @sticky-time-right;
+            }
+        }
+
+        &-url {
+            &-cell {
+                max-width: @top-pages-url-max-width;
+                word-break: break-all;
+
+                > span {
+                    display: inline-block;
+                    max-width: 100%;
+                    overflow-wrap: anywhere;
+                }
+            }
+        }
+    }
+
+    .matomo-sticky-metric {
+        background-clip: padding-box;
+        background-color: @sticky-metric-bg;
+        position: sticky;
+        text-align: center;
+        z-index: 1;
+
+        &-visits {
+            right: @sticky-visits-right;
+        }
+
+        &-bounce {
+            right: @sticky-bounce-right;
+        }
+
+        &-time {
+            right: @sticky-time-right;
+        }
+    }
+
+
+    //
+    // Specific to charts
+    //
+
+    .matomo-donut-chart {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        overflow: visible;
+
+        @container widget-body (max-width: 520px) {
+            overflow-x: auto;
+        }
+    }
+
+
+    //
+    // Palette colors
+    //
+
+    // color: #4c6ef5;
+    // color: #1098ad;
+    // color: #2f9e44;
+    // color: #e8590c;
+    // color: #c2255c;
+    // color: #7b61ff;
+    // color: #495057;
+    // color: #74b816;
+}

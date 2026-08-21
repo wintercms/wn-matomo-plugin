@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360"
+    preserveAspectRatio="none" fill="none"
+    role="img" aria-labelledby="title desc">
+  <title id="title">Line chart placeholder</title>
+  <desc id="desc">Line chart skeleton displayed while report data loads.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f6f8fa"/>
+      <stop offset="100%" stop-color="#ecf2f600"/>
+    </linearGradient>
+    <linearGradient id="shimmer" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#dbe4ea"/>
+      <stop offset="50%" stop-color="#f6f9fb"/>
+      <stop offset="100%" stop-color="#dbe4ea"/>
+      <animateTransform attributeName="gradientTransform" type="translate" values="-1 0;1 0;-1 0" dur="1.6s" repeatCount="indefinite"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="360" rx="12" fill="url(#bg)"/>
+  <line x1="36" y1="40" x2="36" y2="332" stroke="#d4dee6" stroke-width="2"/>
+  <line x1="36" y1="332" x2="900" y2="332" stroke="#d4dee6" stroke-width="4"/>
+
+  <line x1="52" y1="60" x2="900" y2="60" stroke="#d4dee6" stroke-width="2"/>
+  <line x1="52" y1="120" x2="900" y2="120" stroke="#d4dee6" stroke-width="2"/>
+  <line x1="52" y1="180" x2="900" y2="180" stroke="#d4dee6" stroke-width="2"/>
+  <line x1="52" y1="240" x2="900" y2="240" stroke="#d4dee6" stroke-width="2"/>
+  <line x1="52" y1="300" x2="900" y2="300" stroke="#d4dee6" stroke-width="2"/>
+  <polyline points="64,300 150,258 236,276 322,218 408,236 494,180 580,198 666,154 752,172 838,112 904,128" fill="none" stroke="url(#shimmer)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

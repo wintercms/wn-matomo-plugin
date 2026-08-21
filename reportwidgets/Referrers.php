@@ -1,0 +1,266 @@
+<?php
+
+namespace Winter\Matomo\ReportWidgets;
+
+use Backend\Classes\ReportWidgetBase;
+use Illuminate\Support\Facades\Log;
+use Throwable;
+use Winter\Matomo\Classes\Exceptions\MatomoReportingException;
+use Winter\Matomo\Classes\Helpers\ReportValueFormatter;
+use Winter\Matomo\Classes\Helpers\WidgetColorPalette;
+use Winter\Matomo\Classes\MatomoReportingService;
+use Winter\Matomo\Classes\Traits\ReportWidgetConcerns;
+
+/**
+ * Native WinterCMS report widget that renders Matomo referrer types as a donut chart.
+ */
+class Referrers extends ReportWidgetBase
+{
+    use ReportWidgetConcerns;
+
+    /**
+     * Default widget alias used by WinterCMS dashboard internals.
+     *
+     * @var string
+     */
+    protected $defaultAlias = 'MatomoReferrersReportWidget';
+
+    /**
+     * Defines configurable properties shown in the dashboard widget settings.
+     */
+    public function defineProperties(): array
+    {
+        return array_merge([
+            'title' => [
+                'title'    => 'backend::lang.dashboard.widget_title_label',
+                'type'     => 'string',
+                'default'  => 'winter.matomo::lang.reportwidgets.referrers.label',
+                'required' => true,
+            ],
+            'date_range' => [
+                'title'       => 'winter.matomo::lang.reportwidgets.general.date_range',
+                'description' => 'winter.matomo::lang.reportwidgets.general.date_range_desc',
+                'type'        => 'dropdown',
+                'options'     => 'winter.matomo::lang.reportwidgets.general.date_range_options',
+                'default'     => 'last30',
+                'required'    => true,
+            ],
+        ], $this->getDisplayProperties());
+    }
+
+    /**
+     * Loads shared CSS used by Matomo native report widgets.
+     */
+    protected function loadAssets(): void
+    {
+        $this->addCss('/plugins/winter/matomo/assets/css/reportwidgets.css');
+    }
+
+    /**
+     * Renders the widget shell and initial content.
+     */
+    public function render(): string
+    {
+        return $this->makePartial('widget');
+    }
+
+    /**
+     * Loads widget data asynchronously after placeholder render.
+     *
+     * @return array<string, string>
+     */
+    public function onLoad(): array
+    {
+        $this->loadData();
+
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
+    }
+
+    /**
+     * Handles AJAX refresh requests from the widget footer button.
+     *
+     * @return array<string, string>
+     */
+    public function onRefreshWidget(): array
+    {
+        $this->loadData(true);
+
+        return [
+            '#' . $this->alias => $this->makePartial('report'),
+        ];
+    }
+
+    /**
+     * Loads and normalizes Matomo data for the widget view.
+     */
+    protected function loadData(bool $bypassCache = false): void
+    {
+        $selectedDateRange = (string) $this->property('date_range', 'last30');
+        ['period' => $selectedPeriod, 'date' => $selectedDate] = $this->resolveDateRange($selectedDateRange);
+        $selectedDateRangeLabel = $this->translatedOptionLabel(
+            'winter.matomo::lang.reportwidgets.general.date_range_options',
+            $selectedDateRange
+        );
+
+        $this->vars['error'] = null;
+        $this->vars['referrerTypes'] = [];
+        $this->vars['totalVisits'] = 0;
+        $this->vars['refreshButton'] = $this->renderRefreshButton();
+        $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.total_visits'),
+                'value' => (string) ($this->vars['totalVisits'] ?? ''),
+                'show' => !empty($this->vars['totalVisits']),
+            ],
+            [
+                'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date_range'),
+                'value' => (string) $selectedDateRangeLabel,
+            ],
+        ]);
+
+        try {
+            /** @var MatomoReportingService $service */
+            $service = app(MatomoReportingService::class);
+
+            $requestParams = [
+                'period' => $selectedPeriod,
+                'date' => $selectedDate,
+                'language' => 'en',
+            ];
+
+            if ($bypassCache) {
+                $service->clearCache($this->resolveCacheIdentifier($service, 'Referrers.getReferrerType', $requestParams));
+            }
+
+            $response = $service->get('Referrers.getReferrerType', $requestParams);
+
+            $referrerTypes = $this->normalizeReferrerTypes($response);
+            $totalVisits = array_sum(array_column($referrerTypes, 'nb_visits'));
+
+            $this->vars['referrerTypes'] = $referrerTypes;
+            $this->vars['totalVisits'] = $totalVisits;
+            $this->vars['widgetMeta'] = $this->renderWidgetMeta([
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.referrers.total_visits'),
+                    'value' => ReportValueFormatter::integer($totalVisits),
+                    'show' => !empty($totalVisits),
+                ],
+                [
+                    'label' => (string) trans('winter.matomo::lang.reportwidgets.general.selected_date_range'),
+                    'value' => (string) $selectedDateRangeLabel,
+                ],
+            ]);
+        } catch (Throwable $exception) {
+            $this->vars['error'] = $this->resolveUserErrorMessage($exception);
+
+            if ($exception instanceof MatomoReportingException) {
+                Log::warning('Referrers widget failed to load Matomo data.', [
+                    'widget' => static::class,
+                    'error_code' => $exception->errorCode(),
+                    'severity' => $exception->severity(),
+                    'retryable' => $exception->isRetryable(),
+                    'error' => $exception->getMessage(),
+                    'context' => $exception->context(),
+                ]);
+            } else {
+                Log::error('Referrers widget failed with an unexpected exception.', [
+                    'widget' => static::class,
+                    'error' => $exception->getMessage(),
+                ]);
+            }
+        }
+    }
+
+    /**
+     * Normalizes the Matomo referrer response into rows consumable by chart-pie.
+     *
+     * @param array $response Raw Matomo API response
+     * @return array<int, array{label: string, nb_visits: int, color: string}>
+     */
+    protected function normalizeReferrerTypes(array $response): array
+    {
+        $aggregated = [];
+
+        foreach ($this->flattenReferrerTypeRows($response) as $item) {
+            $metricValue = (int) ($item['nb_visits'] ?? $item['nb_actions'] ?? 0);
+            if ($metricValue <= 0) {
+                continue;
+            }
+
+            $canonicalKey = isset($item['referrer_type'])
+                ? WidgetColorPalette::canonicalReferrerKey((int) $item['referrer_type'])
+                : 'other';
+
+            $label = $this->translateReferrerTypeLabel($canonicalKey);
+
+            if (!isset($aggregated[$canonicalKey])) {
+                $aggregated[$canonicalKey] = [
+                    'label' => $label,
+                    'nb_visits' => 0,
+                    'color' => WidgetColorPalette::referrerType($canonicalKey),
+                ];
+            }
+
+            $aggregated[$canonicalKey]['nb_visits'] += $metricValue;
+        }
+
+        $rows = array_values($aggregated);
+
+        usort($rows, fn(array $a, array $b) => $b['nb_visits'] <=> $a['nb_visits']);
+
+        return $rows;
+    }
+
+    protected function translateReferrerTypeLabel(string $canonicalKey): string
+    {
+        $translationKey = 'winter.matomo::lang.reportwidgets.referrers.types.' . $canonicalKey;
+        $translated = (string) trans($translationKey);
+
+        if ($translated === $translationKey) {
+            return (string) trans('winter.matomo::lang.reportwidgets.referrers.types.unknown');
+        }
+
+        return $translated;
+    }
+
+    /**
+     * Flattens top-level or grouped Matomo referrer type responses into raw rows.
+     *
+     * @param array $response Raw Matomo API response
+     * @return array<int, array<string, mixed>>
+     */
+    protected function flattenReferrerTypeRows(array $response): array
+    {
+        $rows = [];
+
+        foreach ($response as $item) {
+            if (!is_array($item)) {
+                continue;
+            }
+
+            if ($this->isReferrerTypeRow($item)) {
+                $rows[] = $item;
+                continue;
+            }
+
+            foreach ($item as $nestedItem) {
+                if (is_array($nestedItem) && $this->isReferrerTypeRow($nestedItem)) {
+                    $rows[] = $nestedItem;
+                }
+            }
+        }
+
+        return $rows;
+    }
+
+    /**
+     * Determines whether a response item looks like a referrer-type row.
+     */
+    protected function isReferrerTypeRow(array $item): bool
+    {
+        return array_key_exists('label', $item)
+            && (array_key_exists('nb_visits', $item) || array_key_exists('nb_actions', $item));
+    }
+}

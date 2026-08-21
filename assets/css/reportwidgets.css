@@ -1,0 +1,208 @@
+.report-widget.matomo-report-widget > div {
+  margin-top: -15px;
+}
+.report-widget.matomo-report-widget > img.placeholder {
+  width: 100%;
+}
+.report-widget.matomo-report-widget table > thead > tr > th {
+  padding: 12px 15px;
+}
+.report-widget.matomo-report-widget table > tbody > tr > td {
+  padding-block: 8px;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-body {
+  container-type: inline-size;
+  container-name: widget-body;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-body .table-container {
+  margin: 0;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  container-type: inline-size;
+  container-name: widget-footer;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta {
+  margin: 0;
+  font-size: 0.9em;
+  display: grid;
+  grid-template-columns: repeat(2, max-content);
+  column-gap: 0.35rem;
+  row-gap: 0.15rem;
+  align-items: baseline;
+  color: #777;
+}
+@container widget-footer (min-width: 480px) {
+  .report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta {
+    grid-template-columns: repeat(4, max-content);
+  }
+  .report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt:nth-of-type(2n) {
+    margin-left: 1rem;
+  }
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt,
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dd {
+  margin: 0;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dt {
+  font-weight: initial;
+  text-align: right;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer dl.matomo-report-widget-meta dd {
+  white-space: nowrap;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions {
+  white-space: nowrap;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh {
+  background: white;
+  border: 1px solid #2896b2;
+  color: #24849d;
+  font-weight: 500;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh:hover {
+  background: #24849d;
+  border-color: #2896b2;
+  color: #fff;
+}
+.report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions .btn-refresh:before {
+  margin-right: 2px;
+}
+@container widget-body (max-width: 360px) {
+  .report-widget.matomo-report-widget .matomo-report-widget-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .report-widget.matomo-report-widget .matomo-report-widget-footer .matomo-report-widget-actions {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+  }
+}
+.report-widget.matomo-report-widget .matomo-device-detection {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@container widget-body (max-width: 860px) {
+  .report-widget.matomo-report-widget .matomo-device-detection {
+    grid-template-columns: 1fr;
+  }
+}
+.report-widget.matomo-report-widget .matomo-device-detection .matomo-device-detection-item {
+  min-width: 0;
+}
+.report-widget.matomo-report-widget .matomo-device-detection .matomo-device-detection-item > h5 {
+  margin-top: 0;
+}
+.report-widget.matomo-report-widget .matomo-countries-table > tbody > tr > td:first-child {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.report-widget.matomo-report-widget .matomo-countries-table > tbody > tr > td > span:first-child {
+  font-size: 2rem;
+  line-height: 1;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table {
+  min-width: 520px;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table-wrapper {
+  max-height: calc(calc(var(--max-pages) + 1) * 36.1667px);
+  overflow-x: auto;
+  overflow-y: auto;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table.table.data tbody tr:nth-child(2n) td {
+  background-color: #ecf0f1;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table .matomo-page-row td.label-cell {
+  padding-left: calc(var(--matomo-page-level, 0) * 16px + 22px) !important;
+  white-space: nowrap;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table .matomo-page-row td:first-child {
+  white-space: nowrap;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table .matomo-page-row-hidden {
+  display: none;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table .matomo-page-toggle {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1em;
+  line-height: 1;
+  padding: 0 6px 0 0;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-table .matomo-page-toggle .icon {
+  padding: 1px;
+  border: 1px solid currentColor;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header {
+  background: #ffffff;
+  position: sticky;
+  top: 0;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header-url {
+  min-width: 200px;
+  z-index: 2;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header-metric {
+  white-space: nowrap;
+  text-align: center;
+  z-index: 3;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header-visits {
+  min-width: 80px;
+  right: 200px;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header-bounce {
+  min-width: 110px;
+  right: 90px;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-header-time {
+  min-width: 90px;
+  right: 0;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-url-cell {
+  max-width: 300px;
+  word-break: break-all;
+}
+.report-widget.matomo-report-widget .matomo-top-pages-url-cell > span {
+  display: inline-block;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.report-widget.matomo-report-widget .matomo-sticky-metric {
+  background-clip: padding-box;
+  background-color: #fff;
+  position: sticky;
+  text-align: center;
+  z-index: 1;
+}
+.report-widget.matomo-report-widget .matomo-sticky-metric-visits {
+  right: 200px;
+}
+.report-widget.matomo-report-widget .matomo-sticky-metric-bounce {
+  right: 90px;
+}
+.report-widget.matomo-report-widget .matomo-sticky-metric-time {
+  right: 0;
+}
+.report-widget.matomo-report-widget .matomo-donut-chart {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: visible;
+}
+@container widget-body (max-width: 520px) {
+  .report-widget.matomo-report-widget .matomo-donut-chart {
+    overflow-x: auto;
+  }
+}

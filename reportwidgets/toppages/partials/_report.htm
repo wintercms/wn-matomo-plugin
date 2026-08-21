@@ -1,0 +1,129 @@
+<div class="report-widget matomo-report-widget">
+    <h3><?= e(trans($this->property('title'))) ?></h3>
+
+    <div class="matomo-report-widget-body">
+        <?php if (!empty($error)): ?>
+            <div class="callout callout-warning">
+                <div class="content"><?= e($error) ?></div>
+            </div>
+        <?php else: ?>
+            <div class="matomo-top-pages-table-wrapper" style="--max-pages:<?= e    ((string) ($selectedLimit ?? '10')) ?>;">
+                <div class="table-container">
+                <table class="table data matomo-top-pages-table">
+                    <thead>
+                        <tr>
+                            <th class="matomo-top-pages-header matomo-top-pages-header-url"><?= e(trans('winter.matomo::lang.reportwidgets.top_pages.columns.url')) ?></th>
+                            <th class="matomo-top-pages-header matomo-top-pages-header-metric matomo-top-pages-header-visits"><?= e(trans('winter.matomo::lang.reportwidgets.top_pages.columns.nb_visits')) ?></th>
+                            <th class="matomo-top-pages-header matomo-top-pages-header-metric matomo-top-pages-header-bounce"><?= e(trans('winter.matomo::lang.reportwidgets.top_pages.columns.bounce_rate')) ?></th>
+                            <th class="matomo-top-pages-header matomo-top-pages-header-metric matomo-top-pages-header-time"><?= e(trans('winter.matomo::lang.reportwidgets.top_pages.columns.avg_time_on_site')) ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php if (empty($pages)): ?>
+                            <tr>
+                                <td colspan="4" class="text-center text-muted">
+                                    <?= e(trans('winter.matomo::lang.reportwidgets.top_pages.no_data')) ?>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <?php if (($selectedViewMode ?? 'flat') === 'hierarchical'): ?>
+                                <?= $this->renderHierarchicalRows($pages) ?>
+                            <?php else: ?>
+                                <?php foreach ($pages as $page): ?>
+                                    <tr>
+                                        <td class="matomo-top-pages-url-cell">
+                                            <span title="<?= e($page['url']) ?>">
+                                                <?= e($page['url']) ?>
+                                            </span>
+                                        </td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-visits"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::integer($page['nb_visits'] ?? 0)) ?></td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-bounce"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::percentage($page['bounce_rate'] ?? 0)) ?></td>
+                                        <td class="matomo-sticky-metric matomo-sticky-metric-time"><?= e(\Winter\Matomo\Classes\Helpers\ReportValueFormatter::duration($page['avg_time_on_site'] ?? 0)) ?></td>
+                                    </tr>
+                                <?php endforeach ?>
+                            <?php endif ?>
+                        <?php endif ?>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        <?php endif ?>
+
+        <div class="matomo-report-widget-footer">
+            <?= $widgetMeta ?? '' ?>
+
+            <div class="matomo-report-widget-actions">
+                <?= $refreshButton ?? '' ?>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        window.WinterMatomoTopPages = window.WinterMatomoTopPages || {};
+
+        if (!window.WinterMatomoTopPages.toggleHierarchy) {
+            window.WinterMatomoTopPages.toggleHierarchy = function (button) {
+                var target = button.dataset.target;
+                if (!target) {
+                    return false;
+                }
+
+                var root = button.closest('.matomo-report-widget') || document;
+                var expanded = button.getAttribute('aria-expanded') !== 'true';
+                var icon = button.querySelector('i');
+
+                button.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+                button.setAttribute('aria-label', expanded ? button.dataset.collapseLabel : button.dataset.expandLabel);
+
+                if (icon) {
+                    icon.classList.toggle('icon-plus', !expanded);
+                    icon.classList.toggle('icon-minus', expanded);
+                }
+
+                root.querySelectorAll('.child-of-' + target).forEach(function (row) {
+                    row.classList.toggle('matomo-page-row-hidden', !expanded);
+                });
+
+                if (!expanded) {
+                    var queue = [target];
+
+                    while (queue.length) {
+                        var parentId = queue.shift();
+
+                        root.querySelectorAll('.child-of-' + parentId).forEach(function (row) {
+                            row.classList.add('matomo-page-row-hidden');
+                            queue.push(row.id);
+                        });
+                    }
+
+                    var buttonQueue = [target];
+
+                    while (buttonQueue.length) {
+                        var buttonParentId = buttonQueue.shift();
+
+                        root.querySelectorAll('.child-of-' + buttonParentId).forEach(function (row) {
+                            var childButton = row.querySelector('.matomo-page-toggle[aria-expanded="true"]');
+
+                            if (childButton) {
+                                childButton.setAttribute('aria-expanded', 'false');
+                                childButton.setAttribute('aria-label', childButton.dataset.expandLabel);
+
+                                var childIcon = childButton.querySelector('i');
+
+                                if (childIcon) {
+                                    childIcon.classList.remove('icon-minus');
+                                    childIcon.classList.add('icon-plus');
+                                }
+
+                                buttonQueue.push(row.id);
+                            }
+                        });
+                    }
+                }
+
+                return false;
+            };
+        }
+    </script>
+</div>
