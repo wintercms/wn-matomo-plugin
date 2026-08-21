@@ -43,11 +43,21 @@ With that, Matomo should start tracking and you should see results shortly.
 > **NOTE:** Matomo provides near-realtime results with an emphasis on "near", so you might have to wait a few minutes to see the first results.
 
 ### Reporting
-This plugin provides two main Dashboard ReportWidgets out of the box.
+This plugin provides several Dashboard ReportWidgets out of the box.
 
-The first widget is the "Analytics Dashboard" widget, which provides the entire Matomo dashboard embedded into the Winter dashboard through the use of an iframe. It is recommended that you set this widget to the maximum width in order to see all of the data present easily. This widget supports changing the period of time that is reported on.
+The following widgets render their data natively and can be configured with a date range and, where applicable, a result limit:
 
-The second widget is the "Analytics Report" widget, which provides the ability to pick from a pre-set list of common reports that can be embedded as individual widgets on the Winter Dashboard. Each of the widgets allows you to configure the period of time that is examined, how the data is displayed, and how many rows to include in the results. It is also possible to export the data of an individual report.
+- **Visits Summary** – displays key visit metrics (visits, unique visitors, actions, bounce rate, average visit duration, etc.) for the selected period.
+- **Visits Over Time** – displays a chart of visits over time for the selected number of days.
+- **Top Pages** – displays the most visited pages, with options to limit the number of rows and exclude low-traffic pages.
+- **Traffic Sources (Referrers)** – displays the channels driving traffic to the site (direct entry, search engines, websites, social networks, campaigns).
+- **Top Countries (User Country)** – displays the countries visitors come from.
+- **Devices & Browsers (Devices Detection)** – displays the device types and browsers used by visitors.
+
+The following two widgets rely on an iframe to embed Matomo content directly into the Winter dashboard, which may cause display issues with certain browsers (for example, if third-party cookies or embedded frames are blocked):
+
+- **Analytics Dashboard** – provides the entire Matomo dashboard embedded into the Winter dashboard through the use of an iframe. It is recommended that you set this widget to the maximum width in order to see all of the data present easily. This widget supports changing the period of time that is reported on.
+- **Analytics Report** – provides the ability to pick from a pre-set list of common reports that can be embedded as individual widgets on the Winter Dashboard. Each of the widgets allows you to configure the period of time that is examined, how the data is displayed, and how many rows to include in the results. It is also possible to export the data of an individual report.
 
 ## Credits
 This plugin was originally written by Helmut Kaufmann, Küssnacht am Rigi, in Switzerland. Helmut can be reached by mail at <software@mercator.li>.
