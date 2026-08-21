@@ -207,7 +207,7 @@
         ],
 
         'embedded_dashboard' => [
-            'title_default'      => 'Analytics Dashboard',
+            'title_default' => 'Analytics Dashboard',
         ],
 
         'embedded_widget' => [
