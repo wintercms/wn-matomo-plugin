@@ -8,6 +8,14 @@
 
 You must have access to Matomo, either through the cloud services provided by [Matomo](https://matomo.org) or a [self hosted Matomo instance](https://matomo.org/matomo-on-premise/). If you are paranoid about privacy, you might want to go for a self-hosted instance.
 
+## Installation
+
+This plugin is available for installation via [Composer](http://getcomposer.org/).
+
+```bash
+composer require winter/wn-matomo-plugin
+```
+
 ## Plugin Usage
 You must have basic knowledge about Matomo in order to use this plugin. In particular, you must know how to create new tracking instances, users, and security tokens. Don't be worried. This is quite easy to learn by playing around with Matomo.
 
